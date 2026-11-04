@@ -1,0 +1,9 @@
+{
+  "name": "yuhetang-miniprogram",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check:mini": "node tools/check-mini.mjs"
+  }
+}
