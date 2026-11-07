@@ -1,0 +1,31 @@
+.stores-page .store-card {
+  margin:24px 36px;
+  background:#fffef9;
+  border:1px solid #e0e6d6;
+  overflow:hidden;
+  border-radius:6px;
+  text-align:left
+}
+.stores-page .store-card image, .stores-page .store-card taro-image-core {
+  height:330px
+}
+.stores-page .store-card .card-body {
+  padding:25px
+}
+.stores-page .store-actions {
+  display:flex;
+  gap:18px;
+  align-items:center;
+  margin-top:18px
+}
+.stores-page .store-actions button, .stores-page .store-actions taro-button-core {
+  flex:1;
+  font-size:24px;
+  border:1px solid #d9e3ce;
+  padding:17px
+}
+.stores-page .store-actions .green {
+  background:#435e4b;
+  color:#fff;
+  border-color:#435e4b
+}

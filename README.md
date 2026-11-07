@@ -1,28 +1,68 @@
-# 裕和堂预约小程序
+# 裕和堂 Taro 小程序与 H5
 
-微信原生小程序，当前版本不再使用早期 Taro 工程。与 [Java API](https://github.com/Ghostisme/yuhetang-miniprogram-backend)、[管理后台及 H5 预览](https://github.com/Ghostisme/yuhetang-miniprogram-admin) 配套使用。
+Taro 4 + React 18 + TypeScript，同一套源码编译微信小程序和 H5。管理后台和 Java API 分别在 [admin](https://github.com/Ghostisme/yuhetang-miniprogram-admin)、[backend](https://github.com/Ghostisme/yuhetang-miniprogram-backend) 仓库，互不参与本仓库构建。
 
-## 功能
+## 常用命令
 
-品牌、项目、门店及空间展示；选门店 → 选项目 → 选日期时段和人数 → 留联系方式、意向调理师、会员自述 → 等待门店人工确认。老师只从所选门店筛选，切店清空旧选择并忽略过期响应。
-
-我的预约支持状态查询、取消与改约；提交及改约后均提示“当前尚未预约成功，等待人工审核”。意向老师不代表最终分配，会员自述不代表已核实会员权益。本期不含支付或团购券。
-
-“微信客服”通过原生 `open-type="contact"` 直接打开微信会话，无需先打开本系统聊天页或等待本系统登录。入口覆盖首页、养护详情、门店详情、预约表单/结果、我的预约和咨询页；门店及预约入口携带本店来源，通用入口进入总部。旁边保留独立的“在线咨询”，按门店与管理后台双向沟通，支持历史和每 2 秒同步。预约和门店详情读取本店独立项目目录。客户消息使用微信订阅授权，拒绝授权不影响预约。门店管理员个人微信通知在 Java 后端通过认证服务号接入。
-
-## 开发与验证
-
-1. 微信开发者工具直接导入本仓库根目录。
-2. 已配置 AppID `wxce054e18303efb8a`，`config.js` 默认连接 `https://booking.yuhetangtcm.com`。开发者工具也默认连接云端；小程序管理后台是另一个仓库。
-3. 本地后端默认端口 8790。需要本地联调时，显式将 `useLocalBackend` 设为 `true`，只对开发者工具的 develop 环境生效。无客户凭证时，仅在本地将 `developmentLogin` 设为 `true`，后端也必须为 local 模式；提交和正式环境保持两项为 `false`。
-4. 手机访问电脑使用局域网地址，不能使用 `127.0.0.1`；正式发布需要合法域名、HTTPS 和隐私指引。
+需要 Node.js 20.19+ 或 22.12+，在本仓库执行：
 
 ```powershell
-npm run check:mini
+npm ci
+npm run dev:weapp    # 微信小程序开发，持续编译
+npm run build:weapp  # 微信小程序正式构建
+npm run dev:h5       # H5 开发，http://127.0.0.1:5182
+npm run build:h5     # H5 静态构建
+npm run check:mini   # TypeScript + 单元测试
 ```
 
-检查脚本不依赖 npm 包，覆盖六个页面和原生客服组件结构、事件绑定、会员选项、老师归属、待确认文案、重复提交、切店旧响应、门店项目加载竞争、原生客服独立入口及门店来源、在线客服路由/增量去重/重复发送、改约日期竞争及双模板订阅、首次登录与拒绝授权。它不替代微信开发者工具编译、真机验收或微信审核。
+微信开发者工具导入仓库根目录，`project.config.json` 已指向 `dist/weapp/`，AppID 为 `wxce054e18303efb8a`。先运行微信编译命令，再用开发者工具预览、真机调试和上传。H5 发布目录为 `dist/h5/`。
 
-预约处理和到店提醒分别申请一次性订阅，模板 ID 从后端运行配置读取；仅登记用户实际接受的模板，拒绝订阅不阻断预约。内容、门店品项及模板映射等通过后台和 API 更新，涉及小程序页面、权限或客户端逻辑的调整仍需重新发布。详见 [接口更新约定](docs/小程序接口更新约定.md)。
+## 源码结构
 
-详情见 [微信接入说明](docs/微信接入说明.md)。
+```text
+config/index.ts          Taro 编译、H5 代理和环境配置
+src/
+  app.tsx                应用入口
+  app.config.ts          页面和底部导航
+  app.scss               全局样式入口
+  styles/common.scss     公用布局、组件与主题
+  pages/
+    home/                首页
+    catalog/             养护项目
+    stores/              门店
+    orders/              我的预约
+    booking/             四步预约
+    chat/                在线咨询
+  components/            公用组件、微信原生客服按钮
+  services/              API、登录、订阅消息及配置缓存
+  types.ts               业务类型
+  assets/                导航图标
+tests/                  单元测试
+```
+
+每个页面使用 `index.tsx`、`index.scss`、`index.config.ts`，业务修改直接编辑 `src/`。`dist/` 是生成产物，不直接修改；旧原生 `app.js/pages/*.wxml` 结构已从本仓库移除。
+
+## 接口与本地联调
+
+正式编译默认 API 为 `https://booking.yuhetangtcm.com`。可用构建环境变量 `TARO_APP_API_BASE` 指定接口地址；变量是公开客户端配置，禁止放 AppSecret、Token 或 AESKey。
+
+本地 H5 通过代理访问独立 Java API：
+
+```powershell
+$env:API_PROXY_TARGET='http://127.0.0.1:8790'
+$env:TARO_APP_API_BASE=''
+$env:TARO_APP_DEV_LOGIN='true'
+npm run dev:h5
+```
+
+模拟登录须显式开启且后端为 local 模式，正式构建始终禁用。生产 H5 当前支持公开内容浏览；客户登录、预约和咨询的生产验收使用微信小程序。若要正式 H5 也能操作客户资料，需要补接 H5 登录，不会自动使用模拟身份。
+
+微信本地开发需设置开发者工具可达的 API 地址；手机不能用电脑的 `127.0.0.1`。正式版仍需配置合法域名、HTTPS、隐私指引并完成真机验证。
+
+## 业务与消息
+
+预约按“门店 → 本店项目 → 日期时段与人数 → 联系资料”提交，提交后等待门店确认。我的预约支持查询、取消、改约。微信原生客服使用 Taro `Button openType="contact"`，附公开门店来源，直接进入微信客服；独立“在线咨询”通过现有 Java 接口与后台收发。
+
+预约处理和到店提醒模板 ID 从 `/api/runtime` 读取。订阅申请在用户点击时发起，拒绝订阅不阻断预约；真实发送由后端完成。品牌、门店、本店项目及规则通过 API 更新，站点与运行配置缓存 60 秒，首页下拉可强制刷新。
+
+本地 TypeScript、单元测试、微信/H5 编译及 H5 预约客服联调不替代真实微信登录、订阅消息送达或提审。接入要求见 [微信说明](docs/微信接入说明.md)，后续内容更新见 [接口约定](docs/小程序接口更新约定.md)。

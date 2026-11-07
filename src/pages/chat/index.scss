@@ -1,0 +1,135 @@
+.page.chat-page {
+  min-height:0;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  background:var(--paper,#faf9f3);
+  color:var(--ink,#344a3b);
+  padding-bottom:env(safe-area-inset-bottom);
+  box-sizing:border-box
+}
+.chat-page .chat-heading {
+  padding:32px 34px 22px;
+  background:var(--soft,#e9eddf)
+}
+.chat-page .chat-heading .heading {
+  font-size:34px;
+  margin:14px 0
+}
+.chat-page .chat-store {
+  padding:25px 34px;
+  border-bottom:1px solid #e0e6d7;
+  font-size:24px
+}
+.chat-page .chat-store>view, .chat-page .chat-store>taro-view-core {
+  display:flex;
+  justify-content:space-between;
+  gap:20px
+}
+.chat-page .chat-store text, .chat-page .chat-store taro-text-core {
+  color:#71825e;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap
+}
+.chat-page .chat-native {
+  display:flex;
+  justify-content:space-between;
+  padding:18px 34px;
+  border-bottom:1px solid #e0e6d7;
+  gap:18px
+}
+.chat-page .chat-native button, .chat-page .chat-native taro-button-core {
+  font-size:23px;
+  color:#59754e;
+  padding:8px 0
+}
+.chat-page .chat-messages {
+  flex:1;
+  min-height:0;
+  box-sizing:border-box
+}
+.chat-page .chat-empty {
+  text-align:center;
+  font-size:25px;
+  color:#929c85;
+  padding:80px 35px
+}
+.chat-page .message-row {
+  display:flex;
+  justify-content:flex-start;
+  padding:0 28px;
+  margin-top:25px
+}
+.chat-page .message-row.mine {
+  justify-content:flex-end
+}
+.chat-page .bubble {
+  max-width:90%;
+  background:#edf0e4;
+  padding:20px 24px;
+  border-radius:16px 16px 16px 0;
+  box-sizing:border-box;
+  overflow-wrap:anywhere;
+  word-break:break-word
+}
+.chat-page .mine .bubble {
+  background:#dfe8d5;
+  border-radius:16px 16px 0 16px
+}
+.chat-page .message-meta {
+  font-size:19px;
+  color:#89947c;
+  margin-bottom:12px
+}
+.chat-page .bubble>text, .chat-page .bubble>taro-text-core {
+  font-size:27px;
+  line-height:1.8;
+  white-space:pre-wrap
+}
+.chat-page .message-bottom {
+  height:28px
+}
+.chat-page .history {
+  font-size:22px;
+  color:#7e8d6e;
+  padding:25px
+}
+.chat-page .chat-compose {
+  display:flex;
+  align-items:flex-end;
+  gap:18px;
+  padding:20px 25px;
+  border-top:1px solid #e0e6d7;
+  background:var(--paper,#faf9f3)
+}
+.chat-page .chat-compose textarea, .chat-page .chat-compose taro-textarea-core {
+  flex:1;
+  width:0;
+  height:104px;
+  min-height:104px;
+  padding:16px 20px;
+  font-size:25px
+}
+.chat-page .chat-compose .primary {
+  padding:23px 30px;
+  font-size:26px;
+  margin:0;
+  min-width:125px
+}
+.chat-page .chat-error {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  font-size:22px;
+  line-height:1.8;
+  color:#a16c50;
+  background:#fbefe5;
+  padding:15px 28px
+}
+.chat-page .chat-error button, .chat-page .chat-error taro-button-core {
+  font-size:22px;
+  color:#95603e;
+  flex-shrink:0
+}

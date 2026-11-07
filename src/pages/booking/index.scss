@@ -1,0 +1,23 @@
+.booking-page {
+  .steps { display:flex; justify-content:space-between; padding:30px; border-bottom:1px solid #e2e7d9; }
+  .steps button, .steps taro-button-core { font-size:21px; color:#9fa98f; display:flex; align-items:center; gap:7px; }
+  .steps .n { border:1px solid #c9d4bd; border-radius:50%; height:37px; width:37px; line-height:35px; text-align:center; font-size:20px; }
+  .steps .active { color:#435e4b; }
+  .steps .active .n { background:var(--primary,#435e4b); color:white; }
+  .slot-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:13px; margin:25px 0; }
+  .slot-grid button, .slot-grid taro-button-core { padding:19px 5px; border:1px solid #dce4d1; background:#fffef8; border-radius:4px; color:#577448; font-size:24px; }
+  .slot-grid .active { background:var(--primary,#435e4b); color:#fff; }
+  .slot-grid .tiny { display:block; font-size:17px; margin-top:7px; }
+  .slot-grid .active .tiny { color:#f6f8f2; }
+  .agree { display:flex; gap:13px; color:#859675; font-size:22px; line-height:1.9; margin:24px 0; }
+  .agree checkbox, .agree taro-checkbox-core { transform:scale(.76); transform-origin:top left; flex-shrink:0; width:36px; }
+  .text-link { display:inline; color:#506e40; font-size:22px; }
+  .receipt { text-align:center; padding:60px 38px; }
+  .receipt-icon { width:126px; height:126px; background:#f1e7d0; color:#aa8445; border-radius:50%; font-size:72px; line-height:119px; margin:0 auto 35px; }
+  .receipt .heading { font-size:49px; line-height:1.75; white-space:pre-line; margin:24px 0; }
+  .receipt-card { background:#fffdf7; border:1px solid #dfe5d4; padding:30px; text-align:left; margin:30px 0; border-radius:5px; }
+  .receipt-card .card-title { margin:18px 0; }
+  .receipt-row { display:flex; justify-content:space-between; gap:20px; padding:14px 0; font-size:24px; border-bottom:1px solid #edf0e5; line-height:1.9; }
+  .receipt-row .label { color:#96a187; flex-shrink:0; }
+  .receipt-row .value { text-align:right; }
+}

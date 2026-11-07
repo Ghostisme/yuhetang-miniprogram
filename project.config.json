@@ -1,6 +1,6 @@
 {
-  "description": "裕和堂门店预约小程序 / 原生微信小程序",
-  "miniprogramRoot": "./",
+  "description": "裕和堂预约 · Taro / React / TypeScript",
+  "miniprogramRoot": "dist/weapp/",
   "compileType": "miniprogram",
   "appid": "wxce054e18303efb8a",
   "projectname": "yuhetang-miniprogram",
@@ -33,76 +33,7 @@
   },
   "condition": {},
   "packOptions": {
-    "ignore": [
-      {
-        "value": "tools",
-        "type": "folder"
-      },
-      {
-        "value": "docs",
-        "type": "folder"
-      },
-      {
-        "value": "node_modules",
-        "type": "folder"
-      },
-      {
-        "value": "package.json",
-        "type": "file"
-      },
-      {
-        "value": "README.md",
-        "type": "file"
-      },
-      {
-        "value": ".gitignore",
-        "type": "file"
-      },
-      {
-        "value": ".gitattributes",
-        "type": "file"
-      },
-      {
-        "value": ".git",
-        "type": "folder"
-      },
-      {
-        "value": ".swc",
-        "type": "folder"
-      },
-      {
-        "value": "config",
-        "type": "folder"
-      },
-      {
-        "value": "dist",
-        "type": "folder"
-      },
-      {
-        "value": "logs",
-        "type": "folder"
-      },
-      {
-        "value": "src",
-        "type": "folder"
-      },
-      {
-        "value": "types",
-        "type": "folder"
-      },
-      {
-        "value": "test-results",
-        "type": "folder"
-      },
-      {
-        "value": "LICENSE",
-        "type": "file"
-      },
-      {
-        "value": "project.private.config.json",
-        "type": "file"
-      }
-    ],
+    "ignore": [],
     "include": []
   },
   "simulatorPluginLibVersion": {},

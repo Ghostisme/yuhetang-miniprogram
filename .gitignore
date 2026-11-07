@@ -3,6 +3,9 @@ dist/
 .taro/
 .swc/
 logs/
+backups/
+__pycache__/
+*.pyc
 test-results/
 .DS_Store
 project.private.config.json

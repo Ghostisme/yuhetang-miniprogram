@@ -1,0 +1,136 @@
+.home-page .brand {
+  padding:27px 36px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  background:#faf9f3
+}
+.home-page .seal {
+  font-family:serif;
+  border:1px solid #b36d52;
+  color:#b36d52;
+  font-size:20px;
+  line-height:1.1;
+  width:33px;
+  padding:4px;
+  text-align:center
+}
+.home-page .brand-name {
+  font-family:serif;
+  font-size:39px;
+  letter-spacing:8px
+}
+.home-page .english {
+  font-size:16px;
+  letter-spacing:5px;
+  display:block;
+  color:#89967d;
+  margin-top:7px
+}
+.home-page .hero {
+  height:820px;
+  position:relative;
+  background:#435443
+}
+.home-page .hero image, .home-page .hero taro-image-core {
+  height:100%
+}
+.home-page .hero-shade {
+  position:absolute;
+  inset:0;
+  background:linear-gradient(0deg,#253426c9,transparent 85%)
+}
+.home-page .hero-copy {
+  position:absolute;
+  left:46px;
+  right:40px;
+  bottom:78px;
+  color:#fffdf1
+}
+.home-page .hero-copy .eyebrow {
+  color:#e2e6d6;
+  letter-spacing:2px
+}
+.home-page .hero-copy .title {
+  font-family:serif;
+  white-space:pre-line;
+  font-size:62px;
+  line-height:1.65;
+  letter-spacing:5px;
+  margin:20px 0
+}
+.home-page .hero-copy .subtitle {
+  font-size:23px;
+  color:#e1e3d5;
+  line-height:1.9
+}
+.home-page .hero-button {
+  background:#f6f2df;
+  color:#3c523e;
+  display:inline-block;
+  padding:22px 35px;
+  margin-top:32px;
+  font-size:25px
+}
+.home-page .quick-links {
+  display:flex;
+  padding:40px 20px;
+  border-bottom:1px solid #e8ebdf
+}
+.home-page .quick-links button, .home-page .quick-links taro-button-core {
+  width:33.33%;
+  text-align:center;
+  border-right:1px solid #e4e8dc;
+  font-size:25px
+}
+.home-page .quick-links button:last-child, .home-page .quick-links taro-button-core:last-child {
+  border:0
+}
+.home-page .quick-links .symbol {
+  font-family:serif;
+  display:block;
+  font-size:46px;
+  margin-bottom:12px
+}
+.home-page .quick-links .sub {
+  display:block;
+  font-size:18px;
+  color:#98a18d;
+  margin-top:8px
+}
+.home-page .intro {
+  background:#e9eddf;
+  padding:45px 38px
+}
+.home-page .intro .heading {
+  line-height:1.7;
+  margin:18px 0
+}
+.home-page .intro .muted {
+  font-size:23px
+}
+.home-page .footer {
+  text-align:center;
+  font-size:18px;
+  letter-spacing:2px;
+  color:#a0aa95;
+  padding:40px 20px
+}
+.home-page .brand {
+  background:var(--paper,#faf9f3)
+}
+.home-page .intro {
+  background:var(--soft,#e9eddf)
+}
+.home-page .order-shortcut {
+  display:block;
+  width:100%;
+  padding:14px 36px;
+  text-align:right;
+  font-size:22px;
+  color:#607c51;
+  border-top:1px solid #e8ebdf
+}
+.home-page .store-preview {
+  margin-top:24px
+}

@@ -1,0 +1,16 @@
+.orders-page {
+  .status { display:inline-block; background:#f1ecdf; color:#a27b3d; padding:8px 15px; font-size:22px; border-radius:4px; }
+  .status.CONFIRMED { background:#e5efdf; color:#547b41; }
+  .status.CANCELLED, .status.NO_SHOW { background:#f2e7e0; color:#9a7060; }
+  .status.ARRIVED, .status.COMPLETED { background:#e4ece7; color:#5d7d64; }
+  .order { margin:25px 30px; background:#fffef9; border:1px solid #e1e7d8; padding:30px; border-radius:6px; }
+  .order-top { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .order-top .tiny { font-size:18px; }
+  .order .card-title { margin:24px 0 10px; }
+  .order .banner { font-size:22px; margin:22px 0; padding:20px; }
+  .order-actions { display:flex; gap:15px; margin-top:25px; align-items:flex-start; }
+  .order-actions button, .order-actions taro-button-core { flex:1; padding:17px; font-size:23px; border:1px solid #d6dfcc; border-radius:4px; }
+  .order-actions .customer-service { flex:1; min-width:0; }
+  .edit-panel { background:#f3f5eb; padding:20px; margin-top:20px; }
+  .edit-panel .field { margin:15px 0; }
+}
