@@ -8,7 +8,8 @@ Taro 4 + React 18 + TypeScript，同一套源码编译微信小程序和 H5。�
 
 ```powershell
 npm ci
-npm run dev:weapp    # 微信小程序开发，持续编译
+npm run dev:weapp    # 连接线上 Java 与线上管理后台，持续编译
+npm run dev:weapp:server # 同上，真实微信登录并检查线上接口
 npm run dev:weapp:local # 本地 Java 就绪后，模拟器联调与开发登录
 npm run build:weapp  # 微信小程序正式构建
 npm run dev:h5       # H5 开发，http://127.0.0.1:5182
@@ -47,7 +48,9 @@ tests/                  单元测试
 
 ## 接口与本地联调
 
-正式编译默认 API 为 `https://booking.yuhetangtcm.com`。可用构建环境变量 `TARO_APP_API_BASE` 指定接口地址；变量是公开客户端配置，禁止放 AppSecret、Token 或 AESKey。
+微信小程序开发和正式编译默认 API 为 `https://mp-admin.hetuonian.cn`，与当前线上管理后台 `/admin` 使用同一套 Java 和数据库。可用构建环境变量 `TARO_APP_API_BASE` 指定接口地址；变量是公开客户端配置，禁止放 AppSecret、Token 或 AESKey。`booking.hetuonian.cn` 当前仅提供微信原生客服回调，不能用作完整业务 API。
+
+测试线上“在线咨询”时运行 `npm run dev:weapp`，然后在模拟器进入咨询页并发一条消息，在 `https://mp-admin.hetuonian.cn/admin` 的“客户沟通”查看“在线客服”会话。该命令先检查线上 Java、数据库和微信登录配置，并关闭模拟登录。微信后台的 request 合法域名需包含 `https://mp-admin.hetuonian.cn`；真机验证仍受该配置约束。模拟器切换接口或登录模式后，会自动丢弃上一环境的客户登录，不再携带本地模拟身份访问线上。
 
 本地 H5 通过代理访问独立 Java API：
 
@@ -72,7 +75,7 @@ cd 'D:\github_code\裕和堂相关项目\yuhetang-miniprogram'
 npm run dev:weapp:local
 ```
 
-该命令先检查 `http://127.0.0.1:8790/api/health`，接口未启动时会直接提示；只接受 local 后端。它启用本地模拟登录，并在不入库的 `project.private.config.json` 中关闭域名校验。普通 `dev:weapp` 同样默认连接 8790，但不自动启用模拟登录。正式 `build:weapp` 禁用模拟登录，并拒绝将 localhost 编入正式包。
+该命令先检查 `http://127.0.0.1:8790/api/health`，接口未启动时会直接提示；只接受 local 后端。它启用本地模拟登录，并在不入库的 `project.private.config.json` 中关闭域名校验。本地咨询应到本地管理后台接待；普通 `dev:weapp` 则连接线上。正式 `build:weapp` 禁用模拟登录，并拒绝将 localhost 编入正式包。
 
 微信开发者工具打开本仓库根目录 `D:\github_code\裕和堂相关项目\yuhetang-miniprogram`，确认“小程序目录”为 `dist/weapp/`。不要打开旧的 `D:\BaiduNetdiskDownload\照片\yuwatang-reservation\miniprogram`；若仍出现旧 WXML、`8098/api/public/bootstrap` 或旧样式报错，先切回本仓库，再“清缓存 → 全部清除”并重新编译。页面源码只修改 `src/`，不复制旧原生模板到 `dist/`。
 

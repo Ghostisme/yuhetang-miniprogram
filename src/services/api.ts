@@ -1,15 +1,29 @@
 import Taro from '@tarojs/taro'
 import { newId, subscriptionIds, message } from '../utils/booking'
+import { prepareSession } from '../utils/session'
 
 const base = API_BASE_URL.replace(/\/$/, '')
 export const isWeapp = process.env.TARO_ENV === 'weapp'
 const pending = new Map<string, Promise<unknown>>()
 const cooldown = new Map<string, number>()
 let loginPromise: Promise<void> | undefined
+let sessionPrepared = false
+
+function customerToken(): string {
+  if (!sessionPrepared) {
+    prepareSession({
+      get: key => Taro.getStorageSync(key),
+      set: (key, value) => Taro.setStorageSync(key, value),
+      remove: key => Taro.removeStorageSync(key),
+    }, base, ENABLE_DEV_LOGIN)
+    sessionPrepared = true
+  }
+  return Taro.getStorageSync<string>('yht-token')
+}
 type Options = { method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'; data?: object; headers?: Record<string, string> }
 
 export function request<T>(path: string, options: Options = {}): Promise<T> {
-  const token = Taro.getStorageSync<string>('yht-token')
+  const token = customerToken()
   const key = `${token}|${path}|${JSON.stringify(options.data || {})}`
   const read = !options.method || options.method === 'GET'
   if (read && pending.has(key)) return pending.get(key) as Promise<T>
@@ -32,7 +46,7 @@ export function request<T>(path: string, options: Options = {}): Promise<T> {
 }
 
 export async function login(): Promise<void> {
-  if (Taro.getStorageSync('yht-token')) return
+  if (customerToken()) return
   if (loginPromise) return loginPromise
   loginPromise = (async () => {
     let result: { token: string }

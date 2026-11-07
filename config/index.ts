@@ -1,9 +1,9 @@
 import { defineConfig } from '@tarojs/cli'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
-const apiBase = process.env.TARO_APP_API_BASE ?? (isDevelopment
-  ? process.env.TARO_ENV === 'h5' ? '' : 'http://127.0.0.1:8790'
-  : 'https://booking.yuhetangtcm.com')
+const apiBase = process.env.TARO_APP_API_BASE ?? (isDevelopment && process.env.TARO_ENV === 'h5'
+  ? ''
+  : 'https://mp-admin.hetuonian.cn')
 
 if (!isDevelopment && apiBase && ['localhost', '127.0.0.1', '[::1]'].includes(new URL(apiBase).hostname)) {
   throw new Error('正式构建不能使用本地接口地址；请配置 TARO_APP_API_BASE。')
