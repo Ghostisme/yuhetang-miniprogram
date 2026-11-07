@@ -18,6 +18,8 @@ npm run check:mini   # TypeScript + 单元测试
 
 微信开发者工具导入仓库根目录，`project.config.json` 已指向 `dist/weapp/`，AppID 为 `wxce054e18303efb8a`。先运行微信编译命令，再用开发者工具预览、真机调试和上传。H5 发布目录为 `dist/h5/`。
 
+已运行开发监听时，可用 `TARO_APP_OUTPUT_ROOT` 指定另外的构建目录（例如 `dist/verify-weapp`），避免正式构建覆盖正在联调的产物；不设置时仍使用上述默认目录。
+
 ## 源码结构
 
 ```text

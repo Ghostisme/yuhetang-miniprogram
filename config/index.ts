@@ -14,7 +14,7 @@ export default defineConfig<'webpack5'>({
   designWidth: 750,
   deviceRatio: { 640: 1.17, 750: 1, 375: 2, 828: 0.905 },
   sourceRoot: 'src',
-  outputRoot: `dist/${process.env.TARO_ENV || 'weapp'}`,
+  outputRoot: process.env.TARO_APP_OUTPUT_ROOT || `dist/${process.env.TARO_ENV || 'weapp'}`,
   framework: 'react',
   compiler: { type: 'webpack5', prebundle: { enable: false } },
   cache: { enable: false },

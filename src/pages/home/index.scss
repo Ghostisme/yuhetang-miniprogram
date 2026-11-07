@@ -1,136 +1,37 @@
-.home-page .brand {
-  padding:27px 36px;
-  display:flex;
-  align-items:center;
-  gap:14px;
-  background:#faf9f3
-}
-.home-page .seal {
-  font-family:serif;
-  border:1px solid #b36d52;
-  color:#b36d52;
-  font-size:20px;
-  line-height:1.1;
-  width:33px;
-  padding:4px;
-  text-align:center
-}
-.home-page .brand-name {
-  font-family:serif;
-  font-size:39px;
-  letter-spacing:8px
-}
-.home-page .english {
-  font-size:16px;
-  letter-spacing:5px;
-  display:block;
-  color:#89967d;
-  margin-top:7px
-}
-.home-page .hero {
-  height:820px;
-  position:relative;
-  background:#435443
-}
-.home-page .hero image, .home-page .hero taro-image-core {
-  height:100%
-}
-.home-page .hero-shade {
-  position:absolute;
-  inset:0;
-  background:linear-gradient(0deg,#253426c9,transparent 85%)
-}
-.home-page .hero-copy {
-  position:absolute;
-  left:46px;
-  right:40px;
-  bottom:78px;
-  color:#fffdf1
-}
-.home-page .hero-copy .eyebrow {
-  color:#e2e6d6;
-  letter-spacing:2px
-}
-.home-page .hero-copy .title {
-  font-family:serif;
-  white-space:pre-line;
-  font-size:62px;
-  line-height:1.65;
-  letter-spacing:5px;
-  margin:20px 0
-}
-.home-page .hero-copy .subtitle {
-  font-size:23px;
-  color:#e1e3d5;
-  line-height:1.9
-}
-.home-page .hero-button {
-  background:#f6f2df;
-  color:#3c523e;
-  display:inline-block;
-  padding:22px 35px;
-  margin-top:32px;
-  font-size:25px
-}
-.home-page .quick-links {
-  display:flex;
-  padding:40px 20px;
-  border-bottom:1px solid #e8ebdf
-}
-.home-page .quick-links button, .home-page .quick-links taro-button-core {
-  width:33.33%;
-  text-align:center;
-  border-right:1px solid #e4e8dc;
-  font-size:25px
-}
-.home-page .quick-links button:last-child, .home-page .quick-links taro-button-core:last-child {
-  border:0
-}
-.home-page .quick-links .symbol {
-  font-family:serif;
-  display:block;
-  font-size:46px;
-  margin-bottom:12px
-}
-.home-page .quick-links .sub {
-  display:block;
-  font-size:18px;
-  color:#98a18d;
-  margin-top:8px
-}
-.home-page .intro {
-  background:#e9eddf;
-  padding:45px 38px
-}
-.home-page .intro .heading {
-  line-height:1.7;
-  margin:18px 0
-}
-.home-page .intro .muted {
-  font-size:23px
-}
-.home-page .footer {
-  text-align:center;
-  font-size:18px;
-  letter-spacing:2px;
-  color:#a0aa95;
-  padding:40px 20px
-}
-.home-page .brand {
-  background:var(--paper,#faf9f3)
-}
-.home-page .intro {
-  background:var(--soft,#e9eddf)
-}
-.home-page .order-shortcut {
-  display:block;
-  width:100%;
-  padding:14px 36px;
-  text-align:right;
-  font-size:22px;
-  color:#607c51;
-  border-top:1px solid #e8ebdf
-}
-.home-page .store-preview {
-  margin-top:24px
+.home-page {
+  .brand { display:flex; align-items:center; justify-content:space-between; gap:24px; padding:30px 32px; }
+  .brand-lockup { display:flex; align-items:center; gap:14px; }
+  .seal { width:35px; padding:5px 3px; border:1px solid #a66d58; border-radius:2px; color:#a66d58; font-family:serif; font-size:20px; line-height:1.1; text-align:center; }
+  .brand-name { font-family:'Songti SC',STSong,serif; font-size:39px; line-height:1.25; letter-spacing:7px; }
+  .english { display:block; margin-top:7px; color:#73806f; font-size:15px; letter-spacing:4px; }
+  .order-shortcut { display:flex; min-height:68px; align-items:center; gap:12px; padding:12px 18px; border:1px solid #dbe3d6; border-radius:34px; color:var(--primary,#435e4b); font-size:23px; }
+  .order-shortcut .arrow { font-size:31px; line-height:1; }
+  .hero { position:relative; height:660px; margin:0 24px; overflow:hidden; border-radius:24px; background:#435443; }
+  .hero image, .hero taro-image-core { height:100%; }
+  .shade { position:absolute; inset:0; background:linear-gradient(0deg,rgba(20,38,27,.9),rgba(20,38,27,.2) 72%,rgba(20,38,27,.06)); }
+  .copy { position:absolute; right:34px; bottom:36px; left:34px; color:#fffdf4; }
+  .copy .eyebrow { color:#eeeedd; font-size:21px; letter-spacing:2px; }
+  .title { margin:12px 0 18px; font-family:'Songti SC',STSong,serif; font-size:55px; line-height:1.45; letter-spacing:3px; white-space:pre-line; }
+  .subtitle { color:#edeedd; font-size:24px; line-height:1.8; }
+  .hero-button { display:inline-flex; min-height:82px; align-items:center; gap:30px; margin-top:28px; padding:18px 28px; border-radius:12px; background:#f6f3e8; color:#30483b; font-size:26px; }
+  .quick-links { display:flex; margin:24px 24px 4px; padding:26px 4px; border:1px solid var(--line); border-radius:20px; background:#fff; }
+  .quick-links button, .quick-links taro-button-core { display:flex; width:33.333%; flex-direction:column; align-items:center; border-right:1px solid #e7ece1; }
+  .quick-links button:last-child, .quick-links taro-button-core:last-child { border-right:0; }
+  .quick-icon { width:50px; height:50px; margin-bottom:14px; }
+  .quick-label { font-size:27px; font-weight:500; }
+  .quick-sub { margin-top:6px; color:#7c8877; font-size:21px; }
+  .quick-bag { position:relative; width:40px; height:40px; margin:10px 0 14px; border:2px solid #435e4b; border-radius:5px; }
+  .quick-bag::before { position:absolute; top:-11px; left:10px; width:16px; height:18px; border:2px solid #435e4b; border-bottom:0; border-radius:9px 9px 0 0; content:""; }
+  .section { padding-top:38px; padding-bottom:20px; }
+  .card .muted { min-height:84px; font-size:24px; }
+  .duration { display:block; margin-top:12px; color:#657958; font-size:23px; }
+  .store-preview { margin-top:22px; }
+  .store-preview image, .store-preview taro-image-core { height:316px; }
+  .store-preview-title { display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:10px; }
+  .store-preview .muted { min-height:0; }
+  .intro { margin:38px 24px 0; padding:40px 30px; border-radius:20px; background:var(--soft,#e9eddf); }
+  .intro .heading { margin:16px 0; font-size:39px; }
+  .intro .link { margin-top:24px; }
+  .home-contact .banner { margin:0; }
+  .footer { padding:24px 20px 8px; color:#7d8a73; font-size:18px; letter-spacing:2px; text-align:center; }
 }
