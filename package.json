@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev:weapp": "taro build --type weapp --watch",
+    "dev:weapp:local": "node tools/dev-weapp-local.mjs",
     "build:weapp": "taro build --type weapp",
     "dev:h5": "taro build --type h5 --watch",
     "build:h5": "taro build --type h5",

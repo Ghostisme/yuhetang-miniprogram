@@ -9,6 +9,7 @@ Taro 4 + React 18 + TypeScript，同一套源码编译微信小程序和 H5。�
 ```powershell
 npm ci
 npm run dev:weapp    # 微信小程序开发，持续编译
+npm run dev:weapp:local # 本地 Java 就绪后，模拟器联调与开发登录
 npm run build:weapp  # 微信小程序正式构建
 npm run dev:h5       # H5 开发，http://127.0.0.1:5182
 npm run build:h5     # H5 静态构建
@@ -57,7 +58,23 @@ npm run dev:h5
 
 模拟登录须显式开启且后端为 local 模式，正式构建始终禁用。生产 H5 当前支持公开内容浏览；客户登录、预约和咨询的生产验收使用微信小程序。若要正式 H5 也能操作客户资料，需要补接 H5 登录，不会自动使用模拟身份。
 
-微信本地开发需设置开发者工具可达的 API 地址；手机不能用电脑的 `127.0.0.1`。正式版仍需配置合法域名、HTTPS、隐私指引并完成真机验证。
+微信模拟器本地联调按以下顺序执行，Java、管理后台和小程序仍各自运行：
+
+```powershell
+# 终端一：独立 Java 仓库
+cd 'D:\github_code\裕和堂相关项目\yuhetang-miniprogram-backend'
+.\tools\start-local.ps1
+
+# 终端二：本小程序仓库
+cd 'D:\github_code\裕和堂相关项目\yuhetang-miniprogram'
+npm run dev:weapp:local
+```
+
+该命令先检查 `http://127.0.0.1:8790/api/health`，接口未启动时会直接提示；只接受 local 后端。它启用本地模拟登录，并在不入库的 `project.private.config.json` 中关闭域名校验。普通 `dev:weapp` 同样默认连接 8790，但不自动启用模拟登录。正式 `build:weapp` 禁用模拟登录，并拒绝将 localhost 编入正式包。
+
+微信开发者工具打开本仓库根目录 `D:\github_code\裕和堂相关项目\yuhetang-miniprogram`，确认“小程序目录”为 `dist/weapp/`。不要打开旧的 `D:\BaiduNetdiskDownload\照片\yuwatang-reservation\miniprogram`；若仍出现旧 WXML、`8098/api/public/bootstrap` 或旧样式报错，先切回本仓库，再“清缓存 → 全部清除”并重新编译。页面源码只修改 `src/`，不复制旧原生模板到 `dist/`。
+
+手机不能用电脑的 `127.0.0.1`；真机局域网联调需启动 Java 的 `-Lan` 选项，并将 `TARO_APP_API_BASE` 设为电脑局域网地址。正式版仍需配置合法域名、HTTPS、隐私指引并完成真机验证。
 
 ## 业务与消息
 

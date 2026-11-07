@@ -1,5 +1,14 @@
 import { defineConfig } from '@tarojs/cli'
 
+const isDevelopment = process.env.NODE_ENV !== 'production'
+const apiBase = process.env.TARO_APP_API_BASE ?? (isDevelopment
+  ? process.env.TARO_ENV === 'h5' ? '' : 'http://127.0.0.1:8790'
+  : 'https://booking.yuhetangtcm.com')
+
+if (!isDevelopment && apiBase && ['localhost', '127.0.0.1', '[::1]'].includes(new URL(apiBase).hostname)) {
+  throw new Error('正式构建不能使用本地接口地址；请配置 TARO_APP_API_BASE。')
+}
+
 export default defineConfig<'webpack5'>({
   projectName: 'yuhetang-miniprogram',
   designWidth: 750,
@@ -11,8 +20,8 @@ export default defineConfig<'webpack5'>({
   cache: { enable: false },
   plugins: ['@tarojs/plugin-platform-weapp', '@tarojs/plugin-platform-h5'],
   defineConstants: {
-    API_BASE_URL: JSON.stringify(process.env.TARO_APP_API_BASE ?? (process.env.TARO_ENV === 'h5' && process.env.NODE_ENV !== 'production' ? '' : 'https://booking.yuhetangtcm.com')),
-    ENABLE_DEV_LOGIN: JSON.stringify(process.env.TARO_APP_DEV_LOGIN === 'true' && process.env.NODE_ENV !== 'production'),
+    API_BASE_URL: JSON.stringify(apiBase),
+    ENABLE_DEV_LOGIN: JSON.stringify(process.env.TARO_APP_DEV_LOGIN === 'true' && isDevelopment),
   },
   mini: { postcss: { pxtransform: { enable: true }, cssModules: { enable: false } } },
   h5: {
