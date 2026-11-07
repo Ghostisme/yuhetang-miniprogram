@@ -1,0 +1,7 @@
+@use '../stores/index';
+
+.store-detail-page {
+  .store-detail-navigation { position:sticky; top:0; z-index:5; display:flex; align-items:center; justify-content:space-between; gap:24px; padding:14px 32px; margin-bottom:18px; border-bottom:1px solid var(--line); background:var(--paper,#faf9f3); }
+  .store-list-return { display:flex; align-items:center; gap:12px; min-height:88px; padding:12px 22px; border:1px solid #cdd8c7; border-radius:12px; background:#fff; color:var(--primary,#435e4b); font-size:26px; }
+  .return-chevron { font-family:Arial,sans-serif; font-size:40px; font-weight:400; line-height:1; }
+}
