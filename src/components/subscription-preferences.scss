@@ -1,0 +1,15 @@
+.subscription-preferences { margin:30px 0; padding:28px; border:1px solid var(--line); border-radius:20px; background:#fff;
+  .subscription-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; font-size:30px; color:var(--primary,#435e4b); }
+  .subscription-label { padding:6px 14px; border-radius:8px; background:#edf2e7; color:#637b55; font-size:21px; }
+  .subscription-intro { display:block; margin:14px 0 8px; color:#84907b; font-size:23px; line-height:1.8; }
+  .subscription-template-row { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:22px 0; border-bottom:1px solid #edf0e8; }
+  .subscription-template-row>view { flex:1; min-width:0; }.subscription-title { display:block; font-size:26px; color:#526749; }
+  .subscription-description { display:block; font-size:22px; margin-top:10px; color:#919987; }
+  .subscription-balance { flex-shrink:0; padding:7px 12px; font-size:22px; color:#9d7e49; background:#f7f1e4; border-radius:8px; }.subscription-balance.available { color:#607a51; background:#edf3e7; }
+  .primary { width:100%; margin:26px 0 16px; font-size:26px; }
+  .subscription-note { margin-top:18px; color:#8d9584; font-size:21px; line-height:1.9; }
+  .subscription-feedback { padding:18px; margin-top:16px; background:#f1f5ec; color:#5a734d; border-radius:10px; font-size:23px; line-height:1.8; }
+  .subscription-history { margin-top:22px; padding-top:22px; border-top:1px solid #edf0e8; }
+  .subscription-history-title { font-size:24px; color:#718069; }
+  .subscription-history-row { display:flex; justify-content:space-between; gap:12px; margin-top:16px; font-size:22px; color:#8b947f; }
+}

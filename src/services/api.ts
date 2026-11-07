@@ -87,22 +87,35 @@ export function privacy(): Promise<void> {
 }
 // Call directly in the user click handler, before login or any other awaited work.
 // Declining a one-time subscription must never prevent a booking.
-export function subscribe(templates?: string | string[]): Promise<void> {
+export type SubscriptionResult = { accepted: number; recorded: number; declined: number; error?: string }
+let subscriptionPromise: Promise<SubscriptionResult> | undefined
+export function subscribe(templates?: string | string[]): Promise<SubscriptionResult> {
+  if (subscriptionPromise) return subscriptionPromise
   const ids = subscriptionIds(templates)
-  if (!isWeapp || !ids.length) return Promise.resolve()
-  return new Promise(resolve => {
+  if (!isWeapp || !ids.length) return Promise.resolve({ accepted: 0, recorded: 0, declined: 0 })
+  const requestId = newId()
+  subscriptionPromise = new Promise<SubscriptionResult>(resolve => {
     try {
       // Taro's cross-platform type also requires Alipay's entityIds; WeChat ignores it.
       Taro.requestSubscribeMessage({ tmplIds: ids, entityIds: [], success: async result => {
+        const accepted = ids.filter(id => result[id] === 'accept')
+        let recorded = 0
         try {
-          const accepted = ids.filter(id => result[id] === 'accept')
           if (accepted.length) {
             await login()
-            await Promise.all(accepted.map(templateId => request('/api/me/subscriptions', { method: 'POST', data: { templateId, accepted: true } }).catch(toastError)))
+            const records = await Promise.allSettled(accepted.map(templateId => request<{recorded: boolean}>('/api/me/subscriptions', { method: 'POST', data: { templateId, accepted: true, requestId } })))
+            recorded = records.filter(record => record.status === 'fulfilled' && record.value.recorded).length
           }
-        } catch (error) { toastError(error) }
-        finally { resolve() }
-      }, fail: () => resolve() })
-    } catch { resolve() }
+          const error = recorded < accepted.length ? '微信授权已完成，但提醒记录未全部保存，请检查网络后重新订阅。' : undefined
+          if (error) toastError(error)
+          resolve({ accepted: accepted.length, recorded, declined: ids.length - accepted.length, error })
+        } catch (error) {
+          const detail = message(error); toastError(error)
+          resolve({ accepted: accepted.length, recorded, declined: ids.length - accepted.length, error: detail })
+        }
+      }, fail: result => resolve({ accepted: 0, recorded: 0, declined: ids.length, error: result.errMsg?.includes('cancel') ? undefined : '订阅未开启，请检查微信消息设置后再试。' }) })
+    } catch { resolve({ accepted: 0, recorded: 0, declined: ids.length, error: '当前环境暂不支持订阅消息，请在手机微信中尝试。' }) }
   })
+  void subscriptionPromise.finally(() => { subscriptionPromise = undefined })
+  return subscriptionPromise
 }
