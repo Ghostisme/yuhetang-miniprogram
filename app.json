@@ -1,8 +1,47 @@
 {
-  "pages": ["pages/home/index", "pages/catalog/index", "pages/stores/index", "pages/orders/index", "pages/booking/index"],
-  "window": {"navigationBarTitleText": "裕和堂", "navigationBarBackgroundColor": "#faf9f3", "navigationBarTextStyle": "black", "backgroundColor": "#faf9f3", "backgroundTextStyle": "dark"},
-  "tabBar": {"color": "#8b9788", "selectedColor": "#405c49", "backgroundColor": "#faf9f3", "borderStyle": "white", "list": [{"pagePath": "pages/home/index", "text": "首页"}, {"pagePath": "pages/catalog/index", "text": "养护"}, {"pagePath": "pages/stores/index", "text": "门店"}, {"pagePath": "pages/orders/index", "text": "我的预约"}]},
+  "pages": [
+    "pages/home/index",
+    "pages/catalog/index",
+    "pages/stores/index",
+    "pages/orders/index",
+    "pages/booking/index",
+    "pages/chat/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "裕和堂",
+    "navigationBarBackgroundColor": "#faf9f3",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#faf9f3",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#8b9788",
+    "selectedColor": "#405c49",
+    "backgroundColor": "#faf9f3",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/catalog/index",
+        "text": "养护"
+      },
+      {
+        "pagePath": "pages/stores/index",
+        "text": "门店"
+      },
+      {
+        "pagePath": "pages/orders/index",
+        "text": "我的预约"
+      }
+    ]
+  },
   "style": "v2",
+  "usingComponents": {
+    "customer-service": "/components/customer-service/index"
+  },
   "lazyCodeLoading": "requiredComponents",
   "sitemapLocation": "sitemap.json"
 }

@@ -1,0 +1,5 @@
+<view class="customer-service {{variant}}">
+  <button class="native" open-type="contact" session-from="{{sessionFrom}}" binderror="nativeError">{{label}}</button>
+  <button wx:if="{{showOnline}}" class="online" bindtap="online">在线咨询</button>
+  <view wx:if="{{error}}" class="error">{{error}}</view>
+</view>

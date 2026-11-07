@@ -1,0 +1,14 @@
+<view class="chat-page" style="{{site.themeStyle}}">
+  <view class="chat-heading"><text class="eyebrow">WE ARE HERE FOR YOU</text><view class="heading">每一份需要，都认真倾听。</view><view class="tiny">这里是在线咨询，回复显示在下方；也可使用微信客服。</view></view>
+  <picker class="chat-store" range="{{storeNames}}" value="{{storeIndex}}" disabled="{{busy}}" bindchange="store"><view>咨询门店<text>{{storeNames[storeIndex]}}　⌄</text></view></picker>
+  <view class="chat-native"><customer-service variant="inline" store-id="{{storeId}}" label="微信客服 ↗" show-online="{{false}}"/><button bindtap="call">电话联系</button></view>
+  <scroll-view class="chat-messages" scroll-y enhanced scroll-into-view="{{scrollTo}}" scroll-with-animation>
+    <button wx:if="{{hasOlder}}" class="history" loading="{{olderBusy}}" bindtap="older">查看更早消息</button>
+    <view class="chat-empty" wx:if="{{loading}}">正在连接门店客服…</view>
+    <view class="chat-empty" wx:elif="{{!messages.length &amp;&amp; !error}}">您好，请问有什么可以帮您？</view>
+    <view wx:for="{{messages}}" wx:key="id" id="message-{{item.id}}" class="message-row {{item.direction==='IN'?'mine':''}}"><view class="bubble"><view class="message-meta">{{item.direction==='IN'?'我':item.senderName}} · {{item.time}}</view><text selectable>{{item.content}}</text></view></view>
+    <view class="message-bottom"></view>
+  </scroll-view>
+  <view class="chat-error" wx:if="{{error}}"><text>{{error}}</text><button wx:if="{{!conversation}}" bindtap="retry">重新连接</button></view>
+  <view class="chat-compose"><textarea value="{{draft}}" maxlength="2000" disabled="{{busy}}" placeholder="请填写想咨询的内容…" bindinput="input" cursor-spacing="24" adjust-position/><button class="primary" loading="{{busy}}" disabled="{{busy || !conversation || !draft}}" bindtap="send">发送</button></view>
+</view>

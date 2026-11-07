@@ -7,5 +7,6 @@ Page({
   detail(e){const selected=this.data.items.find(s=>s.id===e.currentTarget.dataset.id);this.setData({selected})},
   back(){this.setData({selected:null})},
   book(){wx.navigateTo({url:'/pages/booking/index?serviceId='+this.data.selected.id})},
-  preview(e){const url=e.currentTarget.dataset.url;wx.previewImage({current:url,urls:e.currentTarget.dataset.urls||[url]})}
+  preview(e){const url=e.currentTarget.dataset.url;wx.previewImage({current:url,urls:e.currentTarget.dataset.urls||[url]})},
+  contact(e){api.contact('')}
 })

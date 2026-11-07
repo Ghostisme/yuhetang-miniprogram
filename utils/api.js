@@ -1,6 +1,16 @@
 const config = require('../config')
+const pending=new Map()
+const cooldown=new Map()
 let loginPromise
 function request(path, options = {}) {
+  const read=!options.method||options.method==='GET',key=wx.getStorageSync('yht-token')+'|'+path+'|'+JSON.stringify(options.data||{})
+  if(read&&pending.has(key))return pending.get(key)
+  if((cooldown.get(path)||0)>Date.now())return Promise.reject(new Error('当前访问较多，请稍后重试。'))
+  const task=rawRequest(path,options)
+  if(read){pending.set(key,task);task.then(()=>pending.delete(key),()=>pending.delete(key))}
+  return task
+}
+function rawRequest(path, options = {}) {
   const token = wx.getStorageSync('yht-token')
   return new Promise((resolve, reject) => wx.request({
     url: config.apiBase.replace(/\/$/, '') + path,
@@ -9,6 +19,11 @@ function request(path, options = {}) {
     header: Object.assign({'content-type': 'application/json'}, token ? {Authorization: 'Bearer ' + token} : {}, options.headers || {}),
     success(r) {
       if (r.statusCode >= 200 && r.statusCode < 300) return resolve(r.data)
+      if(r.statusCode===429||r.statusCode===503){
+        if(cooldown.size>200)cooldown.clear()
+        const headers=r.header||{},seconds=Number(headers['Retry-After']||headers['retry-after'])||3
+        cooldown.set(path,Date.now()+Math.min(60,Math.max(2,seconds))*1000)
+      }
       if (r.statusCode === 401) wx.removeStorageSync('yht-token')
       reject(new Error(r.data && r.data.message || '操作未完成，请稍后重试。'))
     }, fail() {reject(new Error('暂时无法连接门店服务，请检查网络后重试。'))}
@@ -54,13 +69,23 @@ function privacy() {
   }, fail: () => reject(new Error('隐私设置读取失败，请重新进入小程序。'))}))
 }
 // 必须由用户点击触发；拒绝订阅不影响预约申请。
-function subscribe(templateId) {
-  if (!templateId || !wx.requestSubscribeMessage) return Promise.resolve()
-  return new Promise(resolve => wx.requestSubscribeMessage({tmplIds: [templateId], success: async r => {
-    if (r[templateId] === 'accept') {
-      try {await request('/api/me/subscriptions', {method:'POST', data:{templateId, accepted:true}})} catch (e) {error(e)}
-    }
-    resolve()
-  }, fail: resolve}))
+function subscribe(templates) {
+  const ids=Array.from(new Set((Array.isArray(templates)?templates:[templates]).filter(v=>typeof v==='string'&&v.trim()))).slice(0,5)
+  if (!ids.length || !wx.requestSubscribeMessage) return Promise.resolve()
+  return new Promise(resolve => {
+    try {wx.requestSubscribeMessage({tmplIds: ids, success: async r => {
+      const accepted=ids.filter(templateId=>r[templateId]==='accept')
+      if(accepted.length){
+        try {
+          await login()
+          // Record only the templates actually accepted by WeChat, independently.
+          const results=await Promise.all(accepted.map(templateId=>request('/api/me/subscriptions',{method:'POST',data:{templateId,accepted:true}}).then(()=>null,e=>e)))
+          const failure=results.find(Boolean);if(failure)error(failure)
+        }catch(e){error(e)}
+      }
+      resolve()
+    }, fail:()=>resolve()})}catch(e){resolve()}
+  })
 }
-module.exports = {request, login, media, day, id, error, call, privacy, subscribe}
+function contact(storeId='') {wx.navigateTo({url:'/pages/chat/index?storeId='+encodeURIComponent(storeId)})}
+module.exports = {request, login, media, day, id, error, call, privacy, subscribe, contact}

@@ -2,7 +2,7 @@
   "description": "裕和堂门店预约小程序 / 原生微信小程序",
   "miniprogramRoot": "./",
   "compileType": "miniprogram",
-  "appid": "touristappid",
+  "appid": "wxce054e18303efb8a",
   "projectname": "yuhetang-miniprogram",
   "libVersion": "3.9.3",
   "setting": {
@@ -11,39 +11,100 @@
     "enhance": true,
     "postcss": true,
     "minified": true,
-    "checkSiteMap": true
+    "checkSiteMap": true,
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
   },
   "condition": {},
   "packOptions": {
     "ignore": [
       {
-        "type": "folder",
-        "value": "tools"
+        "value": "tools",
+        "type": "folder"
       },
       {
-        "type": "folder",
-        "value": "docs"
+        "value": "docs",
+        "type": "folder"
       },
       {
-        "type": "folder",
-        "value": "node_modules"
+        "value": "node_modules",
+        "type": "folder"
       },
       {
-        "type": "file",
-        "value": "package.json"
+        "value": "package.json",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "README.md"
+        "value": "README.md",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": ".gitignore"
+        "value": ".gitignore",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": ".gitattributes"
+        "value": ".gitattributes",
+        "type": "file"
+      },
+      {
+        "value": ".git",
+        "type": "folder"
+      },
+      {
+        "value": ".swc",
+        "type": "folder"
+      },
+      {
+        "value": "config",
+        "type": "folder"
+      },
+      {
+        "value": "dist",
+        "type": "folder"
+      },
+      {
+        "value": "logs",
+        "type": "folder"
+      },
+      {
+        "value": "src",
+        "type": "folder"
+      },
+      {
+        "value": "types",
+        "type": "folder"
+      },
+      {
+        "value": "test-results",
+        "type": "folder"
+      },
+      {
+        "value": "LICENSE",
+        "type": "file"
+      },
+      {
+        "value": "project.private.config.json",
+        "type": "file"
       }
-    ]
-  }
+    ],
+    "include": []
+  },
+  "simulatorPluginLibVersion": {},
+  "editorSetting": {}
 }
