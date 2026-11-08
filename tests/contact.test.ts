@@ -1,3 +1,4 @@
+import { i18nFixture } from './fixtures/i18n'
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import vm from 'node:vm'
@@ -18,6 +19,8 @@ function fixture(platform = 'weapp') {
     if (name === '../../services/site') return { contactState: context }
     if (name === '../../utils/booking') return { message: (e: Error) => e.message }
     if (name.endsWith('.scss') || name.endsWith('.png')) return name
+    if (name.endsWith('/i18n')) return i18nFixture
+    if (name.endsWith('/components/LanguageSwitcher')) return { default: 'LanguageSwitcher' }
     throw new Error('Unexpected contact fixture import: ' + name)
   }
   const source = ts.transpileModule(readFileSync('src/components/CustomerService/index.tsx', 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020, jsx: ts.JsxEmit.ReactJSX } }).outputText

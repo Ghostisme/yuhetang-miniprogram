@@ -1,3 +1,4 @@
+import { i18nFixture } from './fixtures/i18n'
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import vm from 'node:vm'
@@ -34,6 +35,8 @@ function fixture() {
     if (name.endsWith('/services/site')) return { catalogState, themeStyle: () => ({}) }
     if (name.endsWith('/components/PageState')) return { default: 'PageState' }
     if (name.endsWith('.scss')) return {}
+    if (name.endsWith('/i18n')) return i18nFixture
+    if (name.endsWith('/components/LanguageSwitcher')) return { default: 'LanguageSwitcher' }
     throw new Error('Unexpected page import: ' + name)
   }
   const module = { exports: {} as { default?: () => Node } }

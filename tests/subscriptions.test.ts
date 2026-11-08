@@ -1,3 +1,4 @@
+import { i18nFixture } from './fixtures/i18n'
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import vm from 'node:vm'
@@ -36,6 +37,8 @@ async function fixture({failRecord=false,failNative=false,signedIn=true}={}){
       if(name==='@tarojs/taro')return {__esModule:true,default:sdk}
       if(name==='../utils/booking')return load('src/utils/booking.ts')
       if(name==='../utils/session')return load('src/utils/session.ts')
+      if (name.endsWith('/i18n')) return i18nFixture
+      if (name.endsWith('/components/LanguageSwitcher')) return { default: 'LanguageSwitcher' }
       throw new Error('Unexpected fixture import: '+name)
     }
     vm.runInNewContext(source,{module,exports:module.exports,require,API_BASE_URL:'https://fixture.invalid',ENABLE_DEV_LOGIN:false,process:{env:{TARO_ENV:'weapp'}},console,Date,Math,Error,setTimeout,clearTimeout})
@@ -53,7 +56,7 @@ function pageAction(path:string,name:string,bindings:Record<string,unknown>):()=
   function visit(node:ts.Node){if(ts.isFunctionDeclaration(node)&&node.name?.text===name)action=node;ts.forEachChild(node,visit)}
   visit(file);assert(action,`Missing ${name} action in ${path}`)
   const source=ts.transpileModule(action.getText(file),{compilerOptions:{target:ts.ScriptTarget.ES2020}}).outputText
-  return vm.runInNewContext(source+'\n'+name,bindings)
+  return vm.runInNewContext(source+'\n'+name,{...i18nFixture,...bindings})
 }
 
 function bookingAction(state:Awaited<ReturnType<typeof fixture>>){

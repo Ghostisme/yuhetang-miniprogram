@@ -1,3 +1,4 @@
+import { t } from '../i18n'
 import Taro from '@tarojs/taro'
 import type { Runtime } from '../types'
 import { newId, subscriptionIds, message } from '../utils/booking'
@@ -55,24 +56,24 @@ export function request<T>(path: string, options: Options = {}): Promise<T> {
   const key = `${token}|${path}|${JSON.stringify(options.data || {})}`
   const read = !options.method || options.method === 'GET'
   if (read && pending.has(key)) return pending.get(key) as Promise<T>
-  if ((cooldown.get(path) || 0) > Date.now()) return Promise.reject(new Error('当前访问较多，请稍后重试。'))
+  if ((cooldown.get(path) || 0) > Date.now()) return Promise.reject(new Error(t('当前访问较多，请稍后重试。')))
   const task = Taro.request<T & { message?: string }>({
     url: base + path, method: options.method || 'GET', data: options.data, timeout: 15000,
     header: { 'content-type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}), ...options.headers },
   }).then(result => {
-    if (privateRequest && token !== customerToken()) throw new LoginRequiredError('登录状态已更新，请重新操作。')
+    if (privateRequest && token !== customerToken()) throw new LoginRequiredError(t('登录状态已更新，请重新操作。'))
     if (result.statusCode >= 200 && result.statusCode < 300) return result.data as T
     if (result.statusCode === 401) {
       session.clear(token)
-      throw new LoginRequiredError('登录已失效，请重新登录。')
+      throw new LoginRequiredError(t('登录已失效，请重新登录。'))
     }
     if ([429, 503].includes(result.statusCode)) {
       if (cooldown.size > 200) cooldown.clear()
       const seconds = Number(result.header['Retry-After'] || result.header['retry-after']) || 3
       cooldown.set(path, Date.now() + Math.min(60, Math.max(2, seconds)) * 1000)
     }
-    throw new Error(result.data?.message || '操作未完成，请稍后重试。')
-  }, () => { throw new Error('暂时无法连接门店服务，请检查网络后重试。') })
+    throw new Error(result.data?.message || t('操作未完成，请稍后重试。'))
+  }, () => { throw new Error(t('暂时无法连接门店服务，请检查网络后重试。')) })
   if (read) { pending.set(key, task); task.then(() => pending.delete(key), () => pending.delete(key)) }
   return task
 }
@@ -87,14 +88,14 @@ export function authorizeCustomerLogin(agreed: boolean): Promise<void> {
     let result: { token: string }
     if (ENABLE_DEV_LOGIN) {
       const runtime = await request<{ developmentLogin?: boolean }>('/api/runtime')
-      if (!runtime.developmentLogin) throw new Error('当前环境禁止模拟登录。')
+      if (!runtime.developmentLogin) throw new Error(t('当前环境禁止模拟登录。'))
       let deviceId = Taro.getStorageSync<string>('yht-device')
       if (!deviceId) { deviceId = newId(); Taro.setStorageSync('yht-device', deviceId) }
       result = await request('/api/auth/dev-customer', { method: 'POST', data: { deviceId } })
     } else {
-      if (!isWeapp) throw new Error('请在微信小程序内登录后办理预约；H5 可浏览门店与项目。')
+      if (!isWeapp) throw new Error(t('请在微信小程序内登录后办理预约；H5 可浏览门店与项目。'))
       const { code } = await Taro.login({ timeout: 10000 })
-      if (!code) throw new Error('微信登录未完成，请重试。')
+      if (!code) throw new Error(t('微信登录未完成，请重试。'))
       result = await request('/api/auth/wechat', { method: 'POST', data: { code } })
     }
     return result
@@ -107,9 +108,9 @@ export function media<T>(value: T): T {
   if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, media(v)])) as T
   return value
 }
-export const toastError = (error: unknown) => { void Taro.showToast({ title: message(error), icon: 'none', duration: 3500 }) }
+export const toastError = (error: unknown) => { void Taro.showToast({ title: t(message(error)), icon: 'none', duration: 3500 }) }
 export const contact = (storeId = '') => Taro.navigateTo({ url: `/pages/chat/index?storeId=${encodeURIComponent(storeId)}` })
-export function call(phone?: string) { if (phone) void Taro.makePhoneCall({ phoneNumber: phone }); else toastError(new Error('门店电话待完善，请使用在线客服。')) }
+export function call(phone?: string) { if (phone) void Taro.makePhoneCall({ phoneNumber: phone }); else toastError(new Error(t('门店电话待完善，请使用在线客服。'))) }
 export function privacy(): Promise<void> {
   if (!isWeapp || !Taro.getPrivacySetting || !Taro.requirePrivacyAuthorize) return Promise.resolve()
   return new Promise((resolve, reject) => {
@@ -132,11 +133,11 @@ function subscriptionSettings(open: boolean): Promise<SubscriptionSettings | nul
     const options = { withSubscriptions: true, success: (result: {subscriptionsSetting?: {mainSwitch?: boolean; itemSettings?: Record<string, string>}}) => {
       const settings = result.subscriptionsSetting
       resolve(settings ? { enabled: settings.mainSwitch !== false, choices: settings.itemSettings || {} } : null)
-    }, fail: () => open ? reject(new Error('暂时无法打开微信订阅设置，请在手机微信中重试。')) : resolve(null) }
+    }, fail: () => open ? reject(new Error(t('暂时无法打开微信订阅设置，请在手机微信中重试。'))) : resolve(null) }
     try {
       const operation = open ? Taro.openSetting(options) : Taro.getSetting(options)
       void operation?.catch(options.fail)
-    } catch { if (open) reject(new Error('当前环境不支持微信订阅设置，请在手机微信中重试。')); else resolve(null) }
+    } catch { if (open) reject(new Error(t('当前环境不支持微信订阅设置，请在手机微信中重试。'))); else resolve(null) }
   })
 }
 export const readSubscriptionSettings = () => subscriptionSettings(false)
@@ -151,11 +152,11 @@ export function subscribe(templates?: string | string[]): Promise<SubscriptionRe
   if (subscriptionPromise) return subscriptionPromise
   const ids = subscriptionIds(templates)
   if (!isWeapp || !ids.length) return Promise.resolve({ accepted: 0, recorded: 0, declined: 0 })
-  if (!hasCustomerSession()) return Promise.resolve({ accepted: 0, recorded: 0, declined: 0, error: '请先登录，再订阅预约提醒。' })
+  if (!hasCustomerSession()) return Promise.resolve({ accepted: 0, recorded: 0, declined: 0, error: t('请先登录，再订阅预约提醒。') })
   const subscriberToken = customerToken()
   const requestId = newId()
   subscriptionPromise = new Promise<SubscriptionResult>(resolve => {
-    const fail = (result: {errMsg?: string}) => resolve({ accepted: 0, recorded: 0, declined: ids.length, error: result.errMsg?.includes('cancel') ? undefined : '订阅未开启，请检查微信消息设置后再试。' })
+    const fail = (result: {errMsg?: string}) => resolve({ accepted: 0, recorded: 0, declined: ids.length, error: result.errMsg?.includes('cancel') ? undefined : t('订阅未开启，请检查微信消息设置后再试。') })
     try {
       // Taro's cross-platform type also requires Alipay's entityIds; WeChat ignores it.
       const operation = Taro.requestSubscribeMessage({ tmplIds: ids, entityIds: [], success: async result => {
@@ -163,12 +164,12 @@ export function subscribe(templates?: string | string[]): Promise<SubscriptionRe
         let recorded = 0
         try {
           if (accepted.length) {
-            if (customerToken() !== subscriberToken) throw new LoginRequiredError('登录状态已更新，请重新订阅。')
+            if (customerToken() !== subscriberToken) throw new LoginRequiredError(t('登录状态已更新，请重新订阅。'))
             await login()
             const records = await Promise.allSettled(accepted.map(templateId => request<{recorded: boolean}>('/api/me/subscriptions', { method: 'POST', data: { templateId, accepted: true, requestId } })))
             recorded = records.filter(record => record.status === 'fulfilled' && record.value.recorded).length
           }
-          const error = recorded < accepted.length ? '微信授权已完成，但提醒记录未全部保存，请检查网络后重新订阅。' : ids.some(id => result[id] === 'ban' || result[id] === 'filter') ? '部分提醒模板暂不可用，已保存其余同意的提醒。' : undefined
+          const error = recorded < accepted.length ? t('微信授权已完成，但提醒记录未全部保存，请检查网络后重新订阅。') : ids.some(id => result[id] === 'ban' || result[id] === 'filter') ? t('部分提醒模板暂不可用，已保存其余同意的提醒。') : undefined
           if (error) toastError(error)
           resolve({ accepted: accepted.length, recorded, declined: ids.length - accepted.length, error })
         } catch (error) {
@@ -177,7 +178,7 @@ export function subscribe(templates?: string | string[]): Promise<SubscriptionRe
         }
       }, fail })
       void operation?.catch(fail)
-    } catch { resolve({ accepted: 0, recorded: 0, declined: ids.length, error: '当前环境暂不支持订阅消息，请在手机微信中尝试。' }) }
+    } catch { resolve({ accepted: 0, recorded: 0, declined: ids.length, error: t('当前环境暂不支持订阅消息，请在手机微信中尝试。') }) }
   })
   void subscriptionPromise.finally(() => { subscriptionPromise = undefined })
   return subscriptionPromise

@@ -1,0 +1,1378 @@
+{
+  "请先阅读并同意用户协议与隐私说明。": {
+    "en": "Please read and agree to the Terms of Use and Privacy Notice.",
+    "ja": "利用規約とプライバシー説明を読み、同意してください。"
+  },
+  "微信登录未完成，请重试。": {
+    "en": "WeChat sign-in was not completed. Please try again.",
+    "ja": "WeChatログインが完了しませんでした。再度お試しください。"
+  },
+  "同意用户协议与隐私说明": {
+    "en": "Agree to the Terms of Use and Privacy Notice",
+    "ja": "利用規約とプライバシー説明に同意"
+  },
+  "我已阅读并同意": {
+    "en": "I have read and agree to",
+    "ja": "内容を読み、同意します："
+  },
+  "开启裕和堂的完整体验": {
+    "en": "Enjoy the full Yu Health experience",
+    "ja": "裕和堂のサービスを利用する"
+  },
+  "同意": {
+    "en": "Agree to",
+    "ja": "同意する："
+  },
+  "《用户协议》": {
+    "en": "Terms of Use",
+    "ja": "利用規約"
+  },
+  "与": {
+    "en": "and",
+    "ja": "および"
+  },
+  "《隐私说明》": {
+    "en": "Privacy Notice",
+    "ja": "プライバシー説明"
+  },
+  "，为您登录或创建客户账号。": {
+    "en": " to sign in or create your customer account.",
+    "ja": "。ログインまたはお客様アカウントを作成します。"
+  },
+  "裕和堂": {
+    "en": "YU Health",
+    "ja": "裕和堂"
+  },
+  "留一段时光": {
+    "en": "Make time",
+    "ja": "自分のための時間"
+  },
+  "好好照顾自己": {
+    "en": "for yourself",
+    "ja": "心と体をいたわる"
+  },
+  "一份东方养护，一次安心相遇。": {
+    "en": "Eastern wellness. A moment of calm.",
+    "ja": "東洋の養生で、安らぎのひとときを。"
+  },
+  "正在登录…": {
+    "en": "Signing in…",
+    "ja": "ログイン中…"
+  },
+  "登录": {
+    "en": "Sign in",
+    "ja": "ログイン"
+  },
+  "先看看门店": {
+    "en": "Explore our branches",
+    "ja": "店舗を見てみる"
+  },
+  "裕和堂登录授权": {
+    "en": "Yu Health sign-in authorization",
+    "ja": "裕和堂のログイン認証"
+  },
+  "把时间留给自己": {
+    "en": "A little time for you",
+    "ja": "自分のための時間を"
+  },
+  "让养护融入日常": {
+    "en": "Care for every day",
+    "ja": "養生を日々の暮らしに"
+  },
+  "预约养护 · 门店咨询 · 到店提醒": {
+    "en": "Wellness · Consultation · Visit reminders",
+    "ja": "養生の予約・店舗への相談・来店リマインド"
+  },
+  "关闭登录": {
+    "en": "Close sign-in",
+    "ja": "ログインを閉じる"
+  },
+  "授权确认": {
+    "en": "Confirm authorization",
+    "ja": "認証の確認"
+  },
+  "立即登录": {
+    "en": "Sign in now",
+    "ja": "ログインする"
+  },
+  "仅浏览": {
+    "en": "Continue browsing",
+    "ja": "閲覧のみ"
+  },
+  "资料暂未加载，请重试。": {
+    "en": "Your profile could not be loaded. Please retry.",
+    "ja": "プロフィールを読み込めませんでした。再度お試しください。"
+  },
+  "请填写您的姓名或称呼。": {
+    "en": "Please enter your name or preferred name.",
+    "ja": "お名前または呼び名を入力してください。"
+  },
+  "请先同意将资料用于客户档案与预约联系。": {
+    "en": "Please agree to use your details for your profile and booking contact.",
+    "ja": "お客様情報と予約連絡のための情報利用に同意してください。"
+  },
+  "手机号与资料已保存": {
+    "en": "Phone and profile saved",
+    "ja": "電話番号と情報を保存しました"
+  },
+  "姓名已保存": {
+    "en": "Name saved",
+    "ja": "お名前を保存しました"
+  },
+  "资料未保存，请重试。": {
+    "en": "Your profile was not saved. Please retry.",
+    "ja": "情報を保存できませんでした。再度お試しください。"
+  },
+  "完善客户资料": {
+    "en": "Complete your profile",
+    "ja": "お客様情報を登録"
+  },
+  "留下称呼与联系电话，让门店更好地接待您。": {
+    "en": "Add your name and phone number so our branch can assist you.",
+    "ja": "お名前と連絡先をご登録いただくと、ご案内がスムーズになります。"
+  },
+  "会员": {
+    "en": "Member",
+    "ja": "会員"
+  },
+  "非会员": {
+    "en": "Non-member",
+    "ja": "非会員"
+  },
+  "姓名 / 称呼": {
+    "en": "Name / Preferred name",
+    "ja": "お名前・呼び名"
+  },
+  "请输入您的姓名或称呼": {
+    "en": "Enter your name or preferred name",
+    "ja": "お名前または呼び名を入力"
+  },
+  "同意将姓名与授权手机号用于客户档案、预约联系与会员匹配": {
+    "en": "Use my name and authorized phone number for my customer profile, booking contact and membership matching",
+    "ja": "名前と認証済み電話番号を、お客様情報・予約連絡・会員情報の照合に利用することに同意します"
+  },
+  "您暂未授权手机号，可先保存称呼，稍后再完善。": {
+    "en": "Phone access was not granted. You can save your name and add your phone later.",
+    "ja": "電話番号の取得は許可されていません。お名前を保存し、後で追加できます。"
+  },
+  "微信未返回手机号授权凭证，请在手机微信中重试。": {
+    "en": "WeChat did not return phone authorization. Please try again on your phone.",
+    "ja": "WeChatから電話番号の認証情報が返されませんでした。スマートフォンで再度お試しください。"
+  },
+  "重新授权手机号": {
+    "en": "Authorize phone again",
+    "ja": "電話番号を再認証"
+  },
+  "微信授权手机号并保存": {
+    "en": "Authorize WeChat phone & save",
+    "ja": "WeChatの電話番号を認証して保存"
+  },
+  "请在微信小程序中授权手机号。您可以先保存称呼。": {
+    "en": "Authorize your phone in the WeChat mini program. You can save your name first.",
+    "ja": "電話番号の認証はWeChatミニプログラムで行ってください。先にお名前のみ保存できます。"
+  },
+  "保存称呼": {
+    "en": "Save name",
+    "ja": "お名前を保存"
+  },
+  "手机号由您单独授权；会员状态由门店核实维护。": {
+    "en": "Phone access is optional and separate. Membership is verified by the branch.",
+    "ja": "電話番号は個別に認証します。会員情報は店舗が確認・管理します。"
+  },
+  "编辑个人资料": {
+    "en": "Edit profile",
+    "ja": "お客様情報を編集"
+  },
+  "重新加载": {
+    "en": "Reload",
+    "ja": "再読み込み"
+  },
+  "在线咨询": {
+    "en": "Online chat",
+    "ja": "オンライン相談"
+  },
+  "向门店留言，查看咨询与接待记录": {
+    "en": "Message the branch and view your conversation history",
+    "ja": "店舗へのメッセージと相談履歴を確認"
+  },
+  "暂时无法打开微信客服，请选择其他联系方式。": {
+    "en": "WeChat support could not be opened. Please use another contact option.",
+    "ja": "WeChatサポートを開けませんでした。別の連絡方法をご利用ください。"
+  },
+  "微信客服": {
+    "en": "WeChat support",
+    "ja": "WeChatサポート"
+  },
+  "打开微信客服窗口，与我们沟通": {
+    "en": "Open WeChat support to chat with us",
+    "ja": "WeChatの窓口でスタッフに相談"
+  },
+  "电话联系": {
+    "en": "Call us",
+    "ja": "電話で問い合わせ"
+  },
+  "微信客服请在微信小程序内使用。": {
+    "en": "WeChat support is available in the WeChat mini program.",
+    "ja": "WeChatサポートはWeChatミニプログラム内でご利用ください。"
+  },
+  "门店电话正在完善中，可先在当前页面留言。": {
+    "en": "The branch phone is being updated. Please leave a message here.",
+    "ja": "店舗の電話情報を準備中です。この画面でメッセージをお送りください。"
+  },
+  "客服": {
+    "en": "Contact",
+    "ja": "お問い合わせ"
+  },
+  "联系门店": {
+    "en": "Contact branch",
+    "ja": "店舗に連絡"
+  },
+  "品牌客服 · 总部接待": {
+    "en": "Yu Health · Central support",
+    "ja": "裕和堂・総合窓口"
+  },
+  "关闭联系方式": {
+    "en": "Close contact options",
+    "ja": "連絡方法を閉じる"
+  },
+  "正在准备联系方式，请稍候…": {
+    "en": "Preparing contact options…",
+    "ja": "連絡方法を読み込み中…"
+  },
+  "暂不联系": {
+    "en": "Not now",
+    "ja": "閉じる"
+  },
+  "暂时未能加载": {
+    "en": "Unable to load",
+    "ja": "読み込めませんでした"
+  },
+  "稍候，时光正好": {
+    "en": "A moment of calm",
+    "ja": "少々お待ちください"
+  },
+  "正在为您准备门店与养护信息…": {
+    "en": "Preparing our branches and wellness services…",
+    "ja": "店舗と養生メニューを準備しています…"
+  },
+  "选择门店": {
+    "en": "Branch",
+    "ja": "店舗"
+  },
+  "选择项目": {
+    "en": "Service",
+    "ja": "メニュー"
+  },
+  "到店时间": {
+    "en": "Visit time",
+    "ja": "来店日時"
+  },
+  "预约信息": {
+    "en": "Your details",
+    "ja": "お客様情報"
+  },
+  "选择一家方便到访的门店": {
+    "en": "Choose a convenient branch",
+    "ja": "ご希望の店舗を選んでください"
+  },
+  "选一份适合自己的养护": {
+    "en": "Choose your wellness service",
+    "ja": "養生メニューを選んでください"
+  },
+  "把一段时间留给自己": {
+    "en": "Make a little time for yourself",
+    "ja": "ご希望の日時を選んでください"
+  },
+  "留下信息，静候门店确认": {
+    "en": "Leave your details for branch confirmation",
+    "ja": "お客様情報を入力し、店舗の確認をお待ちください"
+  },
+  "是": {
+    "en": "Yes",
+    "ja": "はい"
+  },
+  "否": {
+    "en": "No",
+    "ja": "いいえ"
+  },
+  "不确定": {
+    "en": "Not sure",
+    "ja": "未確認"
+  },
+  "预约隐私说明": {
+    "en": "Booking Privacy Notice",
+    "ja": "予約に関するプライバシー説明"
+  },
+  "我们收集称呼、联系电话、到店时间、人数及服务意向，用于门店接待、确认与必要通知。会员信息为本人自述，需门店核实。请勿填写身份证、病历等不必要资料；如自愿提供健康信息，请单独勾选同意。您可通过微信客服联系门店更正、删除资料，完整规则以小程序隐私保护指引为准。": {
+    "en": "We collect your preferred name, phone number, visit time, party size and service preferences to arrange your visit, confirm your booking and send necessary notices. Membership is self-reported and subject to branch verification. Do not provide ID documents, medical records or other unnecessary information. Health information, if volunteered, requires separate consent. Contact the branch through WeChat support to correct or delete your details. Please refer to the mini program Privacy Protection Guide for the full rules.",
+    "ja": "お名前、電話番号、来店日時、人数、施術のご希望を、来店の手配・予約確認・必要な連絡のために収集します。会員情報は自己申告で、店舗が確認します。身分証、診療記録など不要な情報は入力しないでください。健康情報を任意で提供する場合は、個別の同意が必要です。情報の訂正・削除はWeChatサポートで店舗にご連絡ください。詳細はミニプログラムのプライバシー保護ガイドをご確認ください。"
+  },
+  "请选择开放预约的门店。": {
+    "en": "Please choose a branch accepting online bookings.",
+    "ja": "オンライン予約を受け付けている店舗を選んでください。"
+  },
+  "请选择本店养护项目。": {
+    "en": "Please choose a service offered by this branch.",
+    "ja": "この店舗の養生メニューを選んでください。"
+  },
+  "请选择可用时段。": {
+    "en": "Please choose an available time.",
+    "ja": "予約可能な時間を選んでください。"
+  },
+  "请重新确认门店、项目及可用时段。": {
+    "en": "Please recheck your branch, service and available time.",
+    "ja": "店舗、メニュー、予約可能な時間を再確認してください。"
+  },
+  "请重新选择本店调理师。": {
+    "en": "Please select a therapist from this branch again.",
+    "ja": "この店舗の担当者を選び直してください。"
+  },
+  "请填写称呼和正确的11位手机号。": {
+    "en": "Enter your name and a valid 11-digit mainland China mobile number.",
+    "ja": "お名前と有効な中国本土の11桁の携帯電話番号を入力してください。"
+  },
+  "请阅读并同意预约隐私说明。": {
+    "en": "Please read and agree to the Booking Privacy Notice.",
+    "ja": "予約に関するプライバシー説明を読み、同意してください。"
+  },
+  "门店安排（不指定）": {
+    "en": "Branch assignment (no preference)",
+    "ja": "店舗におまかせ（指名なし）"
+  },
+  "预约申请已提交": {
+    "en": "Booking request submitted",
+    "ja": "予約リクエストを送信しました"
+  },
+  "需门店人工确认后安排到店，请留意预约处理通知。": {
+    "en": "Your visit requires branch confirmation. Please check for booking updates.",
+    "ja": "店舗の確認後に予約が確定します。予約結果のお知らせをご確認ください。"
+  },
+  "预约编号": {
+    "en": "Booking ID",
+    "ja": "予約番号"
+  },
+  "养护项目": {
+    "en": "Wellness service",
+    "ja": "養生メニュー"
+  },
+  "预约门店": {
+    "en": "Branch",
+    "ja": "予約店舗"
+  },
+  "同行人数": {
+    "en": "Party size",
+    "ja": "来店人数"
+  },
+  "调理师意向": {
+    "en": "Therapist preference",
+    "ja": "担当者の希望"
+  },
+  "门店安排": {
+    "en": "Assigned by branch",
+    "ja": "店舗におまかせ"
+  },
+  "已按您的选择开启预约消息提醒。": {
+    "en": "Booking notifications were enabled according to your choice.",
+    "ja": "選択内容に従い、予約通知を設定しました。"
+  },
+  "本次未开启微信提醒，可在“我的预约”查看预约状态。": {
+    "en": "WeChat reminders are off for this booking. Check the status in My bookings.",
+    "ja": "今回のWeChat通知は無効です。「マイ予約」で状況を確認できます。"
+  },
+  "查看我的预约": {
+    "en": "View my bookings",
+    "ja": "マイ予約を見る"
+  },
+  "预约一段自在时光": {
+    "en": "Make time for well-being",
+    "ja": "養生のひとときを予約"
+  },
+  "重试": {
+    "en": "Retry",
+    "ja": "再試行"
+  },
+  "暂未开放线上预约，请致电咨询": {
+    "en": "Online booking is unavailable. Please call.",
+    "ja": "オンライン予約は準備中です。お電話でご相談ください。"
+  },
+  "· 本店开放项目": {
+    "en": "· Services at this branch",
+    "ja": "・この店舗のメニュー"
+  },
+  "正在加载本店项目…": {
+    "en": "Loading branch services…",
+    "ja": "店舗メニューを読み込み中…"
+  },
+  "本店暂无开放项目，请联系门店。": {
+    "en": "No services are available online. Please contact the branch.",
+    "ja": "現在予約できるメニューがありません。店舗にご連絡ください。"
+  },
+  "到店日期": {
+    "en": "Visit date",
+    "ja": "来店日"
+  },
+  "人　›": {
+    "en": "guests　›",
+    "ja": "名　›"
+  },
+  "选择开始时间": {
+    "en": "Choose a start time",
+    "ja": "開始時間を選択"
+  },
+  "正在查询名额…": {
+    "en": "Checking availability…",
+    "ja": "空き状況を確認中…"
+  },
+  "不可预约": {
+    "en": "Unavailable",
+    "ja": "予約不可"
+  },
+  "当日暂无可预约时段，请更换日期。": {
+    "en": "No times available for this date. Please choose another day.",
+    "ja": "この日の予約枠はありません。別の日をお選びください。"
+  },
+  "提交后需门店确认；调理师、房间与床位以门店安排为准。": {
+    "en": "The branch must confirm your request. Therapist, room and bed arrangements are made by the branch.",
+    "ja": "店舗による確認が必要です。担当者・部屋・ベッドは店舗が手配します。"
+  },
+  "个人资料可用于快速填写预约。": {
+    "en": "Use your profile to fill in booking details faster.",
+    "ja": "お客様情報を登録すると、予約入力が簡単になります。"
+  },
+  "完善姓名与微信手机号": {
+    "en": "Add name & WeChat phone",
+    "ja": "お名前とWeChat電話番号を登録"
+  },
+  "人同行": {
+    "en": "guests",
+    "ja": "名で来店"
+  },
+  "您的称呼": {
+    "en": "Your name",
+    "ja": "お名前・呼び名"
+  },
+  "请输入称呼": {
+    "en": "Enter your preferred name",
+    "ja": "お名前または呼び名を入力"
+  },
+  "联系电话": {
+    "en": "Phone number",
+    "ja": "電話番号"
+  },
+  "便于门店确认预约": {
+    "en": "For branch booking confirmation",
+    "ja": "予約確認のための連絡先"
+  },
+  "调理师意向（非锁定安排）": {
+    "en": "Therapist preference (subject to confirmation)",
+    "ja": "担当者の希望（確約ではありません）"
+  },
+  "正在加载本店调理师…": {
+    "en": "Loading therapists…",
+    "ja": "担当者を読み込み中…"
+  },
+  "正在查询本项目可选择的调理师。": {
+    "en": "Checking therapists available for this service.",
+    "ja": "このメニューの担当者を確認しています。"
+  },
+  "调理师列表暂未加载，可重试或由门店安排。": {
+    "en": "Therapists could not be loaded. Retry or let the branch arrange.",
+    "ja": "担当者一覧を読み込めませんでした。再試行するか、店舗におまかせください。"
+  },
+  "重新加载调理师": {
+    "en": "Reload therapists",
+    "ja": "担当者を再読み込み"
+  },
+  "仅记录您的意向，实际接待由门店确认。": {
+    "en": "This records a preference only. The branch confirms the arrangement.",
+    "ja": "ご希望のみを記録します。最終的な手配は店舗が確認します。"
+  },
+  "本项目暂未开放调理师意向，由门店为您安排。": {
+    "en": "Therapist selection is unavailable for this service. The branch will arrange.",
+    "ja": "このメニューは担当者を選べません。店舗が手配します。"
+  },
+  "是否会员": {
+    "en": "Are you a member?",
+    "ja": "会員ですか"
+  },
+  "是否到店过": {
+    "en": "Visited before?",
+    "ja": "来店したことはありますか"
+  },
+  "备注（选填）": {
+    "en": "Notes (optional)",
+    "ja": "備考（任意）"
+  },
+  "请勿填写身份证、病历等不必要信息": {
+    "en": "Do not include ID documents or medical records",
+    "ja": "身分証・診療記録などは入力しないでください"
+  },
+  "同意为预约接待处理必要信息，已阅读": {
+    "en": "I agree to the necessary use of my details for this booking and have read the",
+    "ja": "予約に必要な個人情報の利用に同意し、次を確認しました："
+  },
+  "《预约隐私说明》": {
+    "en": "Booking Privacy Notice",
+    "ja": "予約に関するプライバシー説明"
+  },
+  "如自愿提供健康信息，同意仅用于本次接待（选填）": {
+    "en": "If I volunteer health information, use it only for this visit (optional)",
+    "ja": "健康情報を任意で提供する場合、今回の接客に限る利用に同意します（任意）"
+  },
+  "上一步": {
+    "en": "Back",
+    "ja": "戻る"
+  },
+  "下一步 →": {
+    "en": "Next →",
+    "ja": "次へ →"
+  },
+  "提交预约申请": {
+    "en": "Submit request",
+    "ja": "予約を申請"
+  },
+  "微信登录后提交": {
+    "en": "Sign in to submit",
+    "ja": "ログインして申請"
+  },
+  "一份适合自己的养护": {
+    "en": "Find your own way to unwind",
+    "ja": "自分に合った養生を"
+  },
+  "循着身体的节奏，找到自己的放松方式。": {
+    "en": "Follow your body's rhythm and find a moment of ease.",
+    "ja": "体のリズムに合わせて、自分らしい安らぎを。"
+  },
+  "特色养护": {
+    "en": "Wellness",
+    "ja": "養生メニュー"
+  },
+  "东方好物": {
+    "en": "Wellness essentials",
+    "ja": "養生アイテム"
+  },
+  "空间美学": {
+    "en": "Our spaces",
+    "ja": "空間の美学"
+  },
+  "关于裕和堂": {
+    "en": "About Yu Health",
+    "ja": "裕和堂について"
+  },
+  "‹ 返回列表": {
+    "en": "‹ Back to list",
+    "ja": "‹ 一覧に戻る"
+  },
+  "体验流程": {
+    "en": "Your experience",
+    "ja": "施術の流れ"
+  },
+  "选择门店并申请预约 →": {
+    "en": "Choose a branch & request a booking →",
+    "ja": "店舗を選んで予約を申請 →"
+  },
+  "内容正在准备中，欢迎联系门店了解。": {
+    "en": "Content is being prepared. Please contact a branch.",
+    "ja": "情報を準備中です。店舗へお問い合わせください。"
+  },
+  "了解更多 →": {
+    "en": "Learn more →",
+    "ja": "詳しく見る →"
+  },
+  "与门店说说您的需要": {
+    "en": "Tell us how we can help",
+    "ja": "お気軽にご相談ください"
+  },
+  "预约、项目和到店安排，都可以在这里咨询。": {
+    "en": "Ask about bookings, services and your visit.",
+    "ja": "予約、メニュー、来店についてご相談いただけます。"
+  },
+  "接待门店": {
+    "en": "Your branch",
+    "ja": "対応店舗"
+  },
+  "重新连接": {
+    "en": "Reconnect",
+    "ja": "再接続"
+  },
+  "登录后，与门店安心沟通": {
+    "en": "Sign in to talk with the branch",
+    "ja": "ログインして店舗に相談"
+  },
+  "登录用于识别您的客户账号，": {
+    "en": "Sign in to identify your account and",
+    "ja": "ログインはお客様アカウントの確認と、"
+  },
+  "方便保存咨询记录与接待安排。": {
+    "en": "keep your conversation and visit arrangements.",
+    "ja": "相談履歴・来店手配の保存に利用します。"
+  },
+  "微信登录，开始咨询": {
+    "en": "Sign in with WeChat to chat",
+    "ja": "WeChatでログインして相談"
+  },
+  "也可使用底部的“更多联系方式”联系门店。": {
+    "en": "You can also use More contact options below.",
+    "ja": "下部の「その他の連絡方法」からも店舗にご連絡いただけます。"
+  },
+  "本次咨询已结束，聊天记录已保留。": {
+    "en": "This conversation has ended. Your history is saved.",
+    "ja": "今回の相談は終了しました。履歴は保存されています。"
+  },
+  "门店客服": {
+    "en": "Branch support",
+    "ja": "店舗スタッフ"
+  },
+  "等待门店接入，您可以先留下问题。": {
+    "en": "Waiting for a staff member. You can leave your question now.",
+    "ja": "スタッフの対応をお待ちください。先にご質問をお送りいただけます。"
+  },
+  "查看更早消息": {
+    "en": "Earlier messages",
+    "ja": "以前のメッセージ"
+  },
+  "正在连接门店…": {
+    "en": "Connecting to the branch…",
+    "ja": "店舗に接続中…"
+  },
+  "连接暂时中断": {
+    "en": "Connection interrupted",
+    "ja": "接続が中断しました"
+  },
+  "随时为您解答": {
+    "en": "Here to help",
+    "ja": "お気軽にご相談ください"
+  },
+  "稍等片刻，即可开始咨询。": {
+    "en": "Just a moment and you can start your chat.",
+    "ja": "接続できるまで少々お待ちください。"
+  },
+  "请重新连接后继续咨询。": {
+    "en": "Reconnect to continue your conversation.",
+    "ja": "再接続して相談を続けてください。"
+  },
+  "留下您的问题，门店工作人员会在这里回复。": {
+    "en": "Leave your question and our branch staff will reply here.",
+    "ja": "ご質問をお送りください。店舗スタッフがこちらで返信します。"
+  },
+  "我": {
+    "en": "Me",
+    "ja": "自分"
+  },
+  "还有其他问题？可以发起一次新的咨询。": {
+    "en": "More questions? Start a new conversation.",
+    "ja": "ほかにご質問はありますか。新しい相談を開始できます。"
+  },
+  "发起新咨询": {
+    "en": "Start a new chat",
+    "ja": "新しい相談を開始"
+  },
+  "请输入咨询内容": {
+    "en": "Type your message",
+    "ja": "相談内容を入力"
+  },
+  "发送": {
+    "en": "Send",
+    "ja": "送信"
+  },
+  "更多联系方式": {
+    "en": "More contact options",
+    "ja": "その他の連絡方法"
+  },
+  "您的需要，我们在听": {
+    "en": "We're here to listen",
+    "ja": "お話をお聞かせください"
+  },
+  "预约、养护与到店安排，都可以在这里聊聊。": {
+    "en": "Talk to us about bookings, care and your visit.",
+    "ja": "予約、養生、来店のことなど、お気軽にご相談ください。"
+  },
+  "切换 ›": {
+    "en": "Change ›",
+    "ja": "変更 ›"
+  },
+  "每一次沟通，都认真对待": {
+    "en": "Every conversation matters",
+    "ja": "一つひとつのご相談を大切に"
+  },
+  "门店工作人员会在营业时间为您回复。": {
+    "en": "Our staff will reply during branch hours.",
+    "ja": "店舗の営業時間内にスタッフが返信します。"
+  },
+  "裕": {
+    "en": "裕",
+    "ja": "裕"
+  },
+  "和": {
+    "en": "和",
+    "ja": "和"
+  },
+  "我的预约": {
+    "en": "My bookings",
+    "ja": "マイ予約"
+  },
+  "照顾身心": {
+    "en": "Care for body & mind",
+    "ja": "心と体をいたわる"
+  },
+  "城市门店": {
+    "en": "Our branches",
+    "ja": "店舗を探す"
+  },
+  "遇见一处静谧": {
+    "en": "Find your quiet space",
+    "ja": "静かなひとときを"
+  },
+  "草木的温度": {
+    "en": "The warmth of nature",
+    "ja": "草木のぬくもり"
+  },
+  "从一场放松开始": {
+    "en": "Begin with a moment of calm",
+    "ja": "安らぎのひとときから"
+  },
+  "全部养护 →": {
+    "en": "All care →",
+    "ja": "すべての養生 →"
+  },
+  "预约体验": {
+    "en": "Book a visit",
+    "ja": "体験を予約"
+  },
+  "把城市留在门外": {
+    "en": "Leave the city at the door",
+    "ja": "街の喧騒を離れて"
+  },
+  "全部门店 →": {
+    "en": "All branches →",
+    "ja": "すべての店舗 →"
+  },
+  "查看门店 →": {
+    "en": "View branch →",
+    "ja": "店舗を見る →"
+  },
+  "好物，日常相伴": {
+    "en": "Wellness for every day",
+    "ja": "日々に寄り添う養生アイテム"
+  },
+  "全部好物 →": {
+    "en": "All essentials →",
+    "ja": "すべてのアイテム →"
+  },
+  "东方养护，自在有和。": {
+    "en": "Eastern wellness, everyday harmony.",
+    "ja": "東洋の養生で、調和のある毎日を。"
+  },
+  "走近裕和堂 →": {
+    "en": "Discover Yu Health →",
+    "ja": "裕和堂を知る →"
+  },
+  "预约小贴士": {
+    "en": "Booking notes",
+    "ja": "予約のご案内"
+  },
+  "线上提交后，由门店为您确认到店时间与接待安排。": {
+    "en": "The branch will confirm your visit time and arrangements after you submit.",
+    "ja": "オンライン申請後、店舗が来店日時と接客手配を確認します。"
+  },
+  "服务内容": {
+    "en": "Our services",
+    "ja": "サービス内容"
+  },
+  "裕和堂小程序提供门店与养护项目介绍、到店预约和门店咨询。您可以先浏览；查看个人预约、提交预约及使用在线咨询时，需要登录客户账号。": {
+    "en": "The Yu Health mini program introduces branches and wellness services, accepts visit requests and provides branch consultations. You may browse without signing in. Viewing personal bookings, submitting requests and using online chat require a customer account.",
+    "ja": "裕和堂ミニプログラムでは、店舗・養生メニューの紹介、来店予約の申請、店舗への相談を提供します。ログインせずに閲覧できます。個人の予約の確認、予約申請、オンライン相談にはログインが必要です。"
+  },
+  "预约与接待": {
+    "en": "Bookings and visits",
+    "ja": "予約と接客"
+  },
+  "提交预约属于到店申请，需由门店人工确认。调理师意向、房间与床位以门店实际安排为准。修改或取消预约请遵循页面展示的门店规则。": {
+    "en": "A submitted booking is a visit request and requires manual branch confirmation. Therapist preferences, rooms and beds are subject to actual branch arrangements. Follow the rules shown on the page when changing or cancelling.",
+    "ja": "予約の送信は来店の申請であり、店舗による確認が必要です。担当者のご希望、部屋、ベッドは店舗の実際の手配に従います。変更・キャンセルは画面に表示された店舗のルールに従ってください。"
+  },
+  "账号与使用": {
+    "en": "Account use",
+    "ja": "アカウントの利用"
+  },
+  "微信登录用于识别客户身份。请妥善保管设备与账号，提供准确的预约联系信息，不冒用他人身份，不在咨询中发送违法或侵权内容。退出登录不会自动取消已提交的预约。": {
+    "en": "WeChat sign-in identifies your customer account. Keep your device and account secure, provide accurate booking contacts, do not impersonate others, and do not send unlawful or infringing content in chat. Signing out does not cancel submitted bookings.",
+    "ja": "WeChatログインはお客様の識別に利用します。端末とアカウントを適切に管理し、正確な予約連絡先をご提供ください。他人へのなりすまし、違法または権利を侵害する相談内容の送信はお控えください。ログアウトしても申請済みの予約はキャンセルされません。"
+  },
+  "消息与咨询": {
+    "en": "Notifications and consultations",
+    "ja": "通知と相談"
+  },
+  "预约消息提醒需要另行进行微信订阅授权；登录与同意本协议不会自动开启订阅。在线咨询由门店接待，具体回复时间以门店营业与人员安排为准。": {
+    "en": "Booking notifications require separate WeChat subscription permission. Signing in or agreeing to these terms does not enable them automatically. Branch staff handle online chat; response times depend on opening hours and staffing.",
+    "ja": "予約通知には、別途WeChatの通知許可が必要です。ログインや本規約への同意のみで通知が有効になることはありません。オンライン相談は店舗が対応し、返信時間は営業時間とスタッフの配置によります。"
+  },
+  "如需核实服务安排、提出意见或处理账号与资料问题，可通过门店页面的电话、微信客服或在线咨询联系工作人员。": {
+    "en": "To confirm arrangements, give feedback or address account and profile issues, contact staff by the branch phone, WeChat support or online chat on the branch page.",
+    "ja": "手配の確認、ご意見、アカウントやお客様情報に関するご相談は、店舗画面の電話、WeChatサポート、オンライン相談からご連絡ください。"
+  },
+  "登录身份": {
+    "en": "Sign-in identity",
+    "ja": "ログイン情報"
+  },
+  "您主动点击微信登录后，小程序获取临时登录凭证，由服务端向微信换取用于识别客户账号的标识。微信 AppSecret 与会话密钥不下发到客户端。登录不会自动获取您的手机号、头像或昵称。": {
+    "en": "After you tap WeChat sign-in, the mini program obtains a temporary login code. Our server exchanges it with WeChat for an account identifier. The WeChat AppSecret and session key are never sent to the client. Signing in does not automatically obtain your phone number, photo or nickname.",
+    "ja": "WeChatログインを押すと、一時的なログインコードを取得し、サーバーがWeChatからお客様を識別する情報を取得します。AppSecretとセッションキーはクライアントには配信されません。ログインだけで電話番号、画像、ニックネームを自動取得することはありません。"
+  },
+  "客户档案与手机号": {
+    "en": "Customer profile and phone",
+    "ja": "お客様情報と電話番号"
+  },
+  "微信登录记录首次与最近登录时间。您填写姓名或称呼，并主动点击微信手机号授权后，我们记录经微信授权的手机号与授权时间，用于预约联系及匹配已有客户档案。会员状态由总部维护，小程序、大众点评等来源分别记录；姓名或称呼是您填写的信息，不代表微信实名核验。拒绝手机号授权仍可浏览并手工填写预约联系信息。": {
+    "en": "WeChat sign-in records your first and latest login times. When you enter a name and explicitly authorize your WeChat phone number, we save the authorized number and time for booking contact and matching existing profiles. Headquarters maintains membership status; mini program and Dianping sources are recorded separately. Your entered name is not a WeChat-verified legal name. You may decline phone authorization, browse and enter booking contact details manually.",
+    "ja": "初回と最近のWeChatログイン日時を記録します。お名前を入力し、電話番号の取得を明示的に許可すると、認証済み電話番号と認証日時を予約連絡・既存情報の照合のために保存します。会員状態は本部が管理し、ミニプログラムや大衆点評などの利用元を区別して記録します。入力したお名前はWeChatの本人確認済み実名ではありません。電話番号の取得を拒否しても閲覧や予約連絡先の手入力は可能です。"
+  },
+  "预约资料": {
+    "en": "Booking details",
+    "ja": "予約情報"
+  },
+  "提交预约时，收集您填写的称呼、联系电话、到店时间、同行人数及服务意向，用于门店确认、接待和必要通知。会员与到店经历为本人自述，需门店核实。": {
+    "en": "When submitting a booking, we collect your preferred name, phone number, visit time, party size and service preferences for confirmation, reception and necessary notifications. Membership and visit history are self-reported and require branch verification.",
+    "ja": "予約申請時に、お名前、電話番号、来店日時、同行人数、サービスの希望を、店舗による確認、接客、必要な通知のために収集します。会員・来店履歴は自己申告で、店舗による確認が必要です。"
+  },
+  "咨询与自愿提供的信息": {
+    "en": "Chat and optional information",
+    "ja": "相談と任意の情報"
+  },
+  "在线咨询内容用于解答问题、安排接待与保存服务记录。请勿提交身份证、病历等不必要信息；预约中如自愿提供健康信息，需要单独勾选同意。": {
+    "en": "Chat content is used to answer questions, arrange visits and maintain service records. Do not submit unnecessary information such as ID documents or medical records. Voluntary health information in a booking requires a separate consent checkbox.",
+    "ja": "相談内容は、質問への回答、接客手配、サービス履歴の保存に利用します。身分証や診療記録など不要な情報は送信しないでください。予約時に健康情報を任意で提供する場合は、個別の同意が必要です。"
+  },
+  "订阅与权限": {
+    "en": "Subscriptions and permissions",
+    "ja": "通知と権限"
+  },
+  "预约结果及到店提醒由您另行选择微信订阅授权。地图导航、拨打电话等功能在实际使用时按需调用。拒绝登录或消息订阅不会影响浏览公开的门店与项目信息。": {
+    "en": "You separately choose whether to authorize WeChat booking updates and visit reminders. Maps and telephone features request access only when used. Declining sign-in or notifications does not affect browsing public branch and service information.",
+    "ja": "予約結果と来店リマインドの通知は、別途WeChatで許可を選択します。地図や電話などは、利用時に必要な機能を呼び出します。ログインや通知を拒否しても、公開された店舗・メニュー情報の閲覧に影響しません。"
+  },
+  "资料管理": {
+    "en": "Managing your information",
+    "ja": "情報の管理"
+  },
+  "您可在“我的预约”查看与管理预约，并退出当前设备的登录。更正、删除个人资料或申请注销账号，请通过门店电话、微信客服联系工作人员。退出登录不会删除服务器中的预约与咨询记录。": {
+    "en": "View and manage bookings in My bookings and sign out of this device. For profile corrections, deletion or account closure, contact staff by phone or WeChat support. Signing out does not delete booking or conversation records from the server.",
+    "ja": "「マイ予約」で予約を確認・管理し、この端末からログアウトできます。お客様情報の訂正・削除、アカウントの削除は店舗の電話またはWeChatサポートにご連絡ください。ログアウトしても、サーバー上の予約・相談履歴は削除されません。"
+  },
+  "完整隐私保护指引": {
+    "en": "Full Privacy Protection Guide",
+    "ja": "プライバシー保護ガイド"
+  },
+  "涉及个人信息的具体处理规则，请同时查阅微信小程序展示的《用户隐私保护指引》。如对资料使用有疑问，可联系门店核实后再继续操作。": {
+    "en": "For details on personal information processing, also read the Privacy Protection Guide shown by WeChat. If you have questions, contact the branch before continuing.",
+    "ja": "個人情報の取扱いの詳細は、WeChatミニプログラムに表示される「プライバシー保護ガイド」もご確認ください。情報の利用についてご不明な点は、操作を進める前に店舗へお問い合わせください。"
+  },
+  "隐私说明": {
+    "en": "Privacy Notice",
+    "ja": "プライバシー説明"
+  },
+  "用户协议": {
+    "en": "Terms of Use",
+    "ja": "利用規約"
+  },
+  "更新日期：": {
+    "en": "Updated: ",
+    "ja": "更新日："
+  },
+  "暂时无法打开，请在小程序设置中查看隐私保护指引。": {
+    "en": "Unable to open. Please view the Privacy Protection Guide in mini program settings.",
+    "ja": "開けませんでした。ミニプログラムの設定からプライバシー保護ガイドをご確認ください。"
+  },
+  "查看微信隐私保护指引": {
+    "en": "WeChat Privacy Protection Guide",
+    "ja": "WeChatプライバシー保護ガイド"
+  },
+  "返回": {
+    "en": "Back",
+    "ja": "戻る"
+  },
+  "退出当前登录": {
+    "en": "Sign out of this device?",
+    "ja": "ログアウトしますか"
+  },
+  "退出后可继续浏览门店和项目。已提交的预约与咨询记录会保留。": {
+    "en": "You can still browse branches and services. Your bookings and chat history will be saved.",
+    "ja": "店舗やメニューの閲覧は続けられます。予約と相談履歴は保存されます。"
+  },
+  "退出登录": {
+    "en": "Sign out",
+    "ja": "ログアウト"
+  },
+  "预约已更新，请刷新后查看。": {
+    "en": "Your booking changed. Please refresh.",
+    "ja": "予約が更新されました。再読み込みしてください。"
+  },
+  "取消到店申请": {
+    "en": "Cancel booking request",
+    "ja": "予約申請をキャンセル"
+  },
+  "取消后将释放本次预约名额。确定取消吗？": {
+    "en": "Cancelling releases this booking's places. Are you sure?",
+    "ja": "キャンセルすると、この予約枠が解放されます。よろしいですか。"
+  },
+  "确定取消": {
+    "en": "Cancel booking",
+    "ja": "キャンセル"
+  },
+  "客户取消预约": {
+    "en": "Customer cancelled booking",
+    "ja": "お客様によるキャンセル"
+  },
+  "撤回改约申请": {
+    "en": "Withdraw change request",
+    "ja": "変更申請を取り下げ"
+  },
+  "撤回后仍保留原预约时间和名额，不会取消原预约。": {
+    "en": "Your original time and places will remain. This does not cancel the booking.",
+    "ja": "元の予約日時と枠はそのまま残ります。予約のキャンセルではありません。"
+  },
+  "撤回申请": {
+    "en": "Withdraw",
+    "ja": "取り下げる"
+  },
+  "改约申请已提交": {
+    "en": "Change request submitted",
+    "ja": "予約変更を申請しました"
+  },
+  "原预约时间和名额继续保留。门店同意后新时间才会生效，未同意或超时将保留原预约。": {
+    "en": "Your original time and places remain reserved. The new time takes effect only after branch approval. If declined or expired, your original booking stays unchanged.",
+    "ja": "元の予約日時と枠は引き続き確保されます。店舗の承認後に新しい日時が有効になります。未承認または期限切れの場合は元の予約が残ります。"
+  },
+  "欢迎来到裕和堂": {
+    "en": "Welcome to Yu Health",
+    "ja": "裕和堂へようこそ"
+  },
+  "已登录 · 预约与咨询记录为您保留": {
+    "en": "Signed in · Your bookings and chats are saved",
+    "ja": "ログイン済み・予約と相談履歴を保存"
+  },
+  "预约需门店人工确认，请以门店确认结果为准。": {
+    "en": "Bookings require manual branch confirmation. Please follow the branch's final confirmation.",
+    "ja": "予約は店舗による確認が必要です。店舗の確定結果をご確認ください。"
+  },
+  "正在加载预约…": {
+    "en": "Loading bookings…",
+    "ja": "予約を読み込み中…"
+  },
+  "还没有预约": {
+    "en": "No bookings yet",
+    "ja": "予約はまだありません"
+  },
+  "为自己留一点时间，从一场放松开始。": {
+    "en": "Make a little time for yourself. Start with a moment of calm.",
+    "ja": "自分のための時間を、安らぎのひとときから。"
+  },
+  "去预约": {
+    "en": "Book now",
+    "ja": "予約する"
+  },
+  "调理师意向：": {
+    "en": "Therapist preference: ",
+    "ja": "担当者の希望："
+  },
+  "改约已失效": {
+    "en": "Change request expired",
+    "ja": "予約変更の申請は期限切れです"
+  },
+  "申请时间：": {
+    "en": "Requested time: ",
+    "ja": "希望日時："
+  },
+  "门店确认前，仍按上方原预约安排。": {
+    "en": "Your original booking above applies until the branch confirms.",
+    "ja": "店舗が承認するまでは、上記の元の予約が有効です。"
+  },
+  "处理期限：": {
+    "en": "Decision deadline: ",
+    "ja": "対応期限："
+  },
+  "；超时保留原预约。": {
+    "en": "; your original booking remains if this expires.",
+    "ja": "。期限切れの場合、元の予約が残ります。"
+  },
+  "超过处理期限，原预约保持不变。": {
+    "en": "The deadline has passed. Your original booking is unchanged.",
+    "ja": "対応期限を過ぎました。元の予約は変更されません。"
+  },
+  "预约编号：": {
+    "en": "Booking ID: ",
+    "ja": "予約番号："
+  },
+  "自助取消／改约截止：": {
+    "en": "Self-service changes until: ",
+    "ja": "ご自身でのキャンセル・変更期限："
+  },
+  "，逾期请联系门店。": {
+    "en": ". After that, contact the branch.",
+    "ja": "。以降は店舗へご連絡ください。"
+  },
+  "申请改约": {
+    "en": "Request a change",
+    "ja": "予約変更を申請"
+  },
+  "取消预约": {
+    "en": "Cancel booking",
+    "ja": "予約をキャンセル"
+  },
+  "选择新的到店时间": {
+    "en": "Choose a new visit time",
+    "ja": "新しい来店日時を選択"
+  },
+  "提交申请后保留原预约；新时段名额以门店处理时为准。": {
+    "en": "Your original booking stays until approval. Availability is checked when the branch reviews your request.",
+    "ja": "申請後も元の予約は残ります。新しい時間の空き状況は、店舗が対応する時点で確認します。"
+  },
+  "当日暂无可用时段": {
+    "en": "No times available today",
+    "ja": "当日の空き枠はありません"
+  },
+  "暂不改约": {
+    "en": "Keep current time",
+    "ja": "変更しない"
+  },
+  "提交改约": {
+    "en": "Submit change",
+    "ja": "変更を申請"
+  },
+  "当前展示最近 100 条预约，如需更早记录请联系门店。": {
+    "en": "Showing your latest 100 bookings. Contact the branch for older records.",
+    "ja": "最近の予約100件を表示しています。それ以前の記録は店舗にお問い合わせください。"
+  },
+  "个人资料": {
+    "en": "My profile",
+    "ja": "お客様情報"
+  },
+  "返回门店列表": {
+    "en": "Back to branches",
+    "ja": "店舗一覧に戻る"
+  },
+  "门店空间": {
+    "en": "Our spaces",
+    "ja": "店舗の空間"
+  },
+  "营业时间": {
+    "en": "Opening hours",
+    "ja": "営業時間"
+  },
+  "致电门店": {
+    "en": "Call branch",
+    "ja": "店舗に電話"
+  },
+  "门店地图位置待完善，请致电咨询。": {
+    "en": "The branch map location is being updated. Please call.",
+    "ja": "店舗の地図情報を準備中です。お電話でお問い合わせください。"
+  },
+  "地图导航": {
+    "en": "Directions",
+    "ja": "地図案内"
+  },
+  "申请预约": {
+    "en": "Request booking",
+    "ja": "予約を申請"
+  },
+  "电话咨询": {
+    "en": "Call to enquire",
+    "ja": "電話で相談"
+  },
+  "本店养护项目": {
+    "en": "Services at this branch",
+    "ja": "この店舗の養生メニュー"
+  },
+  "项": {
+    "en": "services",
+    "ja": "メニュー"
+  },
+  "养护": {
+    "en": "Care",
+    "ja": "養生"
+  },
+  "参考时长 ·": {
+    "en": "Duration · ",
+    "ja": "目安の時間・"
+  },
+  "欢迎联系门店，了解项目详情与到店安排。": {
+    "en": "Contact the branch for service details and visit arrangements.",
+    "ja": "メニューの詳細と来店手配は、店舗にご相談ください。"
+  },
+  "收起详情 −": {
+    "en": "Less −",
+    "ja": "閉じる −"
+  },
+  "项目详情 +": {
+    "en": "Details +",
+    "ja": "詳細 +"
+  },
+  "本店养护项目正在完善中": {
+    "en": "Branch services are being updated",
+    "ja": "店舗メニューを準備中です"
+  },
+  "欢迎联系门店，了解适合您的养护与到店安排。": {
+    "en": "Contact the branch to find care and visit arrangements that suit you.",
+    "ja": "お客様に合った養生と来店手配について、店舗へお問い合わせください。"
+  },
+  "门店环境": {
+    "en": "Branch gallery",
+    "ja": "店舗の写真"
+  },
+  "张": {
+    "en": "photos",
+    "ja": "枚"
+  },
+  "暂未找到这家门店": {
+    "en": "Branch not found",
+    "ja": "店舗が見つかりません"
+  },
+  "门店资料可能已调整，请返回列表选择其他门店。": {
+    "en": "Branch details may have changed. Return to the list to choose another branch.",
+    "ja": "店舗情報が変更された可能性があります。一覧に戻り、別の店舗をお選びください。"
+  },
+  "查看全部门店": {
+    "en": "View all branches",
+    "ja": "すべての店舗を見る"
+  },
+  "寻一处安放心绪的地方": {
+    "en": "Find a space to feel at ease",
+    "ja": "心やすらぐ場所を見つける"
+  },
+  "选择门店，了解本店开放的项目与到店安排。": {
+    "en": "Choose a branch to explore its services and plan your visit.",
+    "ja": "店舗を選んで、メニューと来店のご案内をご覧ください。"
+  },
+  "全部区域": {
+    "en": "All areas",
+    "ja": "すべてのエリア"
+  },
+  "门店详情": {
+    "en": "Branch details",
+    "ja": "店舗の詳細"
+  },
+  "门店资料正在完善中。": {
+    "en": "Branch information is being updated.",
+    "ja": "店舗情報を準備中です。"
+  },
+  "当前访问较多，请稍后重试。": {
+    "en": "We're receiving many requests. Please try later.",
+    "ja": "アクセスが集中しています。時間をおいてお試しください。"
+  },
+  "登录状态已更新，请重新操作。": {
+    "en": "Your sign-in session changed. Please try again.",
+    "ja": "ログイン状態が変わりました。再度操作してください。"
+  },
+  "登录已失效，请重新登录。": {
+    "en": "Your session expired. Please sign in again.",
+    "ja": "ログインの有効期限が切れました。再度ログインしてください。"
+  },
+  "操作未完成，请稍后重试。": {
+    "en": "Unable to complete this action. Please try later.",
+    "ja": "操作を完了できませんでした。しばらくしてからお試しください。"
+  },
+  "暂时无法连接门店服务，请检查网络后重试。": {
+    "en": "Unable to connect to the branch. Check your network and retry.",
+    "ja": "店舗のサービスに接続できません。通信環境を確認し、再度お試しください。"
+  },
+  "当前环境禁止模拟登录。": {
+    "en": "Test sign-in is unavailable here.",
+    "ja": "この環境ではテストログインを利用できません。"
+  },
+  "请在微信小程序内登录后办理预约；H5 可浏览门店与项目。": {
+    "en": "Sign in within the WeChat mini program to book. You can browse branches and services on the web.",
+    "ja": "予約にはWeChatミニプログラムでログインしてください。Webでは店舗とメニューを閲覧できます。"
+  },
+  "门店电话待完善，请使用在线客服。": {
+    "en": "The branch phone is being updated. Please use online chat.",
+    "ja": "店舗の電話情報を準備中です。オンライン相談をご利用ください。"
+  },
+  "暂时无法打开微信订阅设置，请在手机微信中重试。": {
+    "en": "Unable to open WeChat notification settings. Please retry on your phone.",
+    "ja": "WeChatの通知設定を開けません。スマートフォンで再度お試しください。"
+  },
+  "当前环境不支持微信订阅设置，请在手机微信中重试。": {
+    "en": "WeChat notification settings are not available here. Please use your phone.",
+    "ja": "この環境はWeChat通知設定に対応していません。スマートフォンでお試しください。"
+  },
+  "请先登录，再订阅预约提醒。": {
+    "en": "Sign in before enabling booking reminders.",
+    "ja": "予約通知を許可する前にログインしてください。"
+  },
+  "订阅未开启，请检查微信消息设置后再试。": {
+    "en": "Notifications are off. Check your WeChat message settings.",
+    "ja": "通知は無効です。WeChatの通知設定をご確認ください。"
+  },
+  "登录状态已更新，请重新订阅。": {
+    "en": "Your session changed. Please authorize notifications again.",
+    "ja": "ログイン状態が変わりました。通知の許可をやり直してください。"
+  },
+  "微信授权已完成，但提醒记录未全部保存，请检查网络后重新订阅。": {
+    "en": "WeChat permission was granted, but some notification choices were not saved. Check your network and retry.",
+    "ja": "WeChatの許可は完了しましたが、一部の通知設定を保存できませんでした。通信環境を確認し、再度お試しください。"
+  },
+  "部分提醒模板暂不可用，已保存其余同意的提醒。": {
+    "en": "Some notification templates are unavailable. Your other accepted reminders were saved.",
+    "ja": "一部の通知テンプレートが利用できません。その他の許可済み通知は保存しました。"
+  },
+  "当前环境暂不支持订阅消息，请在手机微信中尝试。": {
+    "en": "Notifications are unavailable here. Please try on your phone in WeChat.",
+    "ja": "この環境は通知に対応していません。スマートフォンのWeChatでお試しください。"
+  },
+  "请刷新预约以核对可操作时间，如需协助请联系门店。": {
+    "en": "Refresh to check when changes are allowed, or contact the branch.",
+    "ja": "操作できる期限を確認するため再読み込みするか、店舗へお問い合わせください。"
+  },
+  "已超过自助处理截止时间，取消或改约请联系门店。": {
+    "en": "The self-service deadline has passed. Please contact the branch to cancel or reschedule.",
+    "ja": "ご自身で変更できる期限を過ぎています。キャンセル・日時変更は店舗にご連絡ください。"
+  },
+  "请先登录，再继续办理。": {
+    "en": "Please sign in to continue.",
+    "ja": "続けるにはログインしてください。"
+  },
+  "本次登录已取消，请重新操作。": {
+    "en": "This sign-in was cancelled. Please try again.",
+    "ja": "ログインをキャンセルしました。再度お試しください。"
+  },
+  "登录凭证未返回，请重试。": {
+    "en": "No login credential was returned. Please retry.",
+    "ja": "ログイン情報を取得できませんでした。再度お試しください。"
+  },
+  "首页": {
+    "en": "Home",
+    "ja": "ホーム"
+  },
+  "门店": {
+    "en": "Branches",
+    "ja": "店舗"
+  },
+  "预约到店": {
+    "en": "Book a visit",
+    "ja": "来店予約"
+  },
+  "{count} 人": {
+    "en": "{count} guests",
+    "ja": "{count}名"
+  },
+  "{count} 人同行": {
+    "en": "Party of {count}",
+    "ja": "{count}名で来店"
+  },
+  "余 {count} 位": {
+    "en": "{count} left",
+    "ja": "残り{count}名"
+  },
+  "{count} 项": {
+    "en": "{count} services",
+    "ja": "{count}件のメニュー"
+  },
+  "{count} 张": {
+    "en": "{count} photos",
+    "ja": "{count}枚"
+  },
+  "{name}正在为您接待": {
+    "en": "{name} is assisting you",
+    "ja": "{name}が対応しています"
+  },
+  "门店营业时间 {hours}": {
+    "en": "Branch hours: {hours}",
+    "ja": "営業時間：{hours}"
+  },
+  "{phone} · 微信手机号已授权": {
+    "en": "{phone} · WeChat phone verified",
+    "ja": "{phone}・WeChat電話番号認証済み"
+  },
+  "确认": {
+    "en": "OK",
+    "ja": "確認"
+  },
+  "取消": {
+    "en": "Cancel",
+    "ja": "キャンセル"
+  },
+  "示例": {
+    "en": "Sample",
+    "ja": "サンプル"
+  },
+  "上海时间（UTC+8）": {
+    "en": "Shanghai time (UTC+8)",
+    "ja": "上海時間（UTC+8）"
+  },
+  "待确认": {
+    "en": "Awaiting confirmation",
+    "ja": "確認待ち"
+  },
+  "门店已确认": {
+    "en": "Confirmed by branch",
+    "ja": "店舗確認済み"
+  },
+  "已确认": {
+    "en": "Confirmed",
+    "ja": "確認済み"
+  },
+  "已完成": {
+    "en": "Completed",
+    "ja": "完了"
+  },
+  "已取消": {
+    "en": "Cancelled",
+    "ja": "キャンセル済み"
+  },
+  "未到店": {
+    "en": "No-show",
+    "ja": "未来店"
+  },
+  "已拒绝": {
+    "en": "Declined",
+    "ja": "お断り"
+  },
+  "改约待处理": {
+    "en": "Change awaiting review",
+    "ja": "変更の確認待ち"
+  },
+  "改约已同意": {
+    "en": "Change approved",
+    "ja": "変更承認済み"
+  },
+  "改约未通过": {
+    "en": "Change declined",
+    "ja": "変更却下"
+  },
+  "改约已撤回": {
+    "en": "Change withdrawn",
+    "ja": "変更取り下げ済み"
+  },
+  "改约已过期": {
+    "en": "Change expired",
+    "ja": "変更期限切れ"
+  },
+  "金卡": {
+    "en": "Gold member",
+    "ja": "ゴールド会員"
+  },
+  "银卡": {
+    "en": "Silver member",
+    "ja": "シルバー会員"
+  },
+  "普通会员": {
+    "en": "Member",
+    "ja": "一般会員"
+  },
+  "已到店": {
+    "en": "Checked in",
+    "ja": "来店済み"
+  },
+  "待门店确认": {
+    "en": "Awaiting branch confirmation",
+    "ja": "店舗確認待ち"
+  },
+  "改约待门店处理": {
+    "en": "Rescheduling pending",
+    "ja": "日時変更の確認待ち"
+  },
+  "该预约当前不可自助取消或改约，请联系门店。": {
+    "en": "Please contact the branch to cancel or reschedule this appointment.",
+    "ja": "このご予約のキャンセル・日時変更は店舗にご連絡ください。"
+  }
+}

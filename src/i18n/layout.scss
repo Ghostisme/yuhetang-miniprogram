@@ -1,0 +1,39 @@
+.page.locale-en {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  .heading, .title { font-family: inherit; letter-spacing: 0; }
+  .heading { font-size: 38px; }
+  .brand-name { letter-spacing: 1px; font-size: 34px; }
+  .brand-lockup { min-width: 0; }
+  .order-shortcut { flex-shrink: 0; font-size: 22px; }
+  .quick-label, .quick-sub { padding: 0 8px; text-align: center; }
+  .quick-label { font-size: 24px; }
+  .quick-sub { font-size: 20px; }
+  .section-heading { align-items: flex-start; }
+  .section-heading .link { max-width: 38%; text-align: right; }
+  .customer-login-hero .login-hero-brand > :first-child { letter-spacing: 1px; font-family: inherit; }
+  .customer-login-hero .login-hero-brand > :last-child { display: none; }
+  .customer-login-hero .login-hero-title { font-size: 48px; line-height: 1.3; letter-spacing: 0; }
+  .customer-login-hero .login-hero-subtitle { letter-spacing: 0; }
+  .login-consent.on-photo { display: block; }
+  .login-consent .login-legal-links { display: flex; flex-wrap: wrap; gap: 0 8px; }
+  .login-consent.on-photo .login-legal-links { margin-left: 42px; }
+  .brand .english { display: none; }
+  .login-sheet-heading { font-size: 38px; letter-spacing: 0; }
+  .login-sheet-brand { letter-spacing: 0; }
+  .login-sheet-caption { max-width: 85%; letter-spacing: 0; }
+  .login-legal-links { white-space: normal; }
+  .receipt-row .label { flex-shrink: 1; min-width: 30%; }
+  .steps button, .steps taro-button-core { font-size: 22px; line-height: 1.4; }
+  .bottom-actions .secondary { min-width: 0; }
+  .booking-footer .primary, .receipt-actions .primary { min-width: 0; padding: 18px 16px; font-size: 25px; }
+  .agree-copy .text-link { margin-left: 6px; }
+  .profile-card-header { flex-wrap: wrap; }
+  .profile-card-header > view, .profile-card-header > taro-view-core { min-width: 0; }
+  .store-service-actions { flex-wrap: wrap; }
+}
+.page.locale-ja {
+  font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Yu Gothic', Meiryo, sans-serif;
+  .heading, .title { letter-spacing: 1px; }
+}
+.orders-page.is-weapp:not(.orders-guest) > .language-switcher { padding-top: calc(96px + env(safe-area-inset-top)); }
+.orders-page.is-weapp:not(.orders-guest) > .section { padding-top: 24px; }

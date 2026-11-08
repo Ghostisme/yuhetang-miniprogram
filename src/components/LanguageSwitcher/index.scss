@@ -1,0 +1,11 @@
+.page .language-switcher {
+  display: flex; flex-shrink: 0; justify-content: flex-end; padding: 12px 32px 0;
+  .language-button { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 60px; margin: 0; padding: 8px 18px; border: 1px solid #dce4d7; border-radius: 40px; background: #fff; color: #49614f; font-size: 23px; line-height: 1.4; white-space: nowrap; }
+  .language-globe { font-size: 30px; line-height: 1; }
+  .language-chevron { font-size: 23px; opacity: .65; }
+  &.compact { padding: 0; }
+  &.light .language-button { border-color: rgba(255,255,255,.45); background: rgba(20,38,26,.26); color: #fff; }
+}
+.customer-login-hero > .language-switcher { position: absolute; z-index: 2; top: calc(110px + env(safe-area-inset-top)); right: 38px; padding: 0; }
+.booking-header-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.booking-header-top .eyebrow { min-width: 0; margin: 0; font-size: 17px; letter-spacing: 2px; }

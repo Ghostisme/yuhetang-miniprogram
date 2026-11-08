@@ -1,3 +1,4 @@
+import { i18nFixture } from './fixtures/i18n'
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import vm from 'node:vm'
@@ -26,6 +27,8 @@ function fixture({platform='weapp',code='one-use-wechat-code',initialToken=''}={
       if(name==='@tarojs/taro')return {__esModule:true,default:sdk}
       if(name==='../utils/booking')return load('src/utils/booking.ts')
       if(name==='../utils/session')return load('src/utils/session.ts')
+      if (name.endsWith('/i18n')) return i18nFixture
+      if (name.endsWith('/components/LanguageSwitcher')) return { default: 'LanguageSwitcher' }
       throw new Error('Unexpected fixture import: '+name)
     }
     vm.runInNewContext(source,{module,exports:module.exports,require,API_BASE_URL:'https://fixture.invalid',ENABLE_DEV_LOGIN:false,process:{env:{TARO_ENV:platform}},console,Date,Math,setTimeout,clearTimeout})
