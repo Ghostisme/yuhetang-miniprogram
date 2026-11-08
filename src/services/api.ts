@@ -88,6 +88,25 @@ export function privacy(): Promise<void> {
 // Call directly in the user click handler, before login or any other awaited work.
 // Declining a one-time subscription must never prevent a booking.
 export type SubscriptionResult = { accepted: number; recorded: number; declined: number; error?: string }
+export type SubscriptionSettings = { enabled: boolean; choices: Record<string, string> }
+
+// A remembered choice is not a new one-time allowance. Settings APIs never write grants.
+function subscriptionSettings(open: boolean): Promise<SubscriptionSettings | null> {
+  if (!isWeapp) return Promise.resolve(null)
+  return new Promise((resolve, reject) => {
+    const options = { withSubscriptions: true, success: (result: {subscriptionsSetting?: {mainSwitch?: boolean; itemSettings?: Record<string, string>}}) => {
+      const settings = result.subscriptionsSetting
+      resolve(settings ? { enabled: settings.mainSwitch !== false, choices: settings.itemSettings || {} } : null)
+    }, fail: () => open ? reject(new Error('暂时无法打开微信订阅设置，请在手机微信中重试。')) : resolve(null) }
+    try {
+      const operation = open ? Taro.openSetting(options) : Taro.getSetting(options)
+      void operation?.catch(options.fail)
+    } catch { if (open) reject(new Error('当前环境不支持微信订阅设置，请在手机微信中重试。')); else resolve(null) }
+  })
+}
+export const readSubscriptionSettings = () => subscriptionSettings(false)
+// Invoke in the button handler before any awaited work, just like requestSubscribeMessage.
+export const openSubscriptionSettings = () => subscriptionSettings(true)
 let subscriptionPromise: Promise<SubscriptionResult> | undefined
 export function subscribe(templates?: string | string[]): Promise<SubscriptionResult> {
   if (subscriptionPromise) return subscriptionPromise
@@ -95,9 +114,10 @@ export function subscribe(templates?: string | string[]): Promise<SubscriptionRe
   if (!isWeapp || !ids.length) return Promise.resolve({ accepted: 0, recorded: 0, declined: 0 })
   const requestId = newId()
   subscriptionPromise = new Promise<SubscriptionResult>(resolve => {
+    const fail = (result: {errMsg?: string}) => resolve({ accepted: 0, recorded: 0, declined: ids.length, error: result.errMsg?.includes('cancel') ? undefined : '订阅未开启，请检查微信消息设置后再试。' })
     try {
       // Taro's cross-platform type also requires Alipay's entityIds; WeChat ignores it.
-      Taro.requestSubscribeMessage({ tmplIds: ids, entityIds: [], success: async result => {
+      const operation = Taro.requestSubscribeMessage({ tmplIds: ids, entityIds: [], success: async result => {
         const accepted = ids.filter(id => result[id] === 'accept')
         let recorded = 0
         try {
@@ -106,14 +126,15 @@ export function subscribe(templates?: string | string[]): Promise<SubscriptionRe
             const records = await Promise.allSettled(accepted.map(templateId => request<{recorded: boolean}>('/api/me/subscriptions', { method: 'POST', data: { templateId, accepted: true, requestId } })))
             recorded = records.filter(record => record.status === 'fulfilled' && record.value.recorded).length
           }
-          const error = recorded < accepted.length ? '微信授权已完成，但提醒记录未全部保存，请检查网络后重新订阅。' : undefined
+          const error = recorded < accepted.length ? '微信授权已完成，但提醒记录未全部保存，请检查网络后重新订阅。' : ids.some(id => result[id] === 'ban' || result[id] === 'filter') ? '部分提醒模板暂不可用，已保存其余同意的提醒。' : undefined
           if (error) toastError(error)
           resolve({ accepted: accepted.length, recorded, declined: ids.length - accepted.length, error })
         } catch (error) {
           const detail = message(error); toastError(error)
           resolve({ accepted: accepted.length, recorded, declined: ids.length - accepted.length, error: detail })
         }
-      }, fail: result => resolve({ accepted: 0, recorded: 0, declined: ids.length, error: result.errMsg?.includes('cancel') ? undefined : '订阅未开启，请检查微信消息设置后再试。' }) })
+      }, fail })
+      void operation?.catch(fail)
     } catch { resolve({ accepted: 0, recorded: 0, declined: ids.length, error: '当前环境暂不支持订阅消息，请在手机微信中尝试。' }) }
   })
   void subscriptionPromise.finally(() => { subscriptionPromise = undefined })

@@ -21,6 +21,13 @@
   .agree checkbox, .agree taro-checkbox-core { flex-shrink:0; width:40px; padding-top:3px; transform:scale(.78); transform-origin:top left; }
   .agree-copy { flex:1; min-width:0; }
   .text-link { display:inline; color:var(--primary,#435e4b); font-size:24px; text-decoration:underline; text-underline-offset:4px; }
+  .booking-subscriptions { margin:28px 0; padding:24px; border:1px solid var(--line); border-radius:16px; background:#fff; }
+  .booking-subscriptions-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; font-size:27px; color:var(--primary,#435e4b); }
+  .booking-subscriptions-heading>text { padding:5px 12px; border-radius:8px; background:#eef3e8; font-size:20px; color:#71866a; }
+  .booking-subscriptions-row { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 16px; margin-top:20px; font-size:24px; color:#526749; }
+  .booking-subscriptions-row>text:last-child { color:#89917f; font-size:22px; }
+  .booking-subscriptions-note { display:block; margin-top:20px; line-height:1.9; font-size:22px; color:#88917c; }
+  .subscription-receipt { margin:22px 0; padding:20px; border-radius:12px; background:#edf2e7; color:#607454; font-size:24px; line-height:1.9; text-align:left; }
   .bottom-actions { margin-top:8px; padding-bottom:calc(24px + env(safe-area-inset-bottom)); }
   .receipt { padding:60px 32px 36px; text-align:center; }
   .receipt-icon { display:flex; width:116px; height:116px; align-items:center; justify-content:center; margin:0 auto 28px; border:1px solid #dce7d3; border-radius:50%; background:#eaf1e3; color:var(--primary,#435e4b); font-size:64px; }

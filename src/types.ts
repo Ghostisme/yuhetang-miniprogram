@@ -9,6 +9,6 @@ export interface Appointment {id:string;customerName:string;phone:string;storeId
 
 export interface Rules {opens:string;closes:string;interval:number;capacity:number;advanceDays:number;minLeadMinutes:number;cancelHours:number;maxHeadcount:number;phoneOpenLimit:number;remindMinutes:number;closedDates:string[]}
 export interface Slots {date:string;storeId:string;slots:{time:string;capacity:number;used:number;remaining:number;available:boolean}[];rules:Rules}
-export interface Runtime {developmentLogin?:boolean;customerTemplateIds?:string[];customerTemplateId?:string}
+export interface Runtime {developmentLogin?:boolean;customerTemplateIds?:string[];customerTemplateId?:string;customerReminderTemplateId?:string}
 export interface ChatMessage {id:string;seq:number;direction:'IN'|'OUT';senderName:string;content:string;createdAt:string}
 export interface MessagePage {items:ChatMessage[]}
