@@ -11,4 +11,5 @@ export interface Rules {opens:string;closes:string;interval:number;capacity:numb
 export interface Slots {date:string;storeId:string;slots:{time:string;capacity:number;used:number;remaining:number;available:boolean}[];rules:Rules}
 export interface Runtime {developmentLogin?:boolean;customerTemplateIds?:string[];customerTemplateId?:string;customerReminderTemplateId?:string}
 export interface ChatMessage {id:string;seq:number;direction:'IN'|'OUT';senderName:string;content:string;createdAt:string}
-export interface MessagePage {items:ChatMessage[]}
+export interface ChatConversation {id:string;status:'OPEN'|'ACTIVE'|'RESOLVED';assignedAdminName?:string;acceptedAt?:string;endedAt?:string;endedBy?:string}
+export interface MessagePage {items:ChatMessage[];conversation?:ChatConversation}
