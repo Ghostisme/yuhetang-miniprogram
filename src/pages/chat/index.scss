@@ -9,6 +9,9 @@
   background:var(--paper,#f7f8f3);
 }
 .chat-page {
+  .chat-login-card { margin:28px 32px; padding:56px 30px 30px; border:1px solid var(--line); border-radius:22px; background:#fffef9; text-align:center; }
+  .chat-login-card .muted > text, .chat-login-card .muted > taro-text-core { display:block; }
+  .chat-login-card .tiny { margin-top:24px; }
   .chat-heading { flex-shrink:0; padding:30px 32px 24px; background:var(--soft,#e9eddf); }
   .chat-heading .eyebrow { margin-bottom:10px; font-size:18px; }
   .chat-heading .heading { margin:0 0 12px; font-size:36px; }

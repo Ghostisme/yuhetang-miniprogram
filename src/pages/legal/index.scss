@@ -1,0 +1,7 @@
+.legal-page {
+  background: #faf9f3;
+  .heading { margin-bottom: 12px; }
+  .legal-section { margin-top: 38px; }
+  .legal-section > view, .legal-section > taro-view-core { margin-bottom: 14px; font-size: 30px; font-weight: 600; }
+  .legal-section > text, .legal-section > taro-text-core { color: #6c7a68; font-size: 26px; line-height: 1.95; }
+}

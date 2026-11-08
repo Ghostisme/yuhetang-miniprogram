@@ -1,5 +1,5 @@
 export default defineAppConfig({
-  pages: ['pages/home/index', 'pages/catalog/index', 'pages/stores/index', 'pages/orders/index', 'pages/booking/index', 'pages/chat/index', 'pages/store-detail/index'],
+  pages: ['pages/home/index', 'pages/catalog/index', 'pages/stores/index', 'pages/orders/index', 'pages/booking/index', 'pages/chat/index', 'pages/store-detail/index', 'pages/login/index', 'pages/legal/index'],
   window: { navigationBarTitleText: '裕和堂', navigationBarBackgroundColor: '#faf9f3', navigationBarTextStyle: 'black', backgroundColor: '#faf9f3' },
   tabBar: {
     color: '#8b9788', selectedColor: '#405c49', backgroundColor: '#faf9f3', borderStyle: 'white',

@@ -1,0 +1,34 @@
+.login-page {
+  min-height: 100vh; padding: 78px 52px calc(48px + env(safe-area-inset-bottom));
+  background: radial-gradient(ellipse at 50% 12%, #eaf0e4 0, #faf9f3 53%); color: #344a3b;
+  .login-brand { display: flex; flex-direction: column; align-items: center; padding-bottom: 74px; }
+  .login-seal { display: flex; flex-direction: column; justify-content: center; width: 64px; height: 82px; border: 2px solid #aa7863; border-radius: 7px; color: #9c6b55; font: 30px/1.12 'STSong', 'Songti SC', serif; text-align: center; }
+  .login-wordmark { margin-top: 20px; font: 44px/1.5 'STSong', 'Songti SC', serif; letter-spacing: 10px; padding-left: 10px; }
+  .login-english { margin-top: 5px; font-size: 16px; letter-spacing: 6px; padding-left: 6px; color: #788573; }
+  .login-brand-note { margin-top: 24px; color: #7b8777; font-size: 23px; letter-spacing: 3px; }
+  .heading { font-size: 42px; letter-spacing: 1px; }
+  .eyebrow { margin-bottom: 14px; color: #839078; font-size: 17px; letter-spacing: 3px; }
+  .login-intro { margin-top: 20px; color: #778272; font-size: 26px; line-height: 1.9; }
+  .login-intro > text, .login-intro > taro-text-core { display: block; }
+  .login-benefits { display: flex; gap: 0; align-items: center; margin: 30px 0 46px; color: #65775d; font-size: 23px; }
+  .login-benefits > text + text, .login-benefits > taro-text-core + taro-text-core { margin-left: 26px; padding-left: 26px; border-left: 1px solid #d7dfcf; }
+  .login-submit { display: flex; justify-content: center; align-items: center; gap: 17px; width: 100%; min-height: 100px; padding: 24px 20px; border-radius: 18px; color: #fff; background: #435e4b; font-size: 30px; box-shadow: 0 10px 26px #435e4b17; }
+  .login-wechat-icon { position: relative; width: 44px; height: 37px; flex-shrink: 0; }
+  .login-wechat-icon > view, .login-wechat-icon > taro-view-core { position: absolute; width: 30px; height: 25px; border-radius: 50%; background: #fff; left: 0; top: 1px; }
+  .login-wechat-icon > view::after, .login-wechat-icon > taro-view-core::after { content: ''; position: absolute; left: 5px; bottom: -3px; border: 5px solid transparent; border-top-color: #fff; transform: rotate(18deg); }
+  .login-wechat-icon > view:nth-child(2), .login-wechat-icon > taro-view-core:nth-child(2) { left: 16px; top: 13px; width: 28px; height: 22px; border: 2px solid #435e4b; }
+  .login-caption { margin-top: 20px; font-size: 22px; color: #8b9485; text-align: center; }
+  .login-platform-note { margin-top: 18px; color: #887952; font-size: 23px; line-height: 1.7; text-align: center; }
+  .login-guest { display: flex; justify-content: center; align-items: center; gap: 16px; width: 100%; min-height: 90px; margin-top: 24px; font-size: 26px; color: #6b7c62; }
+  .login-guest > text, .login-guest > taro-text-core { color: #95a08c; font-size: 34px; }
+  .login-consent { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; margin-top: 28px; color: #8b9384; font-size: 22px; line-height: 1.9; }
+  .login-consent-toggle { display: flex; align-items: center; min-height: 64px; }
+  .login-consent checkbox, .login-consent taro-checkbox-core { transform: scale(.72); transform-origin: center; margin-right: 0; }
+  .login-legal-links { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; }
+  .login-legal-links button, .login-legal-links taro-button-core { min-height: 64px; padding: 10px 2px; font-size: 22px; color: #526e49; }
+  .needs-consent { color: #955e45; }
+  .login-error { margin: 22px 0; padding: 18px 22px; border: 1px solid #ead9ca; border-radius: 12px; color: #975d43; background: #faf0e8; font-size: 24px; }
+  .login-footer { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 56px; font-size: 19px; line-height: 1.7; color: #929b89; }
+  .login-lock { position: relative; flex-shrink: 0; width: 16px; height: 14px; border: 2px solid #929b89; border-radius: 3px; }
+  .login-lock::before { content: ''; position: absolute; width: 8px; height: 8px; border: 2px solid #929b89; border-bottom: 0; border-radius: 6px 6px 0 0; top: -10px; left: 2px; }
+}

@@ -1,4 +1,11 @@
 .orders-page {
+  .customer-account { display:flex; align-items:center; justify-content:space-between; gap:20px; margin-top:28px; padding:25px; border:1px solid var(--line); border-radius:18px; background:#eef2e7; }
+  .account-title { margin-bottom:7px; font-size:28px; }
+  .customer-account button, .customer-account taro-button-core { padding:18px 0 18px 16px; font-size:23px; color:#73836d; }
+  .customer-login-card { margin:36px 0; padding:46px 28px 28px; border:1px solid var(--line); border-radius:24px; background:linear-gradient(160deg,#edf1e5,#fffef9); text-align:center; }
+  .customer-login-mark { display:flex; justify-content:center; align-items:center; width:86px; height:86px; margin:0 auto 28px; border:1px solid #a4b09a; border-radius:20px; color:#6b7e5e; font:46px 'STSong',serif; }
+  .customer-login-card .primary { margin:32px 12px 0; }
+  .customer-browse { width:100%; min-height:84px; margin-top:10px; color:#6d7d64; font-size:25px; }
   .status { display:inline-block; flex-shrink:0; padding:7px 16px; border-radius:8px; background:#f4eddc; color:#8c6c31; font-size:22px; }
   .status.CONFIRMED { background:#e8f0e1; color:#517141; }
   .status.CANCELLED, .status.NO_SHOW { background:#f6eae3; color:#8e6353; }

@@ -7,8 +7,10 @@ import ts from 'typescript'
 import type {SubscriptionResult,SubscriptionSettings} from '../src/services/api'
 
 // Run the real API module with a fixture Taro SDK: no WeChat or HTTP calls escape.
-async function fixture({failRecord=false,failNative=false}={}){
+async function fixture({failRecord=false,failNative=false,signedIn=true}={}){
   const calls:{kind:string;data?:Record<string,unknown>}[]=[],storage=new Map<string,unknown>()
+  storage.set('yht-session-context','https://fixture.invalid|wechat')
+  if(signedIn) { storage.set('yht-token','fixture-token'); storage.set('yht-login-consent',JSON.stringify({version:'2026-11-08'})) }
   let options:any
   const sdk={
     getStorageSync:(key:string)=>storage.get(key),setStorageSync:(key:string,value:unknown)=>storage.set(key,value),removeStorageSync:(key:string)=>storage.delete(key),
@@ -23,6 +25,7 @@ async function fixture({failRecord=false,failNative=false}={}){
       return {statusCode:200,data:{recorded:true},header:{}}
     },
     showToast:async()=>{calls.push({kind:'toast'})},
+    eventCenter:{trigger:()=>{}},
   }
   function load(path:string):any{
     const module={exports:{}},source=ts.transpileModule(readFileSync(resolve(path),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText
@@ -32,11 +35,11 @@ async function fixture({failRecord=false,failNative=false}={}){
       if(name==='../utils/session')return load('src/utils/session.ts')
       throw new Error('Unexpected fixture import: '+name)
     }
-    vm.runInNewContext(source,{module,exports:module.exports,require,API_BASE_URL:'https://fixture.invalid',ENABLE_DEV_LOGIN:false,process:{env:{TARO_ENV:'weapp'}},console,Date,Math,setTimeout,clearTimeout})
+    vm.runInNewContext(source,{module,exports:module.exports,require,API_BASE_URL:'https://fixture.invalid',ENABLE_DEV_LOGIN:false,process:{env:{TARO_ENV:'weapp'}},console,Date,Math,Error,setTimeout,clearTimeout})
     return module.exports
   }
   const api=load('src/services/api.ts')
-  return {subscribe:api.subscribe as (ids:string[])=>Promise<SubscriptionResult>,readSettings:api.readSubscriptionSettings as ()=>Promise<SubscriptionSettings|null>,openSettings:api.openSubscriptionSettings as ()=>Promise<SubscriptionSettings|null>,calls,get options(){return options}}
+  return {subscribe:api.subscribe as (ids:string[])=>Promise<SubscriptionResult>,logout:api.logout as ()=>void,readSettings:api.readSubscriptionSettings as ()=>Promise<SubscriptionSettings|null>,openSettings:api.openSubscriptionSettings as ()=>Promise<SubscriptionSettings|null>,calls,get options(){return options}}
 }
 
 test('subscription prompt starts in the click stack, deduplicates clicks and saves only accepted templates',async()=>{
@@ -49,7 +52,7 @@ test('subscription prompt starts in the click stack, deduplicates clicks and sav
   const records=state.calls.filter(c=>c.kind==='record')
   assert.equal(records.length,1);assert.equal(records[0].data?.templateId,'result')
   assert.match(String(records[0].data?.requestId),/^[A-Za-z0-9_-]{16,64}$/)
-  assert.deepEqual(state.calls.slice(0,3).map(c=>c.kind),['subscribe','login','authenticate'])
+  assert.deepEqual(state.calls.map(c=>c.kind),['subscribe','record'],'Subscription uses the agreed customer session and never starts a silent login')
 })
 
 test('declining or cancelling subscription resolves normally and never records a grant',async()=>{
@@ -102,4 +105,19 @@ test('native Promise failures are handled without blocking booking or fabricatin
   assert.equal(await state.readSettings(),null)
   await assert.rejects(state.openSettings(),/无法打开微信订阅设置/)
   assert.equal(state.calls.filter(c=>['login','record'].includes(c.kind)).length,0)
+})
+
+test('a guest cannot open the native subscription prompt before explicitly logging in',async()=>{
+  const state=await fixture({signedIn:false}),result=await state.subscribe(['result'])
+  assert.equal(result.accepted,0);assert.equal(result.recorded,0);assert.match(result.error||'',/请先登录/)
+  assert.equal(state.calls.length,0)
+})
+
+test('logging out while the native prompt is open cannot record grants against another session',async()=>{
+  const state=await fixture(),promise=state.subscribe(['result'])
+  state.logout()
+  await state.options.success({result:'accept'})
+  const result=await promise
+  assert.equal(result.accepted,1);assert.equal(result.recorded,0);assert.match(result.error||'',/登录状态已更新/)
+  assert.equal(state.calls.filter(c=>['login','authenticate','record'].includes(c.kind)).length,0)
 })

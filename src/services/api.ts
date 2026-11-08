@@ -1,29 +1,56 @@
 import Taro from '@tarojs/taro'
 import { newId, subscriptionIds, message } from '../utils/booking'
-import { prepareSession } from '../utils/session'
+import { CustomerSession, LoginRequiredError, loginReturnTarget, prepareSession } from '../utils/session'
+export { LoginRequiredError } from '../utils/session'
 
 const base = API_BASE_URL.replace(/\/$/, '')
 export const isWeapp = process.env.TARO_ENV === 'weapp'
 const pending = new Map<string, Promise<unknown>>()
 const cooldown = new Map<string, number>()
-let loginPromise: Promise<void> | undefined
 let sessionPrepared = false
+let loginNavigation: Promise<unknown> | undefined
+const sessionStorage = {
+  get: (key: string) => Taro.getStorageSync(key),
+  set: (key: string, value: string) => Taro.setStorageSync(key, value),
+  remove: (key: string) => Taro.removeStorageSync(key),
+}
+const sessionEvent = 'yht-customer-session'
+const session = new CustomerSession(sessionStorage, () => Taro.eventCenter.trigger(sessionEvent))
 
 function customerToken(): string {
   if (!sessionPrepared) {
-    prepareSession({
-      get: key => Taro.getStorageSync(key),
-      set: (key, value) => Taro.setStorageSync(key, value),
-      remove: key => Taro.removeStorageSync(key),
-    }, base, ENABLE_DEV_LOGIN)
+    prepareSession(sessionStorage, base, ENABLE_DEV_LOGIN)
     sessionPrepared = true
   }
-  return Taro.getStorageSync<string>('yht-token')
+  return session.token()
+}
+
+export const hasCustomerSession = () => !!customerToken()
+export function watchCustomerSession(listener: () => void): () => void {
+  Taro.eventCenter.on(sessionEvent, listener)
+  return () => { Taro.eventCenter.off(sessionEvent, listener) }
+}
+export function logout() { session.clear(); pending.clear() }
+export const cancelCustomerLogin = () => session.cancelPending()
+export function openCustomerLogin(returnTo?: string): Promise<unknown> {
+  if (loginNavigation) return loginNavigation
+  const pages = Taro.getCurrentPages(), current = pages[pages.length - 1]
+  const route = current?.route?.replace(/^\//, '')
+  if (route === 'pages/login/index') return Promise.resolve()
+  const options = current?.options || {}
+  const query = Object.entries(options).map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`).join('&')
+  const target = loginReturnTarget(returnTo || (route ? `/${route}${query ? '?' + query : ''}` : ''))
+  const navigation = Taro.navigateTo({ url: `/pages/login/index?returnTo=${encodeURIComponent(target)}` })
+  loginNavigation = navigation
+  void navigation.then(() => { loginNavigation = undefined }, () => { loginNavigation = undefined })
+  return navigation
 }
 type Options = { method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'; data?: object; headers?: Record<string, string> }
 
 export function request<T>(path: string, options: Options = {}): Promise<T> {
   const token = customerToken()
+  const privateRequest = path.startsWith('/api/me/') || (path === '/api/appointments' && options.method === 'POST')
+  if (privateRequest && !token) return Promise.reject(new LoginRequiredError())
   const key = `${token}|${path}|${JSON.stringify(options.data || {})}`
   const read = !options.method || options.method === 'GET'
   if (read && pending.has(key)) return pending.get(key) as Promise<T>
@@ -32,8 +59,12 @@ export function request<T>(path: string, options: Options = {}): Promise<T> {
     url: base + path, method: options.method || 'GET', data: options.data, timeout: 15000,
     header: { 'content-type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}), ...options.headers },
   }).then(result => {
+    if (privateRequest && token !== customerToken()) throw new LoginRequiredError('登录状态已更新，请重新操作。')
     if (result.statusCode >= 200 && result.statusCode < 300) return result.data as T
-    if (result.statusCode === 401) Taro.removeStorageSync('yht-token')
+    if (result.statusCode === 401) {
+      session.clear(token)
+      throw new LoginRequiredError('登录已失效，请重新登录。')
+    }
     if ([429, 503].includes(result.statusCode)) {
       if (cooldown.size > 200) cooldown.clear()
       const seconds = Number(result.header['Retry-After'] || result.header['retry-after']) || 3
@@ -45,10 +76,13 @@ export function request<T>(path: string, options: Options = {}): Promise<T> {
   return task
 }
 
-export async function login(): Promise<void> {
-  if (customerToken()) return
-  if (loginPromise) return loginPromise
-  loginPromise = (async () => {
+export function login(): Promise<void> {
+  return customerToken() ? Promise.resolve() : Promise.reject(new LoginRequiredError())
+}
+
+export function authorizeCustomerLogin(agreed: boolean): Promise<void> {
+  customerToken()
+  return session.authorize(agreed, async () => {
     let result: { token: string }
     if (ENABLE_DEV_LOGIN) {
       const runtime = await request<{ developmentLogin?: boolean }>('/api/runtime')
@@ -58,13 +92,12 @@ export async function login(): Promise<void> {
       result = await request('/api/auth/dev-customer', { method: 'POST', data: { deviceId } })
     } else {
       if (!isWeapp) throw new Error('请在微信小程序内登录后办理预约；H5 可浏览门店与项目。')
-      const { code } = await Taro.login()
+      const { code } = await Taro.login({ timeout: 10000 })
       if (!code) throw new Error('微信登录未完成，请重试。')
       result = await request('/api/auth/wechat', { method: 'POST', data: { code } })
     }
-    Taro.setStorageSync('yht-token', result.token)
-  })()
-  try { await loginPromise } finally { loginPromise = undefined }
+    return result
+  })
 }
 
 export function media<T>(value: T): T {
@@ -85,7 +118,8 @@ export function privacy(): Promise<void> {
     }, fail: reject })
   })
 }
-// Call directly in the user click handler, before login or any other awaited work.
+// The customer must already be signed in. Call directly in the click handler,
+// before any awaited work, to preserve the native subscription user gesture.
 // Declining a one-time subscription must never prevent a booking.
 export type SubscriptionResult = { accepted: number; recorded: number; declined: number; error?: string }
 export type SubscriptionSettings = { enabled: boolean; choices: Record<string, string> }
@@ -112,6 +146,8 @@ export function subscribe(templates?: string | string[]): Promise<SubscriptionRe
   if (subscriptionPromise) return subscriptionPromise
   const ids = subscriptionIds(templates)
   if (!isWeapp || !ids.length) return Promise.resolve({ accepted: 0, recorded: 0, declined: 0 })
+  if (!hasCustomerSession()) return Promise.resolve({ accepted: 0, recorded: 0, declined: 0, error: '请先登录，再订阅预约提醒。' })
+  const subscriberToken = customerToken()
   const requestId = newId()
   subscriptionPromise = new Promise<SubscriptionResult>(resolve => {
     const fail = (result: {errMsg?: string}) => resolve({ accepted: 0, recorded: 0, declined: ids.length, error: result.errMsg?.includes('cancel') ? undefined : '订阅未开启，请检查微信消息设置后再试。' })
@@ -122,6 +158,7 @@ export function subscribe(templates?: string | string[]): Promise<SubscriptionRe
         let recorded = 0
         try {
           if (accepted.length) {
+            if (customerToken() !== subscriberToken) throw new LoginRequiredError('登录状态已更新，请重新订阅。')
             await login()
             const records = await Promise.allSettled(accepted.map(templateId => request<{recorded: boolean}>('/api/me/subscriptions', { method: 'POST', data: { templateId, accepted: true, requestId } })))
             recorded = records.filter(record => record.status === 'fulfilled' && record.value.recorded).length

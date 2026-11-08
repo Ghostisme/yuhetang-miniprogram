@@ -4,7 +4,8 @@ import { Button, Checkbox, CheckboxGroup, Image, Input, Picker, Text, Textarea, 
 import CustomerService from '../../components/CustomerService'
 import PageState from '../../components/PageState'
 import BookingSubscriptionNotice from '../../components/BookingSubscriptionNotice'
-import { call, isWeapp, login, media, privacy, request, subscribe, toastError } from '../../services/api'
+import { call, hasCustomerSession, isWeapp, media, openCustomerLogin, privacy, request, subscribe, toastError } from '../../services/api'
+import { useCustomerSession } from '../../hooks/useCustomerSession'
 import type {SubscriptionResult} from '../../services/api'
 import { loadRuntime, loadSite, themeStyle } from '../../services/site'
 import { day, message, newId } from '../../utils/booking'
@@ -16,6 +17,7 @@ const stepHints = ['选择一家方便到访的门店', '选一份适合自己�
 const claims = ['YES', 'NO', 'UNKNOWN'], claimNames = ['是', '否', '不确定']
 export default function Booking() {
   const { params } = useRouter()
+  const signedIn = useCustomerSession()
   const [site, setSite] = useState<Site | null>(null), [runtime, setRuntime] = useState<Runtime>({}), [error, setError] = useState('')
   const [step, setStep] = useState(0), [storeId, setStoreId] = useState(params.storeId || ''), [serviceId, setServiceId] = useState(params.serviceId || '')
   const [services, setServices] = useState<ServiceItem[]>([]), [servicesLoading, setServicesLoading] = useState(false)
@@ -56,6 +58,7 @@ export default function Booking() {
   }
   async function submit() {
     if (sending.current) return
+    if (!hasCustomerSession()) { void openCustomerLogin().catch(toastError); return }
     const chosen = teachers.find(item => item.id === teacherId)
     if (!store || !service || servicesLoading || teachersLoading || slotsLoading || !slots?.slots.some(item => item.time === time && item.available && item.remaining >= headcount)) return toastError(new Error('请重新确认门店、项目及可用时段。'))
     if (teacherId && (!chosen || chosen.storeId !== storeId)) return toastError(new Error('请重新选择本店调理师。'))
@@ -64,7 +67,7 @@ export default function Booking() {
     sending.current = true; setBusy(true); setError('')
     try {
       const subscription = subscribe(runtime.customerTemplateIds || runtime.customerTemplateId)
-      await login(); setSubscriptionResult(await subscription); await privacy()
+      setSubscriptionResult(await subscription); await privacy()
       const result = await request<Appointment>('/api/appointments', { method: 'POST', headers: { 'Idempotency-Key': key.current }, data: { storeId, serviceId, date, startTime: time, headcount, name: name.trim(), phone, therapistIntentId: teacherId, memberClaim: claims[member], visitedClaim: claims[visited], remark, privacyConsent: true, sensitiveConsent: sensitive } })
       setReceipt(result); void Taro.pageScrollTo({ scrollTop: 0, duration: 150 })
     } catch (e) { setError(message(e)); toastError(e); retry() }
@@ -82,7 +85,7 @@ export default function Booking() {
       {step === 2 && <><View className='selection-note'>{store?.name} · {service?.name}</View><View className='two-fields'><View className='field'><View className='label'>到店日期</View><Picker mode='date' value={date} start={day()} end={day(slots?.rules.advanceDays || 7)} disabled={busy} onChange={e => changed(() => { setDate(e.detail.value); setTime('') })}><View className='picker'>{date}　›</View></Picker></View><View className='field'><View className='label'>同行人数</View><Picker range={counts} value={headcount - 1} onChange={e => changed(() => { setHeadcount(Number(e.detail.value) + 1); setTime('') })}><View className='picker'>{headcount} 人　›</View></Picker></View></View><View className='label'>选择开始时间</View>{slotsLoading && <View className='empty'>正在查询名额…</View>}<View className='slot-grid'>{slots?.slots.map(item => <Button className={time === item.time ? 'active' : ''} key={item.time} disabled={!item.available || item.remaining < headcount} onClick={() => changed(() => setTime(item.time))}>{item.time}<Text className='tiny'>{item.available && item.remaining >= headcount ? `余 ${item.remaining} 位` : '不可预约'}</Text></Button>)}</View>{!slotsLoading && !slots?.slots.length && <View className='empty'>当日暂无可预约时段，请更换日期。</View>}<View className='banner'>提交后需门店确认；调理师、房间与床位以门店安排为准。</View></>}
       {step === 3 && <><View className='banner'>{store?.name} · {service?.name}<View>{date} {time} · {headcount} 人同行</View></View><View className='field'><View className='label'>您的称呼</View><Input className='input' value={name} maxlength={40} disabled={busy} placeholder='请输入称呼' onInput={e => changed(() => setName(e.detail.value))} /></View><View className='field'><View className='label'>联系电话</View><Input className='input' type='number' value={phone} maxlength={11} disabled={busy} placeholder='便于门店确认预约' onInput={e => changed(() => setPhone(e.detail.value))} /></View><View className='field'><View className='label'>调理师意向（非锁定安排）</View><Picker range={teacherNames} value={teachers.findIndex(item => item.id === teacherId) + 1} disabled={busy || teachersLoading} onChange={e => changed(() => setTeacherId(teachers[Number(e.detail.value) - 1]?.id || ''))}><View className='picker'>{teachersLoading ? '正在加载本店调理师…' : teacherNames[teachers.findIndex(item => item.id === teacherId) + 1]}　›</View></Picker></View><View className='two-fields'>{[['是否会员', member, setMember], ['是否到店过', visited, setVisited]].map(([label, value, setter]) => <View className='field' key={String(label)}><View className='label'>{String(label)}</View><Picker range={claimNames} value={Number(value)} disabled={busy} onChange={e => changed(() => (setter as (v: number) => void)(Number(e.detail.value)))}><View className='picker'>{claimNames[Number(value)]}　›</View></Picker></View>)}</View><View className='field'><View className='label'>备注（选填）</View><Textarea value={remark} maxlength={500} disabled={busy} placeholder='请勿填写身份证、病历等不必要信息' onInput={e => changed(() => setRemark(e.detail.value))} /></View><CheckboxGroup onChange={e => changed(() => setConsent(e.detail.value.includes('agree')))}><View className='agree'><Checkbox value='agree' checked={consent} disabled={busy} /><View className='agree-copy'>同意为预约接待处理必要信息，已阅读<Button className='text-link' onClick={showPrivacy}>《预约隐私说明》</Button></View></View></CheckboxGroup><CheckboxGroup onChange={e => changed(() => setSensitive(e.detail.value.includes('health')))}><View className='agree'><Checkbox value='health' checked={sensitive} disabled={busy} /><View className='agree-copy'>如自愿提供健康信息，同意仅用于本次接待（选填）</View></View></CheckboxGroup></>}
       {step===3&&<BookingSubscriptionNotice result={!!runtime.customerTemplateId} reminder={!!runtime.customerReminderTemplateId}/> }
-      <View className='bottom-actions'>{step > 0 && <Button className='secondary' disabled={busy} onClick={() => setStep(value => value - 1)}>上一步</Button>}{step < 3 ? <Button className='primary' onClick={next}>下一步 →</Button> : <Button className='primary' loading={busy} disabled={busy} onClick={() => { void submit() }}>提交预约申请</Button>}</View>
+      <View className='bottom-actions'>{step > 0 && <Button className='secondary' disabled={busy} onClick={() => setStep(value => value - 1)}>上一步</Button>}{step < 3 ? <Button className='primary' onClick={next}>下一步 →</Button> : <Button className='primary' loading={busy} disabled={busy} onClick={() => { void submit() }}>{signedIn ? '提交预约申请' : '微信登录后提交'}</Button>}</View>
       <CustomerService storeId={storeId} variant='inline' />
     </View>}
   </View>
