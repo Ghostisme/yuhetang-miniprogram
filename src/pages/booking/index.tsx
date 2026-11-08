@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import Taro, { useRouter } from '@tarojs/taro'
 import { Button, Checkbox, CheckboxGroup, Image, Input, Picker, Text, Textarea, View } from '@tarojs/components'
 import CustomerService from '../../components/CustomerService'
+import { CustomerLoginSheet } from '../../components/CustomerLogin'
 import PageState from '../../components/PageState'
 import BookingSubscriptionNotice from '../../components/BookingSubscriptionNotice'
-import { call, hasCustomerSession, isWeapp, media, openCustomerLogin, privacy, request, subscribe, toastError } from '../../services/api'
+import { call, hasCustomerSession, isWeapp, media, privacy, request, subscribe, toastError } from '../../services/api'
 import { useCustomerSession } from '../../hooks/useCustomerSession'
 import type {SubscriptionResult} from '../../services/api'
 import { loadRuntime, loadSite, themeStyle } from '../../services/site'
@@ -18,6 +19,7 @@ const claims = ['YES', 'NO', 'UNKNOWN'], claimNames = ['是', '否', '不确定'
 export default function Booking() {
   const { params } = useRouter()
   const signedIn = useCustomerSession()
+  const [loginOpen, setLoginOpen] = useState(false)
   const [site, setSite] = useState<Site | null>(null), [runtime, setRuntime] = useState<Runtime>({}), [error, setError] = useState('')
   const [step, setStep] = useState(0), [storeId, setStoreId] = useState(params.storeId || ''), [serviceId, setServiceId] = useState(params.serviceId || '')
   const [services, setServices] = useState<ServiceItem[]>([]), [servicesLoading, setServicesLoading] = useState(false)
@@ -58,7 +60,7 @@ export default function Booking() {
   }
   async function submit() {
     if (sending.current) return
-    if (!hasCustomerSession()) { void openCustomerLogin().catch(toastError); return }
+    if (!hasCustomerSession()) { setLoginOpen(true); return }
     const chosen = teachers.find(item => item.id === teacherId)
     if (!store || !service || servicesLoading || teachersLoading || slotsLoading || !slots?.slots.some(item => item.time === time && item.available && item.remaining >= headcount)) return toastError(new Error('请重新确认门店、项目及可用时段。'))
     if (teacherId && (!chosen || chosen.storeId !== storeId)) return toastError(new Error('请重新选择本店调理师。'))
@@ -88,5 +90,6 @@ export default function Booking() {
       <View className='bottom-actions'>{step > 0 && <Button className='secondary' disabled={busy} onClick={() => setStep(value => value - 1)}>上一步</Button>}{step < 3 ? <Button className='primary' onClick={next}>下一步 →</Button> : <Button className='primary' loading={busy} disabled={busy} onClick={() => { void submit() }}>{signedIn ? '提交预约申请' : '微信登录后提交'}</Button>}</View>
       <CustomerService storeId={storeId} variant='inline' />
     </View>}
+    <CustomerLoginSheet open={loginOpen} onClose={() => setLoginOpen(false)} onSignedIn={() => { setLoginOpen(false); setError('') }} />
   </View>
 }
