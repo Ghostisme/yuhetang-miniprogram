@@ -102,6 +102,20 @@ test('invalid booking data or a guest submission cannot request subscriptions or
   assert.equal(booking.result.login,true);assert.equal(guest.calls.length,0)
 })
 
+test('missing template configuration or failed grant persistence never makes booking depend on manual subscription',async()=>{
+  const unconfigured=await fixture(),booking=bookingAction(unconfigured)
+  booking.bindings.runtime={customerTemplateId:'',customerReminderTemplateId:'',customerTemplateIds:[]}
+  await booking.submit()
+  assert.deepEqual(unconfigured.calls.map(c=>c.kind),['privacy','booking'])
+  assert.equal(booking.result.receipt?.id,'fixture-booking')
+  const disconnected=await fixture({failRecord:true}),retry=bookingAction(disconnected),submitted=retry.submit()
+  await disconnected.options.success({result:'accept',reminder:'accept'});await submitted
+  assert.equal(retry.result.receipt?.id,'fixture-booking')
+  assert.equal(retry.result.subscription?.recorded,0)
+  assert.equal(disconnected.calls.filter(c=>c.kind==='booking').length,1)
+  assert.deepEqual(retry.result.errors,[])
+})
+
 test('reschedule submit requests reminders in its click and continues if the customer declines',async()=>{
   const state=await fixture(),sending={current:false},refreshes:unknown[]=[]
   const save=pageAction('src/pages/orders/index.tsx','save',{

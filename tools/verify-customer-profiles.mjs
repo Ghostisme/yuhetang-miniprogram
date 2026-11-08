@@ -10,9 +10,9 @@ const contexts=[],checks=[],errors=[],unknown=[]
 const store={id:'shanghai',name:'上海中心店',enabled:true,onlineBooking:true,image:'',address:'测试门店地址',hours:'09:00–23:00',phone:'021-50000000',gallery:[]}
 const service={id:'care-1',name:'舒缓养护',enabled:true,storeId:store.id,image:'',subtitle:'让身心歇一歇',duration:'60分钟'}
 const fresh={name:'',phone:'',phoneVerified:false,memberVerified:false,memberStatus:'NON_MEMBER',memberGrade:'',sources:['MINIPROGRAM'],complete:false,firstLoginAt:'2026-11-08T10:00:00+08:00',lastLoginAt:'2026-11-08T10:00:00+08:00'}
-async function fixture(profile={...fresh}){
-  const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});contexts.push(context)
-  const state={profile:{...profile},calls:[],saves:[]}
+async function fixture(profile={...fresh},orders=[],width=390){
+  const context=await browser.newContext({viewport:{width,height:844},isMobile:true,hasTouch:true});contexts.push(context)
+  const state={profile:{...profile},orders:orders.map(item=>({...item})),calls:[],saves:[],changes:[]}
   await context.addInitScript(()=>{
     if(location.origin!=='http://127.0.0.1:5182')return
     localStorage.setItem('yht-session-context',JSON.stringify({data:'https://mp-admin.hetuonian.cn|wechat'}))
@@ -22,19 +22,27 @@ async function fixture(profile={...fresh}){
   await context.route('**/*',async route=>{
     const req=route.request(),url=new URL(req.url())
     if(url.origin===apiOrigin&&url.pathname.startsWith('/api/')){
-      const path=url.pathname,headers={'Access-Control-Allow-Origin':origin,'Access-Control-Allow-Headers':'authorization,content-type,idempotency-key','Access-Control-Allow-Methods':'GET,POST,PUT,OPTIONS'}
+      const path=url.pathname,headers={'Access-Control-Allow-Origin':origin,'Access-Control-Allow-Headers':'authorization,content-type,idempotency-key','Access-Control-Allow-Methods':'GET,POST,PUT,PATCH,OPTIONS'}
       const json=data=>route.fulfill({headers,json:data})
       if(req.method()==='OPTIONS')return route.fulfill({status:204,headers})
       state.calls.push({path,method:req.method()})
       if(path==='/api/site')return json({brandName:'裕和堂',brandEnglish:'YU HE TANG',theme:'sage',hero:{},contact:{},stores:[store],services:[],sections:[],products:[],galleryGroups:[]})
-      if(path==='/api/runtime')return json({customerProfiles:true,developmentLogin:false,customerTemplateIds:[]})
+      if(path==='/api/runtime')return json({customerProfiles:true,developmentLogin:false,customerTemplateId:'result-fixture',customerReminderTemplateId:'reminder-fixture',customerTemplateIds:['result-fixture','reminder-fixture']})
       if(path.startsWith('/api/me/'))assert.equal(req.headers().authorization,'Bearer customer-profile-fixture')
       if(path==='/api/me/profile'&&req.method()==='GET')return json(state.profile)
       if(path==='/api/me/profile'&&req.method()==='PUT'){
         const body=req.postDataJSON();assert.deepEqual(Object.keys(body).sort(),['consent','name']);assert.equal(body.consent,true)
         state.saves.push(body);state.profile={...state.profile,name:body.name};return json(state.profile)
       }
-      if(path==='/api/me/appointments')return json([])
+      if(path==='/api/me/appointments')return json(state.orders)
+      if(path==='/api/me/appointments/order-fixture/slots')return json({slots:[{time:'16:00',available:true,remaining:4}],rules:{advanceDays:7}})
+      if(path==='/api/me/appointments/order-fixture'&&req.method()==='PATCH'){
+        const change=req.postDataJSON();state.changes.push(change)
+        const item=state.orders.find(item=>item.id==='order-fixture');assert(item);assert.equal(change.version,item.version)
+        if(change.action==='reschedule')Object.assign(item,{bookingDate:change.date,startTime:change.startTime,status:'PENDING',statusLabel:'待门店确认',version:item.version+1})
+        else {assert.equal(change.action,'cancel');Object.assign(item,{status:'CANCELLED',statusLabel:'已取消',version:item.version+1})}
+        return json(item)
+      }
       if(path==='/api/stores/shanghai/services')return json([service])
       if(path==='/api/stores/shanghai/therapists')return json([])
       if(path==='/api/stores/shanghai/slots')return json({date:url.searchParams.get('date'),storeId:store.id,slots:[{time:'15:00',capacity:4,used:0,remaining:4,available:true}],rules:{advanceDays:7,maxHeadcount:4}})
@@ -49,12 +57,16 @@ async function fixture(profile={...fresh}){
   return {page,state}
 }
 async function visit(page,path){await page.goto('about:blank');await page.goto(origin+'/#'+path);await page.locator('.customer-profile-card').waitFor()}
+async function noManualSubscription(page,state){
+  assert.equal(await page.locator('.subscription-preferences, .booking-subscriptions').count(),0)
+  for(const title of ['订阅预约及到店提醒','微信订阅设置','预约消息提醒'])assert.equal(await page.getByText(title,{exact:true}).count(),0)
+  assert.equal(state.calls.filter(call=>call.path==='/api/me/subscriptions').length,0,'Browsing or modifying appointments never uses a manual subscription balance/enable API in H5')
+  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1),'Orders fit the mobile viewport')
+}
 try{
   const pending=await fixture();await visit(pending.page,'/pages/orders/index')
   await pending.page.getByText('还没有预约',{exact:true}).waitFor()
-  assert.equal(await pending.page.locator('.subscription-preferences').count(),0)
-  assert.equal(await pending.page.getByText('订阅预约及到店提醒',{exact:true}).count(),0)
-  assert.equal(pending.state.calls.filter(call=>call.path==='/api/me/subscriptions').length,0,'Opening My Appointments does not fetch manual subscription balances')
+  await noManualSubscription(pending.page,pending.state)
   await pending.page.screenshot({path:resolve(output,'orders-without-manual-subscription.png')})
   checks.push('My Appointments has no separate subscription card, button or balance query')
   const card=pending.page.locator('.customer-profile-card'),input=card.locator('input[placeholder="请输入您的姓名或称呼"]')
@@ -101,6 +113,36 @@ try{
   assert.equal(await member.page.locator('input[placeholder="请输入称呼"]').inputValue(),'陈先生')
   assert.equal(await member.page.locator('input[placeholder="便于门店确认预约"]').inputValue(),'13900003001')
   checks.push('Booking confirmation prefills the authenticated name and verified phone without submitting an appointment')
+  for(const width of [320,390,414]){
+    const nextDay=new Date(Date.now()+86400000).toLocaleDateString('en-CA',{timeZone:'Asia/Shanghai'})
+    const order={id:'order-fixture',storeName:store.name,serviceName:service.name,bookingDate:nextDay,startTime:'15:00',headcount:1,status:'CONFIRMED',statusLabel:'门店已确认',version:1}
+    const active=await fixture({...fresh,name:'测试客户',complete:true},[order],width)
+    await visit(active.page,'/pages/orders/index')
+    await active.page.getByText('门店已确认',{exact:true}).waitFor()
+    await noManualSubscription(active.page,active.state)
+    await active.page.screenshot({path:resolve(output,`orders-without-manual-subscription-${width}.png`),fullPage:true})
+    await active.page.getByText('申请改约',{exact:true}).click()
+    await active.page.locator('.edit-panel .picker').filter({hasText:'16:00'}).waitFor()
+    await noManualSubscription(active.page,active.state)
+    await active.page.getByText('暂不改约',{exact:true}).click()
+    assert.equal(active.state.changes.length,0,'Opening/dismissing reschedule never submits an appointment or subscription')
+    await active.page.getByText('申请改约',{exact:true}).click()
+    await active.page.locator('.edit-panel .picker').filter({hasText:'16:00'}).waitFor()
+    await active.page.getByText('提交改约',{exact:true}).click()
+    await active.page.getByText('改约申请已提交',{exact:true}).waitFor()
+    await active.page.locator('.taro-model__confirm').click()
+    await active.page.locator('.order .appointment-time').filter({hasText:'16:00'}).waitFor()
+    assert.equal(active.state.changes.length,1);assert.equal(active.state.changes[0].action,'reschedule')
+    await active.page.getByText('取消预约',{exact:true}).click()
+    await active.page.getByText('确定取消',{exact:true}).click()
+    await active.page.getByText('已取消',{exact:true}).waitFor()
+    assert.equal(active.state.changes.length,2);assert.equal(active.state.changes[1].action,'cancel')
+    await noManualSubscription(active.page,active.state)
+    await visit(active.page,'/pages/orders/index')
+    await active.page.getByText('已取消',{exact:true}).waitFor()
+    await noManualSubscription(active.page,active.state)
+    checks.push(`${width}px: confirmed/pending/cancelled appointments, refresh and reschedule contain no manual subscription controls or balance requests`)
+  }
   assert.deepEqual(errors,[]);assert.deepEqual(unknown,[])
   await writeFile(resolve(output,'result.json'),JSON.stringify({status:'passed',liveApisUsed:false,checks,errors,unknown,nativePhoneAuthorization:'requires real WeChat device; provider exchange is covered by Java tests'},null,2)+'\n')
   console.log(JSON.stringify({status:'passed',checks},null,2))
