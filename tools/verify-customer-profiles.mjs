@@ -35,7 +35,6 @@ async function fixture(profile={...fresh}){
         state.saves.push(body);state.profile={...state.profile,name:body.name};return json(state.profile)
       }
       if(path==='/api/me/appointments')return json([])
-      if(path==='/api/me/subscriptions')return json({templates:[],items:[],development:false})
       if(path==='/api/stores/shanghai/services')return json([service])
       if(path==='/api/stores/shanghai/therapists')return json([])
       if(path==='/api/stores/shanghai/slots')return json({date:url.searchParams.get('date'),storeId:store.id,slots:[{time:'15:00',capacity:4,used:0,remaining:4,available:true}],rules:{advanceDays:7,maxHeadcount:4}})
@@ -52,6 +51,12 @@ async function fixture(profile={...fresh}){
 async function visit(page,path){await page.goto('about:blank');await page.goto(origin+'/#'+path);await page.locator('.customer-profile-card').waitFor()}
 try{
   const pending=await fixture();await visit(pending.page,'/pages/orders/index')
+  await pending.page.getByText('还没有预约',{exact:true}).waitFor()
+  assert.equal(await pending.page.locator('.subscription-preferences').count(),0)
+  assert.equal(await pending.page.getByText('订阅预约及到店提醒',{exact:true}).count(),0)
+  assert.equal(pending.state.calls.filter(call=>call.path==='/api/me/subscriptions').length,0,'Opening My Appointments does not fetch manual subscription balances')
+  await pending.page.screenshot({path:resolve(output,'orders-without-manual-subscription.png')})
+  checks.push('My Appointments has no separate subscription card, button or balance query')
   const card=pending.page.locator('.customer-profile-card'),input=card.locator('input[placeholder="请输入您的姓名或称呼"]')
   await input.waitFor();assert.equal(await card.locator('input[type=checkbox]').isChecked(),false)
   await card.getByText('保存称呼',{exact:true}).click()

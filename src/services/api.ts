@@ -1,4 +1,5 @@
 import Taro from '@tarojs/taro'
+import type { Runtime } from '../types'
 import { newId, subscriptionIds, message } from '../utils/booking'
 import { CustomerSession, LoginRequiredError, loginReturnTarget, prepareSession } from '../utils/session'
 export { LoginRequiredError } from '../utils/session'
@@ -141,6 +142,10 @@ function subscriptionSettings(open: boolean): Promise<SubscriptionSettings | nul
 export const readSubscriptionSettings = () => subscriptionSettings(false)
 // Invoke in the button handler before any awaited work, just like requestSubscribeMessage.
 export const openSubscriptionSettings = () => subscriptionSettings(true)
+// Run from the booking/changes submit gesture, before awaiting privacy or HTTP.
+export function subscribeBooking(runtime: Runtime): Promise<SubscriptionResult> {
+  return subscribe([runtime.customerTemplateId || '', runtime.customerReminderTemplateId || '', ...(runtime.customerTemplateIds || [])])
+}
 let subscriptionPromise: Promise<SubscriptionResult> | undefined
 export function subscribe(templates?: string | string[]): Promise<SubscriptionResult> {
   if (subscriptionPromise) return subscriptionPromise

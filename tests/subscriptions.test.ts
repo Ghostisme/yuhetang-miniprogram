@@ -19,8 +19,11 @@ async function fixture({failRecord=false,failNative=false,signedIn=true}={}){
     openSetting:(value:any)=>{calls.push({kind:'open-settings',data:value});if(failNative)return Promise.reject({errMsg:'openSetting:fail'});value.success({subscriptionsSetting:{mainSwitch:true,itemSettings:{result:'accept',reminder:'accept'}}})},
     login:async()=>{calls.push({kind:'login'});return {code:'fixture-code'}},
     request:async(value:any)=>{
-      calls.push({kind:value.url.endsWith('/api/auth/wechat')?'authenticate':'record',data:value.data})
+      const kind=value.url.endsWith('/api/auth/wechat')?'authenticate':value.url.endsWith('/api/appointments')?'booking':value.url.includes('/api/me/appointments/')?'reschedule':'record'
+      calls.push({kind,data:value.data})
       if(value.url.endsWith('/api/auth/wechat'))return {statusCode:200,data:{token:'fixture-token'},header:{}}
+      if(kind==='booking')return {statusCode:200,data:{id:'fixture-booking'},header:{}}
+      if(kind==='reschedule')return {statusCode:200,data:{id:'fixture-booking',version:2},header:{}}
       if(failRecord)return {statusCode:503,data:{message:'保存提醒失败'},header:{}}
       return {statusCode:200,data:{recorded:true},header:{}}
     },
@@ -39,8 +42,79 @@ async function fixture({failRecord=false,failNative=false,signedIn=true}={}){
     return module.exports
   }
   const api=load('src/services/api.ts')
-  return {subscribe:api.subscribe as (ids:string[])=>Promise<SubscriptionResult>,logout:api.logout as ()=>void,readSettings:api.readSubscriptionSettings as ()=>Promise<SubscriptionSettings|null>,openSettings:api.openSubscriptionSettings as ()=>Promise<SubscriptionSettings|null>,calls,get options(){return options}}
+  return {api,subscribe:api.subscribe as (ids:string[])=>Promise<SubscriptionResult>,logout:api.logout as ()=>void,readSettings:api.readSubscriptionSettings as ()=>Promise<SubscriptionSettings|null>,openSettings:api.openSubscriptionSettings as ()=>Promise<SubscriptionSettings|null>,calls,get options(){return options}}
 }
+
+// Execute the real page action against the real API adapter and fixture SDK.
+// This catches an await/login/HTTP introduced before the native click gesture.
+function pageAction(path:string,name:string,bindings:Record<string,unknown>):()=>Promise<void>{
+  const file=ts.createSourceFile(path,readFileSync(path,'utf8'),ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX)
+  let action:ts.FunctionDeclaration|undefined
+  function visit(node:ts.Node){if(ts.isFunctionDeclaration(node)&&node.name?.text===name)action=node;ts.forEachChild(node,visit)}
+  visit(file);assert(action,`Missing ${name} action in ${path}`)
+  const source=ts.transpileModule(action.getText(file),{compilerOptions:{target:ts.ScriptTarget.ES2020}}).outputText
+  return vm.runInNewContext(source+'\n'+name,bindings)
+}
+
+function bookingAction(state:Awaited<ReturnType<typeof fixture>>){
+  const result:{receipt?:{id:string};subscription?:SubscriptionResult;login?:boolean;errors:unknown[]}={errors:[]}
+  const sending={current:false},runtime={customerTemplateId:'result',customerReminderTemplateId:'reminder',customerTemplateIds:[]}
+  const bindings={
+    sending,runtime,hasCustomerSession:state.api.hasCustomerSession,setLoginOpen:(value:boolean)=>{result.login=value},
+    store:{id:'shanghai'},service:{id:'care-1'},storeId:'shanghai',serviceId:'care-1',date:'2030-01-02',time:'15:00',headcount:1,
+    teachers:[],teacherId:'',servicesLoading:false,teachersLoading:false,slotsLoading:false,
+    slots:{slots:[{time:'15:00',available:true,remaining:4}]},name:'测试客户',phone:'13900003001',consent:true,sensitive:false,
+    claims:['YES','NO','UNKNOWN'],member:2,visited:2,remark:'',key:{current:'booking-fixture-key'},
+    subscribeBooking:state.api.subscribeBooking,request:state.api.request,
+    privacy:async()=>{state.calls.push({kind:'privacy'})},setBusy:()=>{},setError:()=>{},
+    setReceipt:(value:{id:string})=>{result.receipt=value},setSubscriptionResult:(value:SubscriptionResult)=>{result.subscription=value},
+    toastError:(error:unknown)=>result.errors.push(error),message:(error:Error)=>error.message,retry:()=>{},
+  }
+  return {bindings,result,submit:()=>pageAction('src/pages/booking/index.tsx','submit',bindings)()}
+}
+
+test('booking submit directly opens one native prompt with both reminder templates before HTTP or privacy awaits',async()=>{
+  const state=await fixture(),booking=bookingAction(state)
+  const submitted=booking.submit();await booking.submit()
+  assert.deepEqual(state.calls.map(c=>c.kind),['subscribe'])
+  assert.deepEqual(Array.from(state.options.tmplIds),['result','reminder'],'Legacy runtime fields still include the arrival reminder when its array is empty')
+  await state.options.success({result:'accept',reminder:'accept'});await submitted
+  assert.deepEqual(state.calls.map(c=>c.kind),['subscribe','record','record','privacy','booking'])
+  assert.equal(booking.result.receipt?.id,'fixture-booking');assert.equal(booking.result.subscription?.recorded,2)
+  assert.equal(state.calls.filter(c=>c.kind==='booking').length,1);assert.deepEqual(booking.result.errors,[])
+})
+
+test('declining, cancelling or an unavailable native prompt still submits the booking once',async()=>{
+  for(const outcome of ['reject','cancel','failure']){
+    const state=await fixture({failNative:outcome==='failure'}),booking=bookingAction(state),submitted=booking.submit()
+    if(outcome==='reject')await state.options.success({result:'reject',reminder:'reject'})
+    if(outcome==='cancel')state.options.fail({errMsg:'requestSubscribeMessage:fail cancel'})
+    await submitted
+    assert.equal(booking.result.receipt?.id,'fixture-booking');assert.equal(booking.result.subscription?.recorded,0)
+    assert.deepEqual(state.calls.map(c=>c.kind),['subscribe','privacy','booking']);assert.deepEqual(booking.result.errors,[])
+  }
+})
+
+test('invalid booking data or a guest submission cannot request subscriptions or create an appointment',async()=>{
+  const state=await fixture(),invalid=bookingAction(state);invalid.bindings.phone='123';await invalid.submit()
+  assert.equal(invalid.result.errors.length,1);assert.equal(state.calls.length,0)
+  const guest=await fixture({signedIn:false}),booking=bookingAction(guest);await booking.submit()
+  assert.equal(booking.result.login,true);assert.equal(guest.calls.length,0)
+})
+
+test('reschedule submit requests reminders in its click and continues if the customer declines',async()=>{
+  const state=await fixture(),sending={current:false},refreshes:unknown[]=[]
+  const save=pageAction('src/pages/orders/index.tsx','save',{
+    sending,editing:{id:'fixture-booking',version:1},times:['15:00'],timeIndex:0,timesLoading:false,date:'2030-01-02',
+    runtime:{customerTemplateIds:['result','reminder']},hasCustomerSession:state.api.hasCustomerSession,
+    subscribeBooking:state.api.subscribeBooking,request:state.api.request,setBusy:()=>{},setEditing:()=>{},
+    load:async()=>{refreshes.push('loaded')},Taro:{showModal:async()=>{}},toastError:(error:Error)=>{throw error},
+  })
+  const saved=save();assert.deepEqual(state.calls.map(c=>c.kind),['subscribe'])
+  assert.deepEqual(Array.from(state.options.tmplIds),['result','reminder'])
+  await state.options.success({result:'reject',reminder:'reject'});await saved
+  assert.deepEqual(state.calls.map(c=>c.kind),['subscribe','reschedule']);assert.equal(refreshes.length,1)
+})
 
 test('subscription prompt starts in the click stack, deduplicates clicks and saves only accepted templates',async()=>{
   const state=await fixture(),promise=state.subscribe(['result','reminder'])
