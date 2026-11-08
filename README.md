@@ -30,6 +30,16 @@ npm run check:mini   # TypeScript + 单元测试
 
 完整构建并通过单元与隔离浏览器验证、提交源码后，可运行 `python tools/package-weapp.py --release-id YYYYMMDD-HHMMSS`，生成可单独导入微信开发者工具的编译结果及 SHA256。它不替代原 Taro 源码，不自动上传或发布。
 
+## 中文、English、日本語
+
+每个页面右上方提供语言切换，默认中文，选择后即时生效并在本机记忆；与官网一样使用手动选择。日语内部语言码为 `ja`，兼容官网的 `jp`。微信原生导航标题、五个底部菜单、登录授权说明、预约四步、个人资料、我的预约、咨询与协议说明均随之切换。微信系统授权弹窗自身的语言由微信控制。
+
+`src/i18n/messages.json` 保存界面文案，`src/i18n/content.json` 保存现有门店、品牌和品项介绍的译文。已补齐当前初始化的 9 家门店和 135 个门店独立品项，时长和价格按各店数据保留。切换仅影响展示，不修改门店/项目 ID、会员枚举、预约时间、手机号、真实姓名、客户备注或聊天正文。预约时间仍使用上海时间（UTC+8）。
+
+后台之后新增或修改的文案，如果未提供对应译文，会显示原文。接口展示层预留 `translations.en`、`translations.ja` 字段，例如品项可返回 `{"name":"中医推拿","translations":{"en":{"name":"Traditional Chinese Massage"},"ja":{"name":"中医推拿"}}}`；当前 Java 与管理后台尚未提供这些多语言字段的编辑及保存入口。现阶段新增内容需同步维护词典并重新编译小程序；现有门店图片、价格、名额和业务数据仍通过接口更新。
+
+验证顺序：`npm run check:mini` → `npm run build:h5` → `npm run verify:i18n` → `node tools/verify-customer-profiles.mjs` → `node tools/verify-gallery-preview.mjs` → `npm run build:weapp`。三语浏览器检查使用隔离接口数据，覆盖 320/390/414px、语言记忆、预约表单保留、相册返回、原文聊天与业务 ID；不会访问线上客户数据或发送真实通知。最终仍需重新上传微信体验版并在手机检查原生语言选择器、登录和订阅弹窗。
+
 ## 源码结构
 
 ```text
@@ -48,6 +58,7 @@ src/
     chat/                在线咨询
     contact/             底部客服菜单与统一联系方式
   components/            公用组件、微信原生客服按钮
+  i18n/                  三语词典、语言记忆、内容展示和长文案布局
   services/              API、登录、订阅消息及配置缓存
   types.ts               业务类型
   assets/                导航图标

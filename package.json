@@ -15,7 +15,8 @@
     "check:mini": "npm run typecheck && npm test",
     "verify:login": "node tools/verify-login.mjs",
     "verify:booking": "node tools/verify-booking-scroll.mjs",
-    "verify:contact": "node tools/verify-contact.mjs"
+    "verify:contact": "node tools/verify-contact.mjs",
+    "verify:i18n": "node tools/verify-i18n.mjs"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.0",
