@@ -33,7 +33,7 @@ async function fixture(profile={...fresh},orders=[],width=390){
       const json=data=>route.fulfill({headers,json:data})
       if(req.method()==='OPTIONS')return route.fulfill({status:204,headers})
       state.calls.push({path,method:req.method()})
-      if(path==='/api/site')return json({brandName:'裕和堂',brandEnglish:'YU HE TANG',theme:'sage',hero:{},contact:{},stores:[store],services:[],sections:[],products:[],galleryGroups:[]})
+      if(path==='/api/site')return json({brandName:'裕和堂',brandEnglish:'YU Health',theme:'sage',hero:{},contact:{},stores:[store],services:[],sections:[],products:[],galleryGroups:[]})
       if(path==='/api/runtime')return json({customerProfiles:true,developmentLogin:false,customerTemplateId:'result-fixture',customerReminderTemplateId:'reminder-fixture',customerTemplateIds:['result-fixture','reminder-fixture']})
       if(path.startsWith('/api/me/'))assert.equal(req.headers().authorization,'Bearer customer-profile-fixture')
       if(path==='/api/me/profile'&&req.method()==='GET')return json(state.profile)

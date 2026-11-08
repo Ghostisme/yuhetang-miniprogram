@@ -61,7 +61,7 @@ export function CustomerLoginHero({ onSignedIn, withTabbar = false, error: pageE
   return <View className={`customer-login-hero ${withTabbar && !isWeapp ? 'with-web-tabbar' : ''}`}>
     <Image className='login-hero-image' src={space} mode='aspectFill' />
     <View className='login-hero-shade' />
-    <View className='login-hero-brand'><Text>裕和堂</Text><Text>YU HE TANG</Text></View>
+    <View className='login-hero-brand'><Text>裕和堂</Text><Text>YU Health</Text></View>
     <View className='login-hero-content'>
       <View className='login-hero-title'>留一段时光<Text>好好照顾自己</Text></View>
       <View className='login-hero-subtitle'>一份东方养护，一次安心相遇。</View>
@@ -94,7 +94,7 @@ function LoginSheetContent({ onSignedIn, onClose }: LoginProps & { onClose: () =
       <View className='login-sheet-header'>
         <Image className='login-sheet-photo' src={reception} mode='aspectFill' />
         <View className='login-sheet-shade' />
-        <View className='login-sheet-brand'>裕和堂 <Text>YU HE TANG</Text></View>
+        <View className='login-sheet-brand'>裕和堂 <Text>YU Health</Text></View>
         <View className='login-sheet-heading'>把时间留给自己<Text>让养护融入日常</Text></View>
         <View className='login-sheet-caption'>预约养护 · 门店咨询 · 到店提醒</View>
         <Button className='login-sheet-close' aria-label='关闭登录' onClick={dismiss}><View aria-hidden='true' /></Button>

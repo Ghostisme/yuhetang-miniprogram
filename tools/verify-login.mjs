@@ -17,7 +17,7 @@ const browser=await chromium.launch({channel:'msedge',headless:true})
 const checks=[],errors=[],unknown=[],calls=[]
 const store={id:'shanghai',name:'上海中心店',enabled:true,onlineBooking:true,image:'',address:'测试门店地址',hours:'09:00–23:00',phone:'021-50000000',gallery:[]}
 const service={id:'care-1',name:'舒缓养护',enabled:true,storeId:'shanghai',image:'',subtitle:'让身心歇一歇',duration:'60分钟'}
-const site={brandName:'裕和堂',brandEnglish:'YU HE TANG',theme:'sage',hero:{},contact:{phone:'021-50000000'},stores:[store],services:[],sections:[],products:[],galleryGroups:[]}
+const site={brandName:'裕和堂',brandEnglish:'YU Health',theme:'sage',hero:{},contact:{phone:'021-50000000'},stores:[store],services:[],sections:[],products:[],galleryGroups:[]}
 const runtime={developmentLogin:developmentFixture,customerTemplateIds:[]}
 const appointment={id:'fixture-appointment',storeId:store.id,storeName:store.name,serviceId:service.id,serviceName:service.name,bookingDate:'2026-12-01',startTime:'15:00',headcount:1,status:'PENDING',statusLabel:'待门店确认',version:1}
 const settled = page => page.waitForTimeout(400) // Wait only for the H5 router animation, not for API readiness.

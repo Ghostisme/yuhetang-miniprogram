@@ -8,7 +8,7 @@ await mkdir(output,{recursive:true})
 const browser=await chromium.launch({channel:'msedge',headless:true}),contexts=[],checks=[],errors=[],unknown=[]
 const stores=[{id:'shanghai',name:'上海中心店',district:'浦东新区',tag:'城市空间',enabled:true,onlineBooking:true,image:origin+'/fixture/store.jpg',address:'上海市浦东新区花园石桥路158号',hours:'09:00–23:00',phone:'021-50181919',gallery:[],description:'为自己留一段安静的养护时光。'},{id:'disabled',name:'停用门店',enabled:false,phone:'00000000'}]
 const care={id:'care-1',name:'舒缓养护',enabled:true,storeId:'shanghai',image:origin+'/fixture/store.jpg',subtitle:'让身心歇一歇',duration:'60分钟',description:'以本店安排为准。',steps:[]}
-const site={brandName:'裕和堂',brandEnglish:'YU HE TANG',tagline:'东方养护，用心相待',theme:'sage',hero:{title:'安心相遇，从这里开始',subtitle:'留一段自己的时光',image:origin+'/fixture/store.jpg',button:'申请预约'},brandStory:'从每一次接待开始。',contact:{phone:'021-60000000',message:'欢迎与我们说说您的需要。'},stores:[{...stores[0],services:[care]},stores[1]],services:[care],sections:[],products:[],galleryGroups:[]}
+const site={brandName:'裕和堂',brandEnglish:'YU Health',tagline:'东方养护，用心相待',theme:'sage',hero:{title:'安心相遇，从这里开始',subtitle:'留一段自己的时光',image:origin+'/fixture/store.jpg',button:'申请预约'},brandStory:'从每一次接待开始。',contact:{phone:'021-60000000',message:'欢迎与我们说说您的需要。'},stores:[{...stores[0],services:[care]},stores[1]],services:[care],sections:[],products:[],galleryGroups:[]}
 async function fixture(width=390,height=844,signedIn=false){
   const context=await browser.newContext({viewport:{width,height},isMobile:true,hasTouch:true});contexts.push(context)
   const calls=[]

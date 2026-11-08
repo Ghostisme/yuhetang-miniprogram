@@ -35,9 +35,13 @@ def main():
     assert evidence['status'] == 'passed' and len(evidence['checks']) >= 10 and not evidence['errors'] and not evidence['unknown']
     # H5 and WeChat outputs share the same source. The H5 browser report must be newer than that source.
     assert report.stat().st_mtime >= max(p.stat().st_mtime for p in source)
+    gallery_report = ROOT / 'backups/gallery-preview/result.json'
+    gallery = json.loads(gallery_report.read_text(encoding='utf-8'))
+    assert gallery['status'] == 'passed' and len(gallery['checks']) >= 3 and not gallery['errors'] and not gallery['unknown']
+    assert gallery_report.stat().st_mtime >= max(p.stat().st_mtime for p in source), 'Verify gallery preview against the current source first'
     validation = dict(releaseId=args.release_id, sourceCommit=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
         createdAt=dt.datetime.now(dt.timezone.utc).isoformat(), appId=config['appid'], apiBase='https://mp-admin.hetuonian.cn',
-        browser=evidence, nativeBuildIntegrity='passed', uploadedToWechat=False, realWechatDeliveryValidated=False,
+        browser=evidence, galleryPreview=gallery, nativeBuildIntegrity='passed', uploadedToWechat=False, realWechatDeliveryValidated=False,
         files={name: hashlib.sha256(data).hexdigest() for name, data in sorted(payload.items())})
     payload['validation.json'] = (json.dumps(validation, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
     payload['README.md'] = f'''# 裕和堂小程序 {args.release_id}
@@ -50,6 +54,8 @@ def main():
 4. 点击上传，版本号填写 {args.release_id}，后台选为体验版，用客户微信重新扫码进入。
 5. 我的预约不应再出现独立订阅卡片；点击最终提交预约/改约才申请微信原生订阅授权。
 6. 测试自助处理截止、改约原时间保留、门店确认/未通过/撤回及两端消息。
+7. 在「养护 → 空间美学」滚动后放大、关闭图片，确认仍在当前栏目和浏览位置；回首页的养护、好物入口仍分别进入对应栏目。
+8. 英文品牌及版权文字统一为 YU Health；已有品牌数据由配套 Java 的 V12 迁移分别更新发布版和草稿版。
 
 该 ZIP 不含服务器、私钥、AppSecret、登录凭证或 private 配置，不会自动上传或发布小程序。
 旧手机体验版只有在上传并重新进入新版后才会替换。微信记住订阅选择后，原生授权窗不保证每次出现。

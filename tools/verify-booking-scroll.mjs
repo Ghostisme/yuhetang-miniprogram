@@ -35,7 +35,7 @@ async function fixture(width,height,signedIn=false,teacherScenario='empty') {
       const json=data=>route.fulfill({headers,json:data})
       if(req.method()==='OPTIONS')return route.fulfill({status:204,headers})
       if(req.method()!=='GET')writes.push({method:req.method(),path:url.pathname})
-      if(url.pathname==='/api/site')return json({brandName:'裕和堂',brandEnglish:'YU HE TANG',theme:'sage',hero:{},contact:{},stores,services:[],sections:[],products:[],galleryGroups:[]})
+      if(url.pathname==='/api/site')return json({brandName:'裕和堂',brandEnglish:'YU Health',theme:'sage',hero:{},contact:{},stores,services:[],sections:[],products:[],galleryGroups:[]})
       if(url.pathname==='/api/runtime')return json({customerTemplateIds:[],developmentLogin:false})
       if(signedIn&&url.pathname==='/api/appointments'&&req.method()==='POST') {
         assert.equal(req.headers().authorization,'Bearer booking-layout-fixture')

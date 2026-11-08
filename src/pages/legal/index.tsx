@@ -23,7 +23,7 @@ const privacy = [
 export default function Legal() {
   const privacyPage = useRouter().params.kind === 'privacy'
   return <View className='page legal-page'><View className='section'>
-    <Text className='eyebrow'>YU HE TANG · SERVICE</Text><View className='heading'>{privacyPage ? '隐私说明' : '用户协议'}</View>
+    <Text className='eyebrow'>YU Health · SERVICE</Text><View className='heading'>{privacyPage ? '隐私说明' : '用户协议'}</View>
     <View className='muted'>更新日期：{LOGIN_CONSENT_VERSION}</View>
     {(privacyPage ? privacy : terms).map(([title, content]) => <View className='legal-section' key={title}><View>{title}</View><Text>{content}</Text></View>)}
     {privacyPage && isWeapp && <Button className='secondary' onClick={() => { void Taro.openPrivacyContract({ fail: () => { void Taro.showToast({ title: '暂时无法打开，请在小程序设置中查看隐私保护指引。', icon: 'none' }) } }) }}>查看微信隐私保护指引</Button>}

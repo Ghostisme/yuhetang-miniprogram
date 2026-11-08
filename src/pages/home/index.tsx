@@ -40,6 +40,6 @@ export default function Home() {
     })}
     <View className='section home-contact'><View className='banner'><Text className='strong'>预约小贴士</Text>线上提交后，由门店为您确认到店时间与接待安排。</View></View>
     {error && <View className='section'><View className='error-bar'>{error}<Button onClick={() => void refresh(true)}>重试</Button></View></View>}
-    <View className='footer'>YU HE TANG · WELLNESS &amp; CARE</View>
+    <View className='footer'>YU Health · WELLNESS &amp; CARE</View>
   </View>
 }
