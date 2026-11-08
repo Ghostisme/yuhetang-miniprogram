@@ -12,12 +12,15 @@ npm run dev:weapp    # 连接线上 Java 与线上管理后台，持续编译
 npm run dev:weapp:server # 同上，真实微信登录并检查线上接口
 npm run dev:weapp:local # 本地 Java 就绪后，模拟器联调与开发登录
 npm run build:weapp  # 微信小程序正式构建
+npm run check:weapp  # 检查全部微信页面产物及 WXSS 引用
 npm run dev:h5       # H5 开发，http://127.0.0.1:5182
 npm run build:h5     # H5 静态构建
 npm run check:mini   # TypeScript + 单元测试
 ```
 
 微信开发者工具导入仓库根目录，`project.config.json` 已指向 `dist/weapp/`，AppID 为 `wxce054e18303efb8a`。先运行微信编译命令，再用开发者工具预览、真机调试和上传。H5 发布目录为 `dist/h5/`。
+
+`build:weapp` 完成 Taro 编译后自动检查全部注册页面的 JS、JSON、WXML、WXSS 以及样式引用。每个页面应引入自己的 `index.scss`，共享组件样式由 Taro 提取到公共文件；不要直接在 `dist/` 手工补空文件。若开发者工具仍提示旧文件缺失，等构建完整性检查通过后，使用“清缓存 → 全部清除”并重新编译。
 
 已运行开发监听时，可用 `TARO_APP_OUTPUT_ROOT` 指定另外的构建目录（例如 `dist/verify-weapp`），避免正式构建覆盖正在联调的产物；不设置时仍使用上述默认目录。
 
