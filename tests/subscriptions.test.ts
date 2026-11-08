@@ -120,7 +120,7 @@ test('reschedule submit requests reminders in its click and continues if the cus
   const state=await fixture(),sending={current:false},refreshes:unknown[]=[]
   const save=pageAction('src/pages/orders/index.tsx','save',{
     sending,editing:{id:'fixture-booking',version:1},times:['15:00'],timeIndex:0,timesLoading:false,date:'2030-01-02',
-    runtime:{customerTemplateIds:['result','reminder']},hasCustomerSession:state.api.hasCustomerSession,
+    runtime:{customerTemplateIds:['result','reminder']},hasCustomerSession:state.api.hasCustomerSession,allowed:()=>true,
     subscribeBooking:state.api.subscribeBooking,request:state.api.request,setBusy:()=>{},setEditing:()=>{},
     load:async()=>{refreshes.push('loaded')},Taro:{showModal:async()=>{}},toastError:(error:Error)=>{throw error},
   })
@@ -141,6 +141,14 @@ test('subscription prompt starts in the click stack, deduplicates clicks and sav
   assert.equal(records.length,1);assert.equal(records[0].data?.templateId,'result')
   assert.match(String(records[0].data?.requestId),/^[A-Za-z0-9_-]{16,64}$/)
   assert.deepEqual(state.calls.map(c=>c.kind),['subscribe','record'],'Subscription uses the agreed customer session and never starts a silent login')
+})
+
+test('a reschedule that crossed its cutoff cannot open a subscription prompt or mutate a booking',async()=>{
+  const state=await fixture(),save=pageAction('src/pages/orders/index.tsx','save',{
+    sending:{current:false},editing:{id:'fixture-booking',version:1},times:['15:00'],timeIndex:0,timesLoading:false,
+    hasCustomerSession:state.api.hasCustomerSession,allowed:()=>false,
+  })
+  await save();assert.equal(state.calls.length,0)
 })
 
 test('declining or cancelling subscription resolves normally and never records a grant',async()=>{

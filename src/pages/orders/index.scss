@@ -18,6 +18,11 @@
   .order-actions { display:flex; align-items:stretch; gap:12px; margin-top:24px; }
   .order-actions button, .order-actions taro-button-core { flex:1; min-width:0; min-height:78px; margin:0; padding:16px 8px; border:1px solid #d5dfcd; border-radius:12px; font-size:24px; }
   .edit-panel { margin-top:24px; padding:22px; border-radius:14px; background:#f4f6ef; }
+  .change-policy { margin-top:20px; color:#7c8073; font-size:22px; line-height:1.65; }
+  .reschedule-summary { margin:20px 0; padding:20px; border:1px solid #dde5d8; border-radius:14px; color:#64705e; background:#f5f7f1; font-size:24px; line-height:1.8; overflow-wrap:anywhere; }
+  .reschedule-summary.pending { border-color:#e5dac0; background:#faf6ec; color:#806f4d; }
+  .reschedule-title { margin-bottom:8px; font-size:26px; font-weight:500; }
+  .reschedule-summary button, .reschedule-summary taro-button-core { margin-top:16px; padding:12px 18px; border:1px solid #d6ddcd; border-radius:10px; background:#fff; font-size:24px; }
   .edit-panel .label { margin-bottom:16px; font-size:26px; }
   .edit-panel .picker { margin:14px 0; font-size:26px; }
   .edit-panel .bottom-actions { gap:14px; padding:14px 0 0; }

@@ -10,6 +10,13 @@ const contexts=[],checks=[],errors=[],unknown=[]
 const store={id:'shanghai',name:'上海中心店',enabled:true,onlineBooking:true,image:'',address:'测试门店地址',hours:'09:00–23:00',phone:'021-50000000',gallery:[]}
 const service={id:'care-1',name:'舒缓养护',enabled:true,storeId:store.id,image:'',subtitle:'让身心歇一歇',duration:'60分钟'}
 const fresh={name:'',phone:'',phoneVerified:false,memberVerified:false,memberStatus:'NON_MEMBER',memberGrade:'',sources:['MINIPROGRAM'],complete:false,firstLoginAt:'2026-11-08T10:00:00+08:00',lastLoginAt:'2026-11-08T10:00:00+08:00'}
+function withPolicy(item){
+  if(item.omitPolicy)return item
+  const deadline=item.deadlineOverride||new Date(Date.parse(`${item.bookingDate}T${item.startTime}:00+08:00`)-7200000).toISOString()
+  const active=['PENDING','CONFIRMED'].includes(item.status),before=active&&Date.now()<Date.parse(deadline)
+  const pending=item.rescheduleRequest?.status==='PENDING'&&Date.now()<Date.parse(item.rescheduleRequest.expiresAt)
+  return {...item,customerActions:{canCancel:before,canReschedule:before&&!pending,canWithdrawReschedule:active&&pending,deadline,serverTime:new Date().toISOString(),reason:before?'':'已超过自助处理截止时间，取消或改约请联系门店。'}}
+}
 async function fixture(profile={...fresh},orders=[],width=390){
   const context=await browser.newContext({viewport:{width,height:844},isMobile:true,hasTouch:true});contexts.push(context)
   const state={profile:{...profile},orders:orders.map(item=>({...item})),calls:[],saves:[],changes:[]}
@@ -34,14 +41,15 @@ async function fixture(profile={...fresh},orders=[],width=390){
         const body=req.postDataJSON();assert.deepEqual(Object.keys(body).sort(),['consent','name']);assert.equal(body.consent,true)
         state.saves.push(body);state.profile={...state.profile,name:body.name};return json(state.profile)
       }
-      if(path==='/api/me/appointments')return json(state.orders)
+      if(path==='/api/me/appointments')return json(state.orders.map(withPolicy))
       if(path==='/api/me/appointments/order-fixture/slots')return json({slots:[{time:'16:00',available:true,remaining:4}],rules:{advanceDays:7}})
       if(path==='/api/me/appointments/order-fixture'&&req.method()==='PATCH'){
         const change=req.postDataJSON();state.changes.push(change)
         const item=state.orders.find(item=>item.id==='order-fixture');assert(item);assert.equal(change.version,item.version)
-        if(change.action==='reschedule')Object.assign(item,{bookingDate:change.date,startTime:change.startTime,status:'PENDING',statusLabel:'待门店确认',version:item.version+1})
+        if(change.action==='reschedule')Object.assign(item,{version:item.version+1,rescheduleRequest:{id:'change-fixture',status:'PENDING',statusLabel:'改约待门店处理',originalDate:item.bookingDate,originalTime:item.startTime,requestedDate:change.date,requestedTime:change.startTime,requestedHeadcount:item.headcount,expiresAt:new Date(Date.now()+3600000).toISOString()}})
+        else if(change.action==='withdraw_reschedule')Object.assign(item,{version:item.version+1,rescheduleRequest:{...item.rescheduleRequest,status:'WITHDRAWN',statusLabel:'改约已撤回',resolutionNote:'客户撤回，原预约保留。'}})
         else {assert.equal(change.action,'cancel');Object.assign(item,{status:'CANCELLED',statusLabel:'已取消',version:item.version+1})}
-        return json(item)
+        return json(withPolicy(item))
       }
       if(path==='/api/stores/shanghai/services')return json([service])
       if(path==='/api/stores/shanghai/therapists')return json([])
@@ -131,18 +139,39 @@ try{
     await active.page.getByText('提交改约',{exact:true}).click()
     await active.page.getByText('改约申请已提交',{exact:true}).waitFor()
     await active.page.locator('.taro-model__confirm').click()
-    await active.page.locator('.order .appointment-time').filter({hasText:'16:00'}).waitFor()
+    await active.page.locator('.order .appointment-time').filter({hasText:'15:00'}).waitFor()
+    await active.page.locator('.reschedule-summary').filter({hasText:'16:00'}).waitFor()
+    assert.equal(await active.page.getByText('申请改约',{exact:true}).count(),0,'Pending request cannot be duplicated')
     assert.equal(active.state.changes.length,1);assert.equal(active.state.changes[0].action,'reschedule')
+    await active.page.screenshot({path:resolve(output,`orders-reschedule-pending-${width}.png`),fullPage:true})
+    await active.page.getByText('撤回改约申请',{exact:true}).click()
+    await active.page.getByText('撤回申请',{exact:true}).click()
+    await active.page.getByText('改约已撤回',{exact:true}).waitFor()
+    assert.equal(active.state.changes[1].action,'withdraw_reschedule');assert.equal(active.state.orders[0].startTime,'15:00')
     await active.page.getByText('取消预约',{exact:true}).click()
     await active.page.getByText('确定取消',{exact:true}).click()
     await active.page.getByText('已取消',{exact:true}).waitFor()
-    assert.equal(active.state.changes.length,2);assert.equal(active.state.changes[1].action,'cancel')
+    assert.equal(active.state.changes.length,3);assert.equal(active.state.changes[2].action,'cancel')
     await noManualSubscription(active.page,active.state)
     await visit(active.page,'/pages/orders/index')
     await active.page.getByText('已取消',{exact:true}).waitFor()
     await noManualSubscription(active.page,active.state)
-    checks.push(`${width}px: confirmed/pending/cancelled appointments, refresh and reschedule contain no manual subscription controls or balance requests`)
+    checks.push(`${width}px: request preserves original appointment, duplicate request is hidden, withdrawal keeps original, cancellation is versioned and no manual subscription controls appear`)
   }
+  const tomorrow=new Date(Date.now()+86400000).toLocaleDateString('en-CA',{timeZone:'Asia/Shanghai'})
+  const expiring=await fixture({...fresh,name:'截止测试',complete:true},[{id:'order-fixture',storeName:store.name,serviceName:service.name,bookingDate:tomorrow,startTime:'15:00',headcount:1,status:'CONFIRMED',statusLabel:'门店已确认',version:1,deadlineOverride:new Date(Date.now()+5000).toISOString()}])
+  await visit(expiring.page,'/pages/orders/index')
+  await expiring.page.getByText('取消预约',{exact:true}).waitFor()
+  await expiring.page.getByText('取消预约',{exact:true}).waitFor({state:'detached',timeout:8000})
+  assert.equal(await expiring.page.getByText('申请改约',{exact:true}).count(),0)
+  await expiring.page.getByText('已超过自助处理截止时间，取消或改约请联系门店。',{exact:true}).waitFor()
+  await expiring.page.screenshot({path:resolve(output,'orders-cutoff-390.png'),fullPage:true})
+  assert.equal(expiring.state.changes.length,0)
+  checks.push('Visible page closes customer actions automatically at the server cutoff without a page refresh')
+  const legacy=await fixture({...fresh,name:'旧接口测试',complete:true},[{id:'order-fixture',storeName:store.name,serviceName:service.name,bookingDate:tomorrow,startTime:'15:00',headcount:1,status:'CONFIRMED',statusLabel:'门店已确认',version:1,omitPolicy:true}])
+  await visit(legacy.page,'/pages/orders/index');await legacy.page.getByText('门店已确认',{exact:true}).waitFor()
+  assert.equal(await legacy.page.getByText('取消预约',{exact:true}).count(),0);assert.equal(await legacy.page.getByText('申请改约',{exact:true}).count(),0)
+  checks.push('An older API response without action policy cannot expose unrestricted cancellation or rescheduling')
   assert.deepEqual(errors,[]);assert.deepEqual(unknown,[])
   await writeFile(resolve(output,'result.json'),JSON.stringify({status:'passed',liveApisUsed:false,checks,errors,unknown,nativePhoneAuthorization:'requires real WeChat device; provider exchange is covered by Java tests'},null,2)+'\n')
   console.log(JSON.stringify({status:'passed',checks},null,2))
