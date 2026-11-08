@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 import Taro, { useDidHide, useDidShow, usePullDownRefresh, useUnload } from '@tarojs/taro'
 import { Button, Image, Picker, Text, View } from '@tarojs/components'
 import CustomerProfileCard from '../../components/CustomerProfile'
+import MembershipSummary from '../../components/MembershipSummary'
 import { CustomerLoginHero } from '../../components/CustomerLogin'
 import { hasCustomerSession, isWeapp, logout, request, subscribeBooking, toastError } from '../../services/api'
 import { useCustomerSession } from '../../hooks/useCustomerSession'
@@ -95,7 +96,7 @@ export default function Orders() {
         <View className='card-title'>{t(item.serviceName)}</View>
         <View className='appointment-time'>{item.bookingDate} {item.startTime} · {t('{count} 人同行', { count: item.headcount })}</View>
         <View className='muted'>{t("调理师意向：")}{item.therapistIntentName || t('门店安排')}</View>
-        {item.message && <View className='banner'>{item.message}</View>}
+        <MembershipSummary member={item.membership}/>{item.message && <View className='banner'>{item.message}</View>}
         {change && <View className={`reschedule-summary ${actions.pending ? 'pending' : ''}`}>
           <View className='reschedule-title'>{change.status === 'PENDING' && !actions.pending ? t('改约已失效') : t(change.statusLabel)}</View>
           <View>{t("申请时间：")}{change.requestedDate} {change.requestedTime} · {t('{count} 人同行', { count: change.requestedHeadcount })}</View>

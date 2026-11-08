@@ -1374,5 +1374,25 @@
   "该预约当前不可自助取消或改约，请联系门店。": {
     "en": "Please contact the branch to cancel or reschedule this appointment.",
     "ja": "このご予約のキャンセル・日時変更は店舗にご連絡ください。"
+  },
+  "会员归属门店：{store}": {
+    "en": "Membership branch: {store}",
+    "ja": "会員登録店舗：{store}"
+  },
+  "会员可选择其他门店预约；项目与接待按到店门店安排。": {
+    "en": "Members may book at other branches. Treatments and availability follow the branch you visit.",
+    "ja": "会員は他の店舗も予約できます。施術とお迎えの内容は来店店舗に準じます。"
+  },
+  "会员归属门店待核实，不影响预约。": {
+    "en": "Your membership branch is awaiting verification. You can still book.",
+    "ja": "会員登録店舗は確認中です。ご予約は可能です。"
+  },
+  "本次为会员跨店预约": {
+    "en": "Member booking at another branch",
+    "ja": "他店舗での会員予約"
+  },
+  "已核实会员": {
+    "en": "Verified member",
+    "ja": "確認済み会員"
   }
 }

@@ -13,9 +13,10 @@ const image=await readFile('src/assets/login/reception.jpg')
 const care={id:'care-1',name:'中医推拿',category:'特色养护',enabled:true,image:origin+'/fixture/care.jpg',subtitle:'循着身体的节奏，找到自己的放松方式。',description:'预约、项目和到店安排，都可以在这里咨询。',duration:'60分钟',steps:['中医推拿','预约体验']}
 const store={id:'shanghai',name:'上海中心店',district:'浦东新区',enabled:true,onlineBooking:true,image:origin+'/fixture/store.jpg',address:'浦东新区花园石桥路158号上海中心大厦B1层7室',phone:'021-50181919',hours:'09:00–23:00',description:'2022年入驻上海中心大厦，在中国第一高楼里开一家中医养生馆。空间以「人在水间行走」为意象：水景、水墨屏风、原木理疗间，并配智能净烟艾灸设备。2026年完成扩店，28间理疗房。',gallery:[origin+'/fixture/room.jpg'],services:[care]}
 const site={brandName:'裕和堂',brandEnglish:'YU Health',theme:'sage',tagline:'东方养护，自在有和。',hero:{image:origin+'/fixture/hero.jpg',eyebrow:'A MOMENT FOR YOURSELF',title:'留一段时光',subtitle:'好好照顾自己',button:'预约体验'},brandStory:'预约、项目和到店安排，都可以在这里咨询。',contact:{message:'每一次沟通，都认真对待'},stores:[store,{...store,id:'yuyao',name:'余姚路店',district:'静安区'}],services:[care],products:[{...care,id:'product-1',name:'草本茶饮'}],sections:[{id:'services',enabled:true},{id:'space',enabled:true},{id:'products',enabled:true},{id:'brand',enabled:true}],galleryGroups:[{id:'tea',name:'茶室光影',images:Array.from({length:10},(_,i)=>origin+`/fixture/tea-${i}.jpg`)}]}
-const profile={name:'王女士',phone:'13900003001',phoneVerified:true,memberStatus:'MEMBER',memberGrade:'金卡',memberVerified:true,sources:['MINIPROGRAM','DIANPING'],complete:true}
+const profile={name:'王女士',phone:'13900003001',phoneVerified:true,memberStatus:'MEMBER',memberGrade:'金卡',memberVerified:true,memberStoreId:'yuyao',memberStoreName:'余姚路店',crossStoreBookingSupported:true,sources:['MINIPROGRAM','DIANPING'],complete:true}
 const nextDay=new Date(Date.now()+86400000).toLocaleDateString('en-CA',{timeZone:'Asia/Shanghai'})
 const order={id:'YHT-I18N-FIXTURE',storeId:store.id,storeName:store.name,serviceName:care.name,bookingDate:nextDay,startTime:'15:00',headcount:1,status:'CONFIRMED',statusLabel:'门店已确认',version:1,customerActions:{canCancel:true,canReschedule:true,canWithdrawReschedule:false,deadline:new Date(Date.now()+86400000).toISOString(),serverTime:new Date().toISOString(),reason:''}}
+order.membership={memberVerified:true,memberGrade:'金卡',memberStoreId:'yuyao',memberStoreName:'余姚路店',serviceStoreId:'shanghai',crossStore:true,status:'MEMBER',verificationMethod:'WECHAT_PHONE'}
 const customerText='客户原话：明天想预约推拿。'
 const conversation={id:'chat-i18n',status:'WAITING',storeId:store.id}
 const contexts=[],checks=[],errors=[],unknown=[]
@@ -114,8 +115,12 @@ try{
       await active(page).getByText(tr('下一步 →',lang),{exact:true}).click()
     }
     const form=active(page)
+    await form.getByText(tr('已核实会员',lang),{exact:false}).waitFor()
+    await form.getByText(tr('本次为会员跨店预约',lang),{exact:true}).waitFor()
     await form.locator('input').first().fill('李女士')
     await form.locator('input').nth(1).fill('13900003009')
+    await form.getByText(tr('是否会员',lang),{exact:true}).waitFor()
+    assert.equal(await form.getByText(tr('已核实会员',lang),{exact:false}).count(),0,'Changing the booking phone removes the verified-member display')
     await form.locator('textarea').fill('客户原始备注 unchanged')
     const requestCount=state.calls.filter(x=>x.includes('/api/stores/')).length
     for(const selected of ['en','ja','zh',lang]){
@@ -136,6 +141,7 @@ try{
     assert.equal(state.posts.length,1)
     assert.deepEqual({storeId:state.posts[0].storeId,serviceId:state.posts[0].serviceId,name:state.posts[0].name,remark:state.posts[0].remark,phone:state.posts[0].phone},{storeId:'shanghai',serviceId:'care-1',name:'李女士',remark:'客户原始备注 unchanged',phone:'13900003009'})
     await visit(page,'orders/index','.orders-page');await active(page).getByText(tr('门店已确认',lang),{exact:true}).waitFor()
+    await active(page).getByText(tr('本次为会员跨店预约',lang),{exact:true}).waitFor()
     assert.equal(await active(page).locator('.subscription-preferences, .booking-subscriptions').count(),0)
     await fit(page,`${lang} orders ${width}`)
     if(width===390)await page.screenshot({path:resolve(output,`orders-${lang}.png`),fullPage:true})

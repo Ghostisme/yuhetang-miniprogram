@@ -67,7 +67,7 @@ function bookingAction(state:Awaited<ReturnType<typeof fixture>>){
     store:{id:'shanghai'},service:{id:'care-1'},storeId:'shanghai',serviceId:'care-1',date:'2030-01-02',time:'15:00',headcount:1,
     teachers:[],teacherId:'',servicesLoading:false,teachersLoading:false,slotsLoading:false,
     slots:{slots:[{time:'15:00',available:true,remaining:4}]},name:'测试客户',phone:'13900003001',consent:true,sensitive:false,
-    claims:['YES','NO','UNKNOWN'],member:2,visited:2,remark:'',key:{current:'booking-fixture-key'},
+    claims:['YES','NO','UNKNOWN'],member:2,memberRecognized:false,visited:2,remark:'',key:{current:'booking-fixture-key'},
     subscribeBooking:state.api.subscribeBooking,request:state.api.request,
     privacy:async()=>{state.calls.push({kind:'privacy'})},setBusy:()=>{},setError:()=>{},
     setReceipt:(value:{id:string})=>{result.receipt=value},setSubscriptionResult:(value:SubscriptionResult)=>{result.subscription=value},

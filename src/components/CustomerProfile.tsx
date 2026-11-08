@@ -48,6 +48,7 @@ export default function CustomerProfileCard({ onChanged }: { onChanged?: (profil
     <View className='profile-card-header'><View><View className='profile-card-title'>{profile?.complete ? profile.name : t('完善客户资料')}</View><View className='profile-card-caption'>{profile?.phoneVerified ? t('{phone} · 微信手机号已授权', { phone: profile.phone }) : t('留下称呼与联系电话，让门店更好地接待您。')}</View></View>
       {profile && <Text className={`profile-member ${profile.memberVerified ? 'is-member' : ''}`}>{profile.memberVerified ? t(profile.memberGrade) || t('会员') : t('非会员')}</Text>}
     </View>
+    {profile?.memberVerified&&<View className='profile-card-note'>{profile.memberStoreName?t('会员归属门店：{store}',{store:t(profile.memberStoreName)}):t('会员归属门店待核实，不影响预约。')}<View>{t('会员可选择其他门店预约；项目与接待按到店门店安排。')}</View></View>}
     {profile && (expanded || !profile.complete) && <View className='profile-card-form'>
       <View className='profile-field'><Text>{t("姓名 / 称呼")}</Text><Input value={name} maxlength={40} placeholder={t('请输入您的姓名或称呼')} disabled={busy} onInput={event => { dirty.current = true; setName(event.detail.value); setError('') }} /></View>
       <CheckboxGroup onChange={event => { setAgreed(event.detail.value.includes('profile')); setError('') }}><Label className='profile-consent'><Checkbox value='profile' checked={agreed} disabled={busy} color='#405c49' /><Text>{t("同意将姓名与授权手机号用于客户档案、预约联系与会员匹配")}</Text></Label></CheckboxGroup>

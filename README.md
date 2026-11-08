@@ -12,7 +12,8 @@ npm run dev:weapp    # 连接线上 Java 与线上管理后台，持续编译
 npm run dev:weapp:server # 同上，真实微信登录并检查线上接口
 npm run dev:weapp:local # 本地 Java 就绪后，模拟器联调与开发登录
 npm run build:weapp  # 微信小程序正式构建
-npm run check:weapp  # 检查全部微信页面产物及 WXSS 引用
+npm run check:weapp  # 检查页面产物、WXSS 引用与微信原生样式编译
+npm run check:weapp:native # 强制使用微信原生编译器检查 WXSS
 npm run dev:h5       # H5 开发，http://127.0.0.1:5182
 npm run build:h5     # H5 静态构建
 npm run check:mini   # TypeScript + 单元测试
@@ -20,7 +21,9 @@ npm run check:mini   # TypeScript + 单元测试
 
 微信开发者工具导入仓库根目录，`project.config.json` 已指向 `dist/weapp/`，AppID 为 `wxce054e18303efb8a`。先运行微信编译命令，再用开发者工具预览、真机调试和上传。H5 发布目录为 `dist/h5/`。
 
-`build:weapp` 完成 Taro 编译后自动检查全部注册页面的 JS、JSON、WXML、WXSS 以及样式引用。每个页面应引入自己的 `index.scss`，共享组件样式由 Taro 提取到公共文件；不要直接在 `dist/` 手工补空文件。若开发者工具仍提示旧文件缺失，等构建完整性检查通过后，使用“清缓存 → 全部清除”并重新编译。
+`build:weapp` 完成 Taro 编译后自动检查全部注册页面的 JS、JSON、WXML、WXSS 以及样式引用，并调用已安装微信开发者工具的 `wcsc.exe` 编译全部 WXSS。Taro 编译成功不能证明微信原生样式兼容；例如 `> :first-child`、`> :last-child` 这类选择器可导致 `error at token ':'`，共享样式应使用明确的类名。每个页面应引入自己的 `index.scss`，不要直接在 `dist/` 手工补空文件。
+
+原生编译器优先使用环境变量 `WCSC_PATH`，随后查找本机常用微信开发者工具安装目录。找不到时，普通构建会明确提示未完成原生验证；`npm run check:weapp:native` 会报错。发布工具只接受与当前全部 WXSS 文件 SHA256 一致的成功验证报告。开发监听完成后也可以运行这条命令检查当前产物。只有源码与原生编译检查均通过后，开发者工具还显示旧缓存错误时，才使用“清缓存 → 全部清除”并重新编译。
 
 已运行开发监听时，可用 `TARO_APP_OUTPUT_ROOT` 指定另外的构建目录（例如 `dist/verify-weapp`），避免正式构建覆盖正在联调的产物；不设置时仍使用上述默认目录。
 
@@ -29,6 +32,12 @@ npm run check:mini   # TypeScript + 单元测试
 取消及申请改约按服务端返回的门店截止规则显示，到期时自动关闭。改约待门店处理时保留原预约，支持撤回；确认、未通过和超时均展示处理结果。API 缺少新策略时默认关闭自助修改并提示刷新，避免旧服务端开放超时取消。
 
 完整构建并通过单元与隔离浏览器验证、提交源码后，可运行 `python tools/package-weapp.py --release-id YYYYMMDD-HHMMSS`，生成可单独导入微信开发者工具的编译结果及 SHA256。它不替代原 Taro 源码，不自动上传或发布。
+
+## 会员跨店预约与支付预留
+
+已授权手机号并关联已核实会员档案的客户，可以选择任意已开放预约的门店。项目、时段和调理师取自到店门店；会员归属门店继续保留，预约详情展示本次跨店标识。手机号改为其他人时，不沿用当前客户的已核实会员身份。客户自选“是会员”只作为待核实声明，不能获得储值结算资格。
+
+配套 Java 的 V13 增量迁移保存预约时的会员归属和接待门店快照。管理后台可登记以整数分保存的核价金额，以及“会员储值”或“微信支付”结算意向。目前两个支付通道均未启用，不发生扣款、储值划账或实际跨店结算。此功能需同步更新配套 Java 和管理后台；既有门店和品项无需重新初始化。
 
 ## 中文、English、日本語
 
