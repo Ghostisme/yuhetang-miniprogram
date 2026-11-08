@@ -44,9 +44,13 @@ def main():
     assert languages['status'] == 'passed' and len(languages['checks']) >= 12 and not languages['errors'] and not languages['unknown']
     assert languages['locales'] == ['zh', 'en', 'ja'] and languages['liveApisUsed'] is False and languages['realMessagesSent'] is False
     assert language_report.stat().st_mtime >= max(p.stat().st_mtime for p in source), 'Verify all three languages against the current source first'
+    native = json.loads((ROOT / 'backups/weapp-native/result.json').read_text(encoding='utf-8'))
+    assert native['status'] == 'passed' and not native['failures'], 'Run npm run check:weapp:native before packaging'
+    style_hashes = {name: hashlib.sha256(value).hexdigest() for name, value in payload.items() if name.endswith('.wxss')}
+    assert native['files'] == style_hashes, 'The native WXSS report does not match the current build'
     validation = dict(releaseId=args.release_id, sourceCommit=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
         createdAt=dt.datetime.now(dt.timezone.utc).isoformat(), appId=config['appid'], apiBase='https://mp-admin.hetuonian.cn',
-        browser=evidence, galleryPreview=gallery, internationalization=languages, nativeBuildIntegrity='passed', uploadedToWechat=False, realWechatDeliveryValidated=False,
+        browser=evidence, galleryPreview=gallery, internationalization=languages, nativeWxss=native, nativeBuildIntegrity='passed', uploadedToWechat=False, realWechatDeliveryValidated=False,
         files={name: hashlib.sha256(data).hexdigest() for name, data in sorted(payload.items())})
     payload['validation.json'] = (json.dumps(validation, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
     payload['README.md'] = f'''# 裕和堂小程序 {args.release_id}

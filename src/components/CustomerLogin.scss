@@ -4,8 +4,8 @@
   .login-hero-image, .login-hero-shade { position: absolute; inset: 0; width: 100%; height: 100%; }
   .login-hero-shade { background: linear-gradient(180deg, rgba(15, 30, 22, .28), transparent 32%, rgba(16, 29, 23, .18) 49%, rgba(13, 28, 21, .85) 100%); }
   .login-hero-brand { position: relative; display: flex; flex-direction: column; align-items: flex-start; padding: calc(116px + env(safe-area-inset-top)) 52px 0; }
-  .login-hero-brand > text:first-child, .login-hero-brand > taro-text-core:first-child { font: 48px/1.5 'Songti SC', 'STSong', serif; letter-spacing: 10px; }
-  .login-hero-brand > text:last-child, .login-hero-brand > taro-text-core:last-child { margin-top: 6px; color: rgba(255,255,255,.85); font-size: 18px; letter-spacing: 5px; }
+  .login-hero-brand-name { font: 48px/1.5 'Songti SC', 'STSong', serif; letter-spacing: 10px; }
+  .login-hero-brand-english { margin-top: 6px; color: rgba(255,255,255,.85); font-size: 18px; letter-spacing: 5px; }
   .login-hero-content { position: relative; padding: 180px 52px calc(32px + env(safe-area-inset-bottom)); }
   .login-hero-title { font-size: 57px; font-weight: 600; line-height: 1.5; letter-spacing: 3px; }
   .login-hero-title > text, .login-hero-title > taro-text-core { display: block; }

@@ -66,7 +66,7 @@ export function CustomerLoginHero({ onSignedIn, withTabbar = false, error: pageE
     <LanguageSwitcher light />
     <Image className='login-hero-image' src={space} mode='aspectFill' />
     <View className='login-hero-shade' />
-    <View className='login-hero-brand'><Text>{t("裕和堂")}</Text><Text>YU Health</Text></View>
+    <View className='login-hero-brand'><Text className='login-hero-brand-name'>{t("裕和堂")}</Text><Text className='login-hero-brand-english'>YU Health</Text></View>
     <View className='login-hero-content'>
       <View className='login-hero-title'>{t("留一段时光")}<Text>{t("好好照顾自己")}</Text></View>
       <View className='login-hero-subtitle'>{t("一份东方养护，一次安心相遇。")}</View>
