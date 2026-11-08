@@ -1,0 +1,11 @@
+.contact-page {
+  .page-heading { padding-top:60px; padding-bottom:36px; }
+  .contact-center-body { padding:0 32px 40px; }
+  .contact-store-picker { display:flex; align-items:center; justify-content:space-between; gap:24px; margin-bottom:32px; padding:28px; border:1px solid var(--line); border-radius:18px; background:#fff; }
+  .contact-store-label { color:#87947a; font-size:22px; }
+  .contact-store-name { margin-top:6px; font-size:29px; font-weight:500; overflow-wrap:anywhere; }
+  .contact-store-change { flex-shrink:0; color:#7b896e; font-size:24px; }
+  .contact-channel { padding-top:36px; padding-bottom:36px; }
+  .contact-center-note { margin-top:46px; color:#8a9580; font-size:23px; line-height:1.9; text-align:center; }
+  .contact-center-note > text, .contact-center-note > taro-text-core { display:block; margin-bottom:12px; color:#6b7c60; font-family:"Songti SC","STSong",serif; font-size:28px; }
+}

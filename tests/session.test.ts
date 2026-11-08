@@ -122,5 +122,6 @@ test('login returns only to known application pages and retains store selection'
     assert.equal(loginReturnTarget(unsafe), '/pages/orders/index')
   }
   assert.equal(isTabPage('/pages/orders/index'), true)
+  assert.equal(isTabPage(loginReturnTarget('/pages/contact/index')), true)
   assert.equal(isTabPage('/pages/booking/index?storeId=shanghai'), false)
 })

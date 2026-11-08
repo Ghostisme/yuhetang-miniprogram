@@ -14,6 +14,8 @@ function cached<T>(load: () => Promise<T>) {
 export const loadSite = cached(() => request<Site>('/api/site').then(media))
 export const loadRuntime = cached(() => request<Runtime>('/api/runtime'))
 export const catalogState = { tab: 'services' }
+// Only public store context is retained while navigating; no login or chat is started.
+export const contactState = { storeId: '' }
 export function themeStyle(site?: Site | null): CSSProperties {
   const colors = { sage: ['#344a3b', '#435e4b', '#faf9f3', '#e9eddf'], sand: ['#5b4937', '#7a654c', '#fbf7f0', '#f0e8dc'], ink: ['#35434a', '#3e535c', '#f7f8f8', '#e7ecee'] }[site?.theme || 'sage']
   return { '--ink': colors[0], '--primary': colors[1], '--paper': colors[2], '--soft': colors[3] } as CSSProperties

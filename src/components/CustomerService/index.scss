@@ -1,11 +1,30 @@
-.page .customer-service {
-  display: block;
-  margin-top: 22px;
-  .native { display: flex; width: 100%; min-height: 88px; align-items: center; justify-content: center; padding: 20px 24px; border: 1px solid #cbd7c7; border-radius: 14px; background: #fff; color: var(--primary, #435e4b); font-size: 27px; line-height: 1.5; }
-  .online { display: block; width: 100%; margin-top: 14px; padding: 10px 18px; color: var(--primary, #435e4b); font-size: 25px; text-align: center; }
-  .error { display: block; margin-top: 14px; color: #965e47; font-size: 23px; line-height: 1.7; }
-  &--compact, &--inline { margin-top: 0; }
-  &--compact .native, &--inline .native { width: auto; min-height: 64px; padding: 12px; border: 0; background: transparent; font-size: 25px; }
-  &--compact .online, &--inline .online { margin-top: 0; padding: 10px; font-size: 24px; }
-  &--order .native { min-height: 76px; padding: 16px; font-size: 25px; }
-}
+.page .customer-service { flex-shrink:0; }
+.page .contact-entry { display:flex; min-width:88px; min-height:92px; flex-direction:column; align-items:center; justify-content:center; gap:4px; padding:8px 12px; color:var(--primary,#435e4b); font-size:22px; line-height:1.4; }
+.page .contact-entry image, .page .contact-entry taro-image-core { width:40px; height:40px; }
+.page .customer-service--dock { height:calc(112px + env(safe-area-inset-bottom)); }
+.page .customer-service--dock > .contact-entry { position:fixed; right:0; bottom:0; left:0; z-index:15; min-height:112px; padding-bottom:calc(10px + env(safe-area-inset-bottom)); border-top:1px solid var(--line); background:var(--paper,#faf9f3); }
+.page .contact-overlay { position:fixed; z-index:1100; inset:0; text-align:left; }
+.page .contact-mask { position:absolute; inset:0; background:rgba(25,39,30,.42); }
+.page .contact-sheet { position:absolute; right:0; bottom:0; left:0; display:flex; max-height:85vh; flex-direction:column; padding:34px 32px calc(20px + env(safe-area-inset-bottom)); border-radius:32px 32px 0 0; background:var(--paper,#faf9f3); box-shadow:0 -12px 48px rgba(25,39,30,.08); }
+.page .contact-sheet-header { display:flex; flex-shrink:0; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:24px; }
+.page .contact-sheet-title { color:var(--ink,#344a3b); font-family:"Songti SC","STSong",serif; font-size:38px; line-height:1.5; }
+.page .contact-sheet-subtitle { display:block; margin-top:6px; color:#75816e; font-size:24px; overflow-wrap:anywhere; }
+.page .contact-sheet-close { flex-shrink:0; width:72px; min-height:72px; margin:-12px -12px 0 0; color:#6d7c70; font-family:Arial,sans-serif; font-size:50px; font-weight:400; }
+.page .contact-sheet-body { flex:1; min-height:0; overflow-y:auto; }
+.page .contact-sheet-cancel { flex-shrink:0; width:100%; min-height:88px; margin-top:20px; color:#7a8773; font-size:26px; }
+.page .contact-channel { display:flex; width:100%; align-items:center; gap:24px; margin-bottom:20px; padding:30px 26px; border:1px solid #dce5d6; border-radius:20px; background:#fff; text-align:left; white-space:normal; }
+.page .contact-channel-online { border-color:#d6e2cf; background:#edf2e7; }
+.page .contact-channel-icon { display:flex; flex-shrink:0; width:76px; height:76px; align-items:center; justify-content:center; border-radius:22px; background:#fff; }
+.page .contact-channel-icon image, .page .contact-channel-icon taro-image-core { width:48px; height:48px; }
+.page .contact-channel-copy { flex:1; min-width:0; }
+.page .contact-channel-title { display:block; color:var(--primary,#435e4b); font-size:30px; font-weight:600; line-height:1.5; }
+.page .contact-channel-description { display:block; margin-top:8px; color:#78856e; font-size:23px; font-weight:400; line-height:1.7; }
+.page .contact-channel-chevron { flex-shrink:0; color:#87977a; font-family:Arial,sans-serif; font-size:36px; font-weight:400; }
+.page .contact-wechat-icon { position:relative; background:#edf2e7; }
+.page .contact-wechat-icon > view, .page .contact-wechat-icon > taro-view-core { position:absolute; top:19px; left:14px; width:33px; height:28px; border:2px solid #56714c; border-radius:50%; }
+.page .contact-wechat-icon > view:last-child, .page .contact-wechat-icon > taro-view-core:last-child { top:31px; left:33px; width:29px; height:25px; background:#edf2e7; }
+.page .contact-phone { display:flex; width:100%; min-height:96px; align-items:center; gap:20px; padding:22px 8px; border-top:1px solid var(--line); color:var(--primary,#435e4b); font-size:26px; }
+.page .contact-phone > text:nth-child(2), .page .contact-phone > taro-text-core:nth-child(2) { flex:1; color:#7b8772; font-size:24px; text-align:right; }
+.page .contact-platform-note { display:block; margin-top:12px; color:#8a9482; font-size:22px; line-height:1.7; }
+.page .contact-error, .page .contact-loading { display:block; padding:16px 0; color:#975e43; font-size:24px; line-height:1.8; }
+.page .contact-loading button, .page .contact-loading taro-button-core { margin-top:16px; color:var(--primary,#435e4b); text-decoration:underline; }

@@ -60,8 +60,8 @@ export default function StoreDetail() {
           </View>)}</View> : <View className='store-services-empty'><View>本店养护项目正在完善中</View><Text>欢迎联系门店，了解适合您的养护与到店安排。</Text></View>}
         </View>
         {!!gallery.length && <View className='store-gallery'><View className='store-section-heading'><View className='heading'>门店环境</View><Text className='tiny'>{gallery.length} 张</Text></View><View className={`gallery${gallery.length === 1 ? ' single' : ''}`}>{gallery.map(src => <Image key={src} src={src} mode='aspectFill' onClick={() => { void Taro.previewImage({ current: src, urls: gallery }) }} />)}</View></View>}
-        <CustomerService storeId={store.id} />
       </View>
     </> : <View className='empty'><View className='empty-title'>暂未找到这家门店</View><Text>门店资料可能已调整，请返回列表选择其他门店。</Text><Button className='primary' onClick={() => void backToList()}>查看全部门店</Button></View>}
+    {store && <CustomerService site={site} storeId={store.id} variant='dock' />}
   </View>
 }

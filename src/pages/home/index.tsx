@@ -1,6 +1,5 @@
 import Taro, { useShareAppMessage } from '@tarojs/taro'
 import { Button, Image, Text, View } from '@tarojs/components'
-import CustomerService from '../../components/CustomerService'
 import PageState from '../../components/PageState'
 import { useSite } from '../../hooks/useSite'
 import { catalogState, themeStyle } from '../../services/site'
@@ -39,7 +38,7 @@ export default function Home() {
     if (section.id === 'brand') return <View className='intro' key={section.id}><Text className='eyebrow'>OUR PHILOSOPHY</Text><View className='heading'>东方养护，自在有和。</View><View className='muted'>{site.tagline}</View><Button className='link' onClick={() => catalog('brand')}>走近裕和堂 →</Button></View>
     return null
     })}
-    <View className='section home-contact'><View className='banner'><Text className='strong'>预约小贴士</Text>线上提交后，由门店为您确认到店时间与接待安排。</View><CustomerService label='微信客服 · 联系我们' /></View>
+    <View className='section home-contact'><View className='banner'><Text className='strong'>预约小贴士</Text>线上提交后，由门店为您确认到店时间与接待安排。</View></View>
     {error && <View className='section'><View className='error-bar'>{error}<Button onClick={() => void refresh(true)}>重试</Button></View></View>}
     <View className='footer'>YU HE TANG · WELLNESS &amp; CARE</View>
   </View>

@@ -62,12 +62,12 @@ export class CustomerSession {
   }
 }
 
-const pages = ['home', 'catalog', 'stores', 'orders', 'booking', 'chat', 'store-detail', 'profile']
+const pages = ['home', 'catalog', 'stores', 'contact', 'orders', 'booking', 'chat', 'store-detail', 'profile']
 export function loginReturnTarget(value?: string): string {
   if (!value || value.length > 1500 || /[\r\n#\\]/.test(value)) return '/pages/orders/index'
   const path = value.split('?')[0]
   return pages.some(page => path === `/pages/${page}/index`) ? value : '/pages/orders/index'
 }
 export function isTabPage(value: string): boolean {
-  return ['home', 'catalog', 'stores', 'orders'].some(page => value.split('?')[0] === `/pages/${page}/index`)
+  return ['home', 'catalog', 'stores', 'contact', 'orders'].some(page => value.split('?')[0] === `/pages/${page}/index`)
 }
