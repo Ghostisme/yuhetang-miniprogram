@@ -12,7 +12,8 @@
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
     "check:mini": "npm run typecheck && npm test",
-    "verify:login": "node tools/verify-login.mjs"
+    "verify:login": "node tools/verify-login.mjs",
+    "verify:booking": "node tools/verify-booking-scroll.mjs"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.0",
