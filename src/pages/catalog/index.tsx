@@ -10,7 +10,13 @@ import './index.scss'
 export default function Catalog() {
   const { site, error, refresh } = useSite()
   const [tab, setTab] = useState('services'), [detail, setDetail] = useState<ServiceItem | ProductItem | null>(null)
-  useDidShow(() => { setTab(catalogState.tab); setDetail(null); catalogState.tab = 'services' })
+  useDidShow(() => {
+    const requestedTab = catalogState.tab
+    catalogState.tab = ''
+    // Native image preview also triggers onShow when it closes. Only an explicit
+    // homepage shortcut should replace the current column or its open detail.
+    if (requestedTab) { setTab(requestedTab); setDetail(null) }
+  })
   if (!site) return <PageState error={error} retry={() => void refresh(true)} />
   const book = (id: string) => { void Taro.navigateTo({ url: `/pages/booking/index?serviceId=${encodeURIComponent(id)}` }) }
   const items: (ServiceItem | ProductItem)[] = (tab === 'services' ? site.services : site.products).filter(item => item.enabled)

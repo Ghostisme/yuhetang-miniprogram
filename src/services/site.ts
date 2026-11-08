@@ -13,7 +13,8 @@ function cached<T>(load: () => Promise<T>) {
 }
 export const loadSite = cached(() => request<Site>('/api/site').then(media))
 export const loadRuntime = cached(() => request<Runtime>('/api/runtime'))
-export const catalogState = { tab: 'services' }
+// A one-use destination set by a homepage shortcut; ordinary resumes keep page state.
+export const catalogState = { tab: '' }
 // Only public store context is retained while navigating; no login or chat is started.
 export const contactState = { storeId: '' }
 export function themeStyle(site?: Site | null): CSSProperties {
