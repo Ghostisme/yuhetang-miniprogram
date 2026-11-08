@@ -62,7 +62,7 @@ export class CustomerSession {
   }
 }
 
-const pages = ['home', 'catalog', 'stores', 'orders', 'booking', 'chat', 'store-detail']
+const pages = ['home', 'catalog', 'stores', 'orders', 'booking', 'chat', 'store-detail', 'profile']
 export function loginReturnTarget(value?: string): string {
   if (!value || value.length > 1500 || /[\r\n#\\]/.test(value)) return '/pages/orders/index'
   const path = value.split('?')[0]

@@ -1,0 +1,21 @@
+.customer-profile-card {
+  margin: 28px 0; padding: 30px; border: 1px solid #e1e7db; border-radius: 20px; background: #fff;
+  .profile-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+  .profile-card-header > view, .profile-card-header > div { min-width: 0; flex: 1; }
+  .profile-card-title { color: #344f3e; font-size: 32px; font-weight: 600; overflow-wrap: anywhere; }
+  .profile-card-caption { margin-top: 12px; color: #768172; font-size: 24px; line-height: 1.7; }
+  .profile-member { flex-shrink: 0; padding: 6px 15px; border-radius: 25px; background: #f2f3ee; color: #737d70; font-size: 23px; }
+  .profile-member.is-member { color: #80602c; background: #f6efdf; }
+  .profile-card-form { margin-top: 25px; padding-top: 25px; border-top: 1px solid #edf0e8; }
+  .profile-field > text, .profile-field > span { display: block; margin-bottom: 14px; font-size: 26px; color: #4b5e4e; }
+  .profile-field input, .profile-field taro-input-core { box-sizing: border-box; width: 100%; height: 88px; padding: 0 22px; border: 1px solid #d9e1d3; border-radius: 12px; background: #fafbf7; font-size: 28px; color: #344f3e; }
+  .profile-consent { display: flex; align-items: flex-start; gap: 10px; margin: 24px 0; color: #6c7968; font-size: 23px; line-height: 1.7; }
+  .profile-consent checkbox, .profile-consent taro-checkbox-core { flex-shrink: 0; transform: scale(.8); transform-origin: left top; margin-right: -8px; }
+  .profile-action-row { display: flex; flex-direction: column; gap: 16px; }
+  button, taro-button-core { box-sizing: border-box; height: auto; min-height: 80px; padding: 18px 20px; margin: 0; border-radius: 12px; font-size: 27px; line-height: 1.5; }
+  .profile-card-note, .profile-wechat-tip { font-size: 23px; line-height: 1.7; color: #7f8979; }
+  .profile-card-note { margin-top: 20px; }
+  .profile-edit { margin-top: 18px; min-height: 54px; padding: 10px 0 0; display: flex; justify-content: space-between; color: #405c49; background: transparent; font-size: 25px; border: 0; }
+  .profile-edit::after { border: 0; }
+  .profile-error { margin-top: 22px; padding: 16px; border-radius: 10px; background: #fff2ed; color: #a24a36; font-size: 24px; line-height: 1.7; }
+}
