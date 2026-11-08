@@ -36,6 +36,9 @@
   .agree { display:flex; align-items:flex-start; gap:12px; margin:24px 0; color:#68765e; font-size:24px; line-height:1.9; }
   .agree checkbox, .agree taro-checkbox-core { flex-shrink:0; width:40px; padding-top:3px; transform:scale(.78); transform-origin:top left; }
   .agree-copy { flex:1; min-width:0; }
+  .therapist-note { margin-top:12px; color:#7b8772; font-size:24px; line-height:1.8; }
+  .therapist-note .text-link { margin-left:12px; }
+  .therapist-unavailable { background:#f3f5ef; color:#6d7b65; }
   .text-link { display:inline; color:var(--primary,#435e4b); font-size:24px; text-decoration:underline; text-underline-offset:4px; }
   .subscription-receipt { margin:22px 0; padding:20px; border-radius:12px; background:#edf2e7; color:#607454; font-size:24px; line-height:1.9; text-align:left; }
   .bottom-actions { margin:0; padding:0; }

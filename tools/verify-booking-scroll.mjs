@@ -8,11 +8,19 @@ const origin='http://127.0.0.1:5182', apiOrigin='https://mp-admin.hetuonian.cn'
 const dist=resolve('dist/h5'), output=resolve('backups/booking-scroll')
 await mkdir(output,{recursive:true})
 const browser=await chromium.launch({channel:'msedge',headless:true})
-const contexts=[], checks=[], errors=[], unknown=[], writes=[]
+const contexts=[], checks=[], errors=[], unknown=[], writes=[], staffRequests=[]
 const stores=Array.from({length:12},(_,i)=>({id:`store-${i}`,name:i===0?'上海中心店':`测试门店 ${i}`,enabled:true,onlineBooking:true,image:origin+'/fixture/store.jpg',address:'上海市浦东新区 · 门店地址与楼层信息，用于检查长内容换行',hours:'09:00–23:00',phone:'021-50000000',gallery:[]}))
 const services=storeId=>Array.from({length:12},(_,i)=>({id:`care-${i}`,name:`舒缓养护 ${i+1}`,enabled:true,storeId,image:origin+'/fixture/store.jpg',subtitle:'为自己留一段安静时光，按本店开放项目预约',duration:'60分钟'}))
 const slots=Array.from({length:48},(_,i)=>({time:`${String(10+Math.floor(i/4)).padStart(2,'0')}:${String(i%4*15).padStart(2,'0')}`,capacity:4,used:0,remaining:4,available:true}))
-async function fixture(width,height,signedIn=false) {
+const therapists=storeId=>{
+  const teacher={id:'teacher-intent',storeId,name:'林老师（示例）',grade:'资深调理师',enabled:true,showOnClient:true,resting:false,serviceIds:['care-0']}
+  return [teacher,...[
+    {id:'wrong-branch',storeId:'other-store'}, {id:'disabled',enabled:false}, {id:'hidden',showOnClient:false},
+    {id:'resting',resting:true}, {id:'other-project',serviceIds:['care-1']}
+  ].map(item=>({...teacher,...item,name:'不可用于本次预约-'+item.id}))]
+}
+async function fixture(width,height,signedIn=false,teacherScenario='empty') {
+  let teacherRequests=0
   const context=await browser.newContext({viewport:{width,height},isMobile:true,hasTouch:true});contexts.push(context)
   if(signedIn)await context.addInitScript(()=>{
     if(location.origin!=='http://127.0.0.1:5182')return
@@ -36,10 +44,18 @@ async function fixture(width,height,signedIn=false) {
         assert.equal(body.privacyConsent,true)
         assert.equal(body.name,'测试客户')
         assert.equal(body.phone,'13900003001')
-        return json({id:'fixture-booking-layout',storeId:body.storeId,storeName:stores[0].name,serviceId:body.serviceId,serviceName:'舒缓养护 1',bookingDate:body.date,startTime:body.startTime,headcount:body.headcount,status:'PENDING',version:1})
+        assert.equal(body.therapistIntentId,'teacher-intent','Submit the selected staff ID instead of a label/index')
+        return json({id:'fixture-booking-layout',storeId:body.storeId,storeName:stores[0].name,serviceId:body.serviceId,serviceName:'舒缓养护 1',bookingDate:body.date,startTime:body.startTime,headcount:body.headcount,therapistIntentName:'林老师（示例）',status:'PENDING',version:1})
       }
       const match=url.pathname.match(/^\/api\/stores\/(store-\d+)\/(services|therapists|slots)$/)
-      if(match) return json(match[2]==='services'?services(match[1]):match[2]==='therapists'?[]:{date:url.searchParams.get('date'),storeId:match[1],slots,rules:{advanceDays:7,maxHeadcount:4}})
+      if(match) {
+        if(match[2]==='therapists') {
+          staffRequests.push({teacherScenario,storeId:match[1],attempt:teacherRequests+1})
+          if(teacherScenario==='retry'&&++teacherRequests===1)return route.fulfill({status:500,headers,json:{message:'Fixture staff API unavailable'}})
+          return json(teacherScenario==='empty'?[]:therapists(match[1]))
+        }
+        return json(match[2]==='services'?services(match[1]):{date:url.searchParams.get('date'),storeId:match[1],slots,rules:{advanceDays:7,maxHeadcount:4}})
+      }
       unknown.push(req.method()+' '+url.pathname);return route.fulfill({status:404,headers,json:{message:'Unmocked API blocked'}})
     }
     if(url.origin!==origin) {unknown.push(url.origin+url.pathname);return route.abort()}
@@ -83,6 +99,29 @@ async function scrollMiddle(page,label) {
   return after
 }
 async function top(page){assert((await scrollState(page)).top<=1,'A different step starts at the top')}
+async function contactStep(page) {
+  await page.locator('.booking-content .choice').first().click()
+  await page.getByText('下一步 →',{exact:true}).click();await page.locator('.booking-content .choice').first().click()
+  await page.getByText('下一步 →',{exact:true}).click();await page.locator('.slot-grid').getByText('10:00',{exact:false}).click()
+  await page.getByText('下一步 →',{exact:true}).click()
+}
+async function chooseTeacher(page) {
+  const field=page.locator('.therapist-field'),picker=field.locator('taro-picker-core')
+  await picker.waitFor()
+  await field.locator('.picker').click()
+  // Taro portals the fixed panel into body; its overlay wrapper has no own box.
+  const overlay=page.locator('.weui-picker:visible')
+  await overlay.waitFor({state:'visible'})
+  const options=overlay.locator('.weui-picker__item')
+  assert.deepEqual(await options.allTextContents(),['门店安排（不指定）','林老师（示例） · 资深调理师'])
+  await overlay.evaluate(el=>Promise.all(el.getAnimations({subtree:true}).map(animation=>animation.finished.catch(()=>{}))))
+  const group=await overlay.locator('taro-picker-group').boundingBox();assert(group)
+  // Use the actual picker gesture, then its confirmation control.
+  await page.touchscreen.tap(group.x+group.width/2,group.y+153)
+  await overlay.getByText('确定',{exact:true}).click()
+  await overlay.waitFor({state:'hidden'})
+  assert((await field.locator('.picker').innerText()).includes('林老师（示例）'))
+}
 try {
   for(const [width,height] of [[390,844],[414,780],[320,568]]) {
     const page=await fixture(width,height)
@@ -94,6 +133,8 @@ try {
     await page.locator('.slot-grid').waitFor();await top(page);await scrollMiddle(page,'times')
     await page.locator('.slot-grid').getByText('21:45',{exact:false}).click()
     await page.getByText('下一步 →',{exact:true}).click();await page.locator('input[placeholder="请输入称呼"]').waitFor();await top(page)
+    await page.getByText('本项目暂未开放调理师意向，由门店为您安排。',{exact:true}).waitFor()
+    assert.equal(await page.locator('.therapist-field taro-picker-core').count(),0,'Empty choices must not show a fake dropdown')
     await page.locator('input[placeholder="请输入称呼"]').fill('测试客户')
     await page.locator('input[placeholder="便于门店确认预约"]').fill('13900003001')
     await page.locator('textarea').fill('希望安静一些')
@@ -113,15 +154,30 @@ try {
     await page.screenshot({path:resolve(output,`booking-stores-${width}.png`)})
     checks.push(`All four steps scroll internally at ${width}x${height}; header/actions remain fixed, step changes reset scroll, selections/drafts survive back navigation and login dismissal`)
   }
-  const receiptPage=await fixture(320,568,true)
-  await receiptPage.locator('.booking-content .choice').first().click()
-  await receiptPage.getByText('下一步 →',{exact:true}).click();await receiptPage.locator('.booking-content .choice').first().click()
-  await receiptPage.getByText('下一步 →',{exact:true}).click();await receiptPage.locator('.slot-grid').getByText('10:00',{exact:false}).click()
-  await receiptPage.getByText('下一步 →',{exact:true}).click()
+  const retryPage=await fixture(390,844,false,'retry')
+  await contactStep(retryPage)
+  await retryPage.locator('input[placeholder="请输入称呼"]').fill('保留草稿')
+  await retryPage.getByText('重新加载调理师',{exact:true}).click()
+  await chooseTeacher(retryPage)
+  assert.equal(await retryPage.locator('input[placeholder="请输入称呼"]').inputValue(),'保留草稿')
+  await retryPage.screenshot({path:resolve(output,'booking-therapist-selection-390.png')})
+  await retryPage.locator('.steps taro-button-core').nth(1).click()
+  // Change to a project that has no matching staff; do not submit an old intent.
+  await retryPage.locator('.booking-content .choice').nth(2).click()
+  await retryPage.getByText('下一步 →',{exact:true}).click()
+  await retryPage.getByText('下一步 →',{exact:true}).click()
+  await retryPage.getByText('本项目暂未开放调理师意向，由门店为您安排。',{exact:true}).waitFor()
+  assert.equal(await retryPage.locator('.therapist-field .picker').innerText(),'门店安排（不指定）')
+  assert.equal(await retryPage.locator('input[placeholder="请输入称呼"]').inputValue(),'保留草稿')
+  checks.push('A failed staff request can be retried without losing the draft; the real picker excludes hidden/resting/disabled/other-store/other-project staff; changing the project clears the old intent')
+  const receiptPage=await fixture(320,568,true,'eligible')
+  await contactStep(receiptPage)
+  await chooseTeacher(receiptPage)
   await receiptPage.locator('input[placeholder="请输入称呼"]').fill('测试客户')
   await receiptPage.locator('input[placeholder="便于门店确认预约"]').fill('13900003001')
   await receiptPage.locator('.agree input[type=checkbox]').first().check()
   await receiptPage.getByText('提交预约申请',{exact:true}).click();await receiptPage.locator('.receipt').waitFor()
+  assert((await receiptPage.locator('.receipt-card').innerText()).includes('林老师（示例）'))
   const receiptScroll=receiptPage.locator('.booking-receipt-scroll')
   assert(await receiptScroll.evaluate((root,source)=>{const el=eval('('+source+')')(root);return el.scrollHeight>el.clientHeight+40},scrollingElement.toString()))
   await receiptPage.locator('.receipt-card .receipt-row').last().scrollIntoViewIfNeeded()
@@ -134,7 +190,7 @@ try {
   await receiptPage.locator('.contact-sheet').waitFor()
   await receiptPage.locator('.contact-sheet-cancel').click()
   await receiptPage.screenshot({path:resolve(output,'booking-receipt-320.png')})
-  checks.push('After an isolated fixture submission, the success receipt scrolls internally and its last action is reachable on a 320px screen')
+  checks.push('An isolated submission sends the chosen therapist ID and displays their name on the receipt; the receipt scrolls internally with reachable bottom actions on a 320px screen')
   assert.deepEqual(errors,[]);assert.deepEqual(unknown,[]);assert.deepEqual(writes,[{method:'POST',path:'/api/appointments'}])
   await writeFile(resolve(output,'result.json'),JSON.stringify({status:'passed',createdAt:new Date().toISOString(),liveApisUsed:false,realMessagesSent:false,checks,errors,unknown,writes},null,2)+'\n')
   console.log(JSON.stringify({status:'passed',checks},null,2))
@@ -142,7 +198,7 @@ try {
   for(const [i,context] of contexts.entries()) {
     const page=context.pages()[0];if(!page)continue
     await page.screenshot({path:resolve(output,`failure-${i}.png`),fullPage:true})
-    console.error(await page.evaluate(()=>Array.from(document.querySelectorAll('.booking-page,.booking-wizard,.booking-header,.booking-content,.booking-footer,.taro_page')).map(el=>({cls:el.className,rect:el.getBoundingClientRect().toJSON(),height:el.clientHeight,extent:el.scrollHeight,scroll:el.scrollTop,overflow:getComputedStyle(el).overflowY}))))
+    console.error(await page.evaluate(()=>({staff:document.querySelector('.therapist-field')?.outerHTML,layout:Array.from(document.querySelectorAll('.booking-page,.booking-wizard,.booking-header,.booking-content,.booking-footer,.taro_page')).map(el=>({cls:el.className,rect:el.getBoundingClientRect().toJSON(),height:el.clientHeight,extent:el.scrollHeight,scroll:el.scrollTop,overflow:getComputedStyle(el).overflowY}))})))
   }
-  console.error({errors,unknown,writes});throw error
+  console.error({errors,unknown,writes,staffRequests});throw error
 } finally {for(const context of contexts)await context.close();await browser.close()}
