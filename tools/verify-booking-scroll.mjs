@@ -37,6 +37,7 @@ async function fixture(width,height,signedIn=false,teacherScenario='empty') {
       if(req.method()!=='GET')writes.push({method:req.method(),path:url.pathname})
       if(url.pathname==='/api/site')return json({brandName:'裕和堂',brandEnglish:'YU Health',theme:'sage',hero:{},contact:{},stores,services:[],sections:[],products:[],galleryGroups:[]})
       if(url.pathname==='/api/runtime')return json({customerTemplateIds:[],developmentLogin:false})
+      if(url.pathname==='/api/me/profile')return json({name:'测试客户',phone:'13900003001',phoneVerified:true,memberVerified:false,complete:true})
       if(signedIn&&url.pathname==='/api/appointments'&&req.method()==='POST') {
         assert.equal(req.headers().authorization,'Bearer booking-layout-fixture')
         assert(req.headers()['idempotency-key'])
@@ -106,20 +107,13 @@ async function contactStep(page) {
   await page.getByText('下一步 →',{exact:true}).click()
 }
 async function chooseTeacher(page) {
-  const field=page.locator('.therapist-field'),picker=field.locator('taro-picker-core')
-  await picker.waitFor()
-  await field.locator('.picker').click()
-  // Taro portals the fixed panel into body; its overlay wrapper has no own box.
-  const overlay=page.locator('.weui-picker:visible')
+  const field=page.locator('.therapist-field')
+  await field.locator('.option-select-trigger').click()
+  const overlay=page.locator('.option-select-dialog:visible')
   await overlay.waitFor({state:'visible'})
-  const options=overlay.locator('.weui-picker__item')
-  assert.deepEqual(await options.allTextContents(),['门店安排（不指定）','林老师（示例） · 资深调理师'])
-  await overlay.evaluate(el=>Promise.all(el.getAnimations({subtree:true}).map(animation=>animation.finished.catch(()=>{}))))
-  const group=await overlay.locator('taro-picker-group').boundingBox();assert(group)
-  // Use the actual picker gesture, then its confirmation control.
-  await page.touchscreen.tap(group.x+group.width/2,group.y+153)
-  await overlay.getByText('确定',{exact:true}).click()
-  await overlay.waitFor({state:'hidden'})
+  assert.deepEqual(await overlay.locator('.option-select-label').allTextContents(),['门店安排（不指定）','林老师（示例） · 资深调理师'])
+  await overlay.locator('.option-select-option').nth(1).click()
+  await overlay.waitFor({state:'detached'})
   assert((await field.locator('.picker').innerText()).includes('林老师（示例）'))
 }
 try {
@@ -134,7 +128,7 @@ try {
     await page.locator('.slot-grid').getByText('21:45',{exact:false}).click()
     await page.getByText('下一步 →',{exact:true}).click();await page.locator('input[placeholder="请输入称呼"]').waitFor();await top(page)
     await page.getByText('本项目暂未开放调理师意向，由门店为您安排。',{exact:true}).waitFor()
-    assert.equal(await page.locator('.therapist-field taro-picker-core').count(),0,'Empty choices must not show a fake dropdown')
+    assert.equal(await page.locator('.therapist-field .option-select-trigger').count(),0,'Empty choices must not show a fake dropdown')
     await page.locator('input[placeholder="请输入称呼"]').fill('测试客户')
     await page.locator('input[placeholder="便于门店确认预约"]').fill('13900003001')
     await page.locator('textarea').fill('希望安静一些')

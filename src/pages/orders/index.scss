@@ -1,6 +1,7 @@
 .orders-page {
   &.orders-guest { min-height: 0; padding-bottom: 0; }
-  &.is-weapp:not(.orders-guest) > .section { padding-top: calc(112px + env(safe-area-inset-top)); }
+  &.is-weapp:not(.orders-guest) > .section { padding-top: 12px; }
+  .orders-navigation-space { flex-shrink: 0; }
   .customer-account { display:flex; align-items:center; justify-content:space-between; gap:20px; margin-top:28px; padding:25px; border:1px solid var(--line); border-radius:18px; background:#eef2e7; }
   .account-title { margin-bottom:7px; font-size:28px; }
   .customer-account button, .customer-account taro-button-core { padding:18px 0 18px 16px; font-size:23px; color:#73836d; }

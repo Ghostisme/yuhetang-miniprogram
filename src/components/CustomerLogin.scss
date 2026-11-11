@@ -25,7 +25,7 @@
   .login-consent-circle.checked { border-color: #375b49; background: #375b49; }
   .login-consent-circle.checked::after { content: ''; position: absolute; left: 9px; top: 9px; width: 16px; height: 9px; border: solid #fff; border-width: 0 0 3px 3px; transform: rotate(-45deg); }
   .login-legal-links { display: block; margin-left: 56px; font-size: 24px; line-height: 1.9; color: #8a918b; }
-  .login-legal-links button, .login-legal-links taro-button-core { display: inline; padding: 8px 0; border: 0; background: transparent; font-size: inherit; line-height: inherit; color: #415b49; text-decoration: underline; text-underline-offset: 5px; white-space: nowrap; }
+  .login-legal-links button, .login-legal-links taro-button-core { display: inline; padding: 8px 0; border: 0; background: transparent; font-size: inherit; line-height: inherit; color: #415b49; text-decoration: underline; text-underline-offset: 5px; white-space: normal; }
   .login-legal-links text, .login-legal-links taro-text-core { display: inline; }
   &.needs-consent .login-consent-circle { border-color: #b87d58; }
 }

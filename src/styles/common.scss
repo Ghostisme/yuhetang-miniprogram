@@ -20,6 +20,9 @@ image, taro-image-core { display: block; width: 100%; object-fit: cover; }
     width: auto; margin: 0; padding: 0; border: 0; border-radius: 0;
     background: transparent; color: inherit; font-family: inherit;
     font-size: 28px; font-weight: 500; line-height: 1.5;
+    min-width: 0; max-width: 100%; height: auto;
+    white-space: normal; overflow-wrap: break-word; word-break: normal;
+    text-overflow: clip;
     -webkit-tap-highlight-color: transparent;
   }
   button::after, taro-button-core::after { border: 0; }
@@ -65,7 +68,7 @@ image, taro-image-core { display: block; width: 100%; object-fit: cover; }
   .gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 26px; }
   .gallery image, .gallery taro-image-core { height: 240px; border-radius: 16px; }
   .bottom-actions { display: flex; align-items: center; gap: 20px; padding: 24px 0; }
-  .bottom-actions .primary { flex: 1; margin: 0; }
+  .bottom-actions .primary { flex: 1; min-width: 0; margin: 0; }
   .bottom-actions .secondary { min-width: 180px; margin: 0; }
   .empty { padding: 76px 28px; color: var(--muted); font-size: 26px; line-height: 1.8; text-align: center; }
   .empty-title { margin-bottom: 12px; color: var(--ink, #30483b); font-size: 32px; font-weight: 600; }
@@ -86,7 +89,7 @@ image, taro-image-core { display: block; width: 100%; object-fit: cover; }
   }
   .input, taro-input-core { height: 92px; }
   textarea, taro-textarea-core { height: 176px; line-height: 1.7; resize: none; }
-  .picker { display: flex; align-items: center; justify-content: space-between; overflow-wrap: anywhere; }
+  .picker { display: flex; align-items: center; justify-content: space-between; gap: 16px; text-align: left; overflow-wrap: break-word; }
   .two-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
   .error-bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin: 20px 0; padding: 22px; border: 1px solid #ead5c9; border-radius: 14px; background: #fbefe8; color: #965e47; font-size: 25px; line-height: 1.7; }
   .error-bar button, .error-bar taro-button-core { flex-shrink: 0; color: #875238; font-size: 24px; text-decoration: underline; }

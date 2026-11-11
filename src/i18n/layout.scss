@@ -35,5 +35,25 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Yu Gothic', Meiryo, sans-serif;
   .heading, .title { letter-spacing: 1px; }
 }
-.orders-page.is-weapp:not(.orders-guest) > .language-switcher { padding-top: calc(96px + env(safe-area-inset-top)); }
-.orders-page.is-weapp:not(.orders-guest) > .section { padding-top: 24px; }
+
+.customer-heading-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 14px; min-height: 60px; }
+.customer-heading-top .eyebrow { flex: 1; min-width: 0; margin: 0; font-size: 17px; letter-spacing: 2px; overflow-wrap: break-word; }
+.page .customer-heading-top .language-switcher { position: static; padding: 0; flex: 0 0 auto; }
+.page .customer-heading-top .language-button { min-height: 56px; padding: 6px 16px; }
+.member-sync-status { padding: 20px 24px; margin-bottom: 22px; border: 1px solid #e0e6d9; border-radius: 16px; background: #f0f4ea; color: #63775c; font-size: 23px; line-height: 1.8; }
+.member-sync-status text, .member-sync-status span { display: block; }
+.member-sync-time { color: #7d8877; font-size: 22px; }
+.page.locale-en, .page.locale-ja {
+  .catalog-tabs .toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .store-actions { flex-wrap: wrap; }
+  .store-actions button, .store-actions taro-button-core { flex: 1 1 180px; }
+  .order-actions { flex-wrap: wrap; }
+  .order-actions button, .order-actions taro-button-core { flex: 1 1 200px; }
+  .slot-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .contact-store-picker > view, .contact-store-picker > taro-view-core { flex: 1; min-width: 0; }
+  .contact-store-change { max-width: 36%; }
+  .customer-account { align-items: flex-start; flex-wrap: wrap; }
+  .customer-account > view, .customer-account > taro-view-core { flex: 1 1 280px; min-width: 0; }
+  .customer-account button, .customer-account taro-button-core { padding-left: 0; text-align: left; }
+  .error-bar button, .error-bar taro-button-core, .chat-error button, .chat-error taro-button-core { max-width: 36%; }
+}

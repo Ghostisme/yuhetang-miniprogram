@@ -1,9 +1,10 @@
 import { withLaunchNotice } from '../../components/LaunchNotice'
 import LanguageSwitcher from '../../components/LanguageSwitcher'
+import OptionSelect from '../../components/OptionSelect'
 import { t, useI18n } from '../../i18n'
 import { useState } from 'react'
 import { useDidShow } from '@tarojs/taro'
-import { Picker, Text, View } from '@tarojs/components'
+import { Text, View } from '@tarojs/components'
 import { ContactChannels } from '../../components/CustomerService'
 import PageState from '../../components/PageState'
 import { useSite } from '../../hooks/useSite'
@@ -22,7 +23,7 @@ function Contact() {
   return <View className={`page contact-page locale-${locale}`} style={themeStyle(site)}><LanguageSwitcher />
     <View className='page-heading'><Text className='eyebrow'>ALWAYS HERE FOR YOU</Text><View className='heading'>{t("您的需要，我们在听")}</View><View className='muted'>{t("预约、养护与到店安排，都可以在这里聊聊。")}</View></View>
     <View className='contact-center-body'>
-      <Picker range={names} value={stores.findIndex(item => item.id === store?.id) + 1} onChange={e => { const id = stores[Number(e.detail.value) - 1]?.id || ''; contactState.storeId = id; setStoreId(id) }}><View className='contact-store-picker'><View><Text className='contact-store-label'>{t("接待门店")}</Text><View className='contact-store-name'>{store?.name || names[0]}</View></View><Text className='contact-store-change'>{t("切换 ›")}</Text></View></Picker>
+      <OptionSelect title={t('接待门店')} options={names} value={stores.findIndex(item => item.id === store?.id) + 1} onChange={index => { const id = stores[index - 1]?.id || ''; contactState.storeId = id; setStoreId(id) }}><View className='contact-store-picker'><View><Text className='contact-store-label'>{t("接待门店")}</Text><View className='contact-store-name'>{store?.name || names[0]}</View></View><Text className='contact-store-change'>{t("切换 ›")}</Text></View></OptionSelect>
       <ContactChannels key={store?.id || 'brand'} site={site} storeId={store?.id} />
       <View className='contact-center-note'><Text>{t("每一次沟通，都认真对待")}</Text><View>{store?.hours ? t('门店营业时间 {hours}', { hours: store.hours }) : t('门店工作人员会在营业时间为您回复。')}</View></View>
     </View>

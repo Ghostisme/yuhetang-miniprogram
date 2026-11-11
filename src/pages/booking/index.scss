@@ -16,7 +16,8 @@
   .receipt-actions { flex-shrink:0; padding:16px 32px calc(16px + env(safe-area-inset-bottom)); border-top:1px solid var(--line); background:var(--paper,#faf9f3); }
   .receipt-actions .bottom-actions { padding:0; }
   .steps { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin:24px 0 22px; padding:0 0 22px; border-bottom:1px solid var(--line); }
-  .steps button, .steps taro-button-core { display:flex; flex-direction:column; align-items:center; gap:12px; color:#85907d; font-size:23px; }
+  .steps button, .steps taro-button-core { display:flex; min-width:0; flex-direction:column; align-items:center; gap:12px; color:#85907d; font-size:23px; }
+  .steps button > text, .steps taro-button-core > taro-text-core { max-width:100%; }
   .steps button[disabled=""], .steps button[disabled="true"], .steps taro-button-core[disabled=""], .steps taro-button-core[disabled="true"] { opacity:1; }
   .steps .n { display:flex; width:48px; height:48px; align-items:center; justify-content:center; border:1px solid #d2dccb; border-radius:50%; background:#fff; font-size:24px; }
   .steps .active { color:var(--primary,#435e4b); font-weight:600; }
@@ -41,7 +42,9 @@
   .therapist-unavailable { background:#f3f5ef; color:#6d7b65; }
   .text-link { display:inline; color:var(--primary,#435e4b); font-size:24px; text-decoration:underline; text-underline-offset:4px; }
   .subscription-receipt { margin:22px 0; padding:20px; border-radius:12px; background:#edf2e7; color:#607454; font-size:24px; line-height:1.9; text-align:left; }
-  .bottom-actions { margin:0; padding:0; }
+  .bottom-actions { margin:0; padding:0; align-items:stretch; }
+  .booking-footer .secondary { min-width:0; flex:0 1 180px; }
+  .booking-footer .primary { flex:1 1 260px; }
   .receipt { padding:60px 32px 36px; text-align:center; }
   .receipt-icon { display:flex; width:116px; height:116px; align-items:center; justify-content:center; margin:0 auto 28px; border:1px solid #dce7d3; border-radius:50%; background:#eaf1e3; color:var(--primary,#435e4b); font-size:64px; }
   .receipt .heading { margin:20px 0; font-size:43px; }

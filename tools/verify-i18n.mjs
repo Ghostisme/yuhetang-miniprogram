@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import {chromium} from 'playwright'
 import {mkdir, readFile, writeFile} from 'node:fs/promises'
 import {resolve, sep, extname} from 'node:path'
+import {assertFullText} from './ui-fit.mjs'
 
 // Real compiled UI; every HTTP request is fulfilled locally or blocked.
 const origin='http://127.0.0.1:5182',api='https://mp-admin.hetuonian.cn',dist=resolve('dist/h5'),output=resolve('backups/i18n')
@@ -17,6 +18,7 @@ const profile={name:'王女士',phone:'13900003001',phoneVerified:true,memberSta
 const nextDay=new Date(Date.now()+86400000).toLocaleDateString('en-CA',{timeZone:'Asia/Shanghai'})
 const order={id:'YHT-I18N-FIXTURE',storeId:store.id,storeName:store.name,serviceName:care.name,bookingDate:nextDay,startTime:'15:00',headcount:1,status:'CONFIRMED',statusLabel:'门店已确认',version:1,customerActions:{canCancel:true,canReschedule:true,canWithdrawReschedule:false,deadline:new Date(Date.now()+86400000).toISOString(),serverTime:new Date().toISOString(),reason:''}}
 order.membership={memberVerified:true,memberGrade:'金卡',memberStoreId:'yuyao',memberStoreName:'余姚路店',serviceStoreId:'shanghai',crossStore:true,status:'MEMBER',verificationMethod:'WECHAT_PHONE'}
+const teachers=Array.from({length:9},(_,i)=>({id:`teacher-${i+1}`,storeId:store.id,name:`王老师${i+1}（示例）`,enabled:true,showOnClient:true,resting:false,serviceIds:[care.id],grade:'资深调理师'}))
 const customerText='客户原话：明天想预约推拿。'
 const conversation={id:'chat-i18n',status:'WAITING',storeId:store.id}
 const contexts=[],checks=[],errors=[],unknown=[]
@@ -42,11 +44,14 @@ async function fixture(lang,width=390,signedIn=true){
       if(req.method()==='OPTIONS')return route.fulfill({status:204,headers})
       state.calls.push(req.method()+' '+path)
       if(path==='/api/site')return json(site)
+      if(path==='/api/launch-status')return json({enabled:false,title:{},message:{},revision:0,updatedAt:''})
       if(path==='/api/runtime')return json({customerProfiles:true,developmentLogin:false,customerTemplateIds:[]})
       if(path==='/api/me/profile')return json(profile)
+      if(path==='/api/me/wallets')return json({accounts:[],entries:[],memberVerified:true,phoneVerified:true,migrationStatus:'PARTIAL',sourceSync:{enabled:false}})
       if(path==='/api/me/appointments')return json([order])
+      if(path==='/api/me/appointments/YHT-I18N-FIXTURE/slots')return json({slots:[{time:'15:00',available:true,remaining:4}],rules:{advanceDays:7}})
       if(path==='/api/stores/shanghai/services')return json([care])
-      if(path==='/api/stores/shanghai/therapists')return json([{id:'teacher-1',storeId:store.id,name:'王老师（示例）',enabled:true,showOnClient:true,resting:false,serviceIds:[care.id],grade:'资深调理师'}])
+      if(path==='/api/stores/shanghai/therapists')return json(teachers)
       if(path==='/api/stores/shanghai/slots')return json({date:nextDay,storeId:store.id,slots:[{time:'15:00',available:true,remaining:4,capacity:4,used:0}],rules:{advanceDays:7,maxHeadcount:4}})
       if(path==='/api/appointments'&&req.method()==='POST'){state.posts.push(req.postDataJSON());return json(order)}
       if(path==='/api/me/chats'&&req.method()==='POST')return json(conversation)
@@ -64,7 +69,29 @@ async function fixture(lang,width=390,signedIn=true){
 }
 function active(page,css='.page'){return page.locator(css).filter({visible:true}).last()}
 async function visit(page,path,css){await page.goto('about:blank');await page.goto(origin+'/#/pages/'+path);await active(page,css).waitFor()}
-async function fit(page,label){assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),label+' fits viewport')}
+async function fit(page,label){
+  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),label+' fits viewport')
+  await assertFullText(active(page),label)
+}
+async function choose(page,trigger,index,label){
+  await trigger.click()
+  const dialog=active(page).locator('.option-select-dialog')
+  await dialog.waitFor()
+  await assertFullText(dialog,label+' open options')
+  const option=dialog.locator('.option-select-option').nth(index)
+  await option.scrollIntoViewIfNeeded()
+  if(label.includes('therapist')){
+    const state=await dialog.locator('.option-select-options').evaluate(root=>{
+      const scroll=root.querySelector('.taro-scroll-view')||root
+      return {height:scroll.clientHeight,extent:scroll.scrollHeight}
+    })
+    assert(state.extent>state.height+100,'Long lists scroll within the options dialog')
+    await page.screenshot({path:resolve(output,label.replace(/[^a-z0-9-]/gi,'-')+'.png')})
+  }
+  await option.click()
+  await dialog.waitFor({state:'detached'})
+  await fit(page,label+' selected value')
+}
 async function language(page,lang){
   await active(page).locator('.language-button').click()
   await page.getByText(labels[lang],{exact:true}).filter({visible:true}).last().click()
@@ -78,7 +105,7 @@ try{
     await visit(page,'home/index','.home-page')
     await active(page).locator('.hero-button').waitFor()
     assert.equal(await active(page).locator('.quick-label').first().innerText(),tr('特色养护',lang))
-    assert.equal(await page.locator('taro-tabbar').getByText(tr('门店',lang),{exact:true}).count(),1)
+    await page.locator('taro-tabbar').getByText(tr('门店',lang),{exact:true}).waitFor()
     await fit(page,`${lang} home ${width}`)
     await page.screenshot({path:resolve(output,`home-${lang}-${width}.png`)})
     await visit(page,'stores/index','.stores-page')
@@ -106,11 +133,22 @@ try{
     await language(page,lang==='en'?'ja':'en');assert.equal(await active(page).locator('.gallery taro-image-core').count(),10)
     await language(page,lang)
     await fit(page,`${lang} gallery ${width}`)
+    if(width===320)await page.screenshot({path:resolve(output,`catalog-${lang}-${width}.png`)})
     await visit(page,'contact/index','.contact-page');await active(page).locator('.contact-store-picker').waitFor();await fit(page,`${lang} contact ${width}`)
+    await choose(page,active(page).locator('.option-select-trigger'),2,`${lang}-contact-store-${width}`)
+    await language(page,lang==='en'?'ja':'en')
+    assert.equal(await active(page).locator('.contact-store-name').innerText(),tr('余姚路店',lang==='en'?'ja':'en'),'Selected branch survives the locale change')
+    await language(page,lang)
+    await active(page).locator('.option-select-trigger').click()
+    await active(page).locator('.option-select-mask').click({position:{x:8,y:8}})
+    assert.equal(await active(page).locator('.contact-store-name').innerText(),tr('余姚路店',lang),'Closing the options keeps the current branch')
     await visit(page,'booking/index?storeId=shanghai&serviceId=care-1','.booking-page')
     for(let step=0;step<3;step++){
       await fit(page,`${lang} booking step ${step+1} ${width}`)
-      if(step===2)await active(page).locator('.slot-grid').getByText('15:00',{exact:false}).click()
+      if(step===2){
+        await choose(page,active(page).locator('.two-fields .option-select-trigger'),1,`${lang}-headcount-${width}`)
+        await active(page).locator('.slot-grid').getByText('15:00',{exact:false}).click()
+      }
       await page.screenshot({path:resolve(output,`booking-${lang}-${width}-step${step+1}.png`)})
       await active(page).getByText(tr('下一步 →',lang),{exact:true}).click()
     }
@@ -122,12 +160,16 @@ try{
     await form.getByText(tr('是否会员',lang),{exact:true}).waitFor()
     assert.equal(await form.getByText(tr('已核实会员',lang),{exact:false}).count(),0,'Changing the booking phone removes the verified-member display')
     await form.locator('textarea').fill('客户原始备注 unchanged')
+    await choose(page,form.locator('.therapist-field .option-select-trigger'),9,`${lang}-therapist-${width}`)
+    await choose(page,form.locator('.two-fields .option-select-trigger').first(),2,`${lang}-member-claim-${width}`)
     const requestCount=state.calls.filter(x=>x.includes('/api/stores/')).length
     for(const selected of ['en','ja','zh',lang]){
       await language(page,selected)
       assert.equal(await form.locator('input').first().inputValue(),'李女士')
       assert.equal(await form.locator('input').nth(1).inputValue(),'13900003009')
       assert.equal(await form.locator('textarea').inputValue(),'客户原始备注 unchanged')
+      assert.match(await form.locator('.therapist-field .picker').innerText(),/王老师9/)
+      assert.equal(await form.locator('.two-fields .option-select-value').first().innerText(),tr('不确定',selected))
       assert.equal(await form.locator('.steps .active').innerText(),`4\n${tr('预约信息',selected)}`)
       await fit(page,`${selected} booking form ${width}`)
     }
@@ -139,15 +181,26 @@ try{
     await form.locator('.booking-footer .primary').click()
     await form.locator('.receipt').waitFor()
     assert.equal(state.posts.length,1)
+    assert.equal(state.posts[0].therapistIntentId,'teacher-9')
+    assert.equal(state.posts[0].headcount,2)
+    assert.equal(state.posts[0].memberClaim,'UNKNOWN')
     assert.deepEqual({storeId:state.posts[0].storeId,serviceId:state.posts[0].serviceId,name:state.posts[0].name,remark:state.posts[0].remark,phone:state.posts[0].phone},{storeId:'shanghai',serviceId:'care-1',name:'李女士',remark:'客户原始备注 unchanged',phone:'13900003009'})
     await visit(page,'orders/index','.orders-page');await active(page).getByText(tr('门店已确认',lang),{exact:true}).waitFor()
     await active(page).getByText(tr('本次为会员跨店预约',lang),{exact:true}).waitFor()
     assert.equal(await active(page).locator('.subscription-preferences, .booking-subscriptions').count(),0)
     await fit(page,`${lang} orders ${width}`)
+    await active(page).getByText(tr('申请改约',lang),{exact:true}).click()
+    await active(page).locator('.edit-panel .option-select-value').getByText('15:00',{exact:true}).waitFor()
+    await choose(page,active(page).locator('.edit-panel .option-select-trigger'),0,`${lang}-reschedule-time-${width}`)
+    await fit(page,`${lang} reschedule actions ${width}`)
+    await active(page).getByText(tr('暂不改约',lang),{exact:true}).click()
     if(width===390)await page.screenshot({path:resolve(output,`orders-${lang}.png`),fullPage:true})
     await visit(page,'profile/index','.profile-page');await active(page).getByText('王女士',{exact:true}).waitFor();await active(page).getByText(tr('金卡',lang),{exact:true}).waitFor();await fit(page,`${lang} profile ${width}`)
     await visit(page,'chat/index?storeId=shanghai','.chat-page');await active(page).getByText(customerText,{exact:true}).waitFor()
     await active(page).locator('textarea').fill('草稿保持原文')
+    await active(page).locator('.chat-store .option-select-trigger').click()
+    await assertFullText(active(page).locator('.option-select-dialog'),`${lang} chat branch options ${width}`)
+    await active(page).locator('.option-select-close').click()
     await language(page,lang==='en'?'ja':'en')
     assert.equal(await active(page).locator('textarea').inputValue(),'草稿保持原文')
     assert.equal(await active(page).getByText(customerText,{exact:true}).count(),1)
@@ -159,7 +212,7 @@ try{
       if(lang==='en')assert(!/[\u4e00-\u9fff]/.test(await active(page).locator('.section').innerText()),'English legal paragraphs are translated')
       await fit(page,`${lang} legal ${kind} ${width}`)
     }
-    checks.push(`${lang}/${width}px: all content/booking/order/profile/chat/legal screens fit; region and gallery selection, customer text and booking choices survive language switches; booking submits canonical business data`)
+    checks.push(`${lang}/${width}px: all content/booking/order/profile/chat/legal screens fit; region and gallery selection, customer text and booking choices survive language switches; booking submits canonical business data; expanded long staff/branch lists, headcount, claims and reschedule choices remain readable and preserve IDs`)
     await context.close()
   }
   for(const lang of ['zh','en','ja']){

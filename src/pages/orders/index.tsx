@@ -2,6 +2,7 @@ import { customerActionAvailable } from '../../services/launch-mode'
 import { withLaunchNotice } from '../../components/LaunchNotice'
 import { localizeSite } from '../../i18n/content'
 import LanguageSwitcher from '../../components/LanguageSwitcher'
+import OptionSelect from '../../components/OptionSelect'
 import { dialogLabels, t, useI18n } from '../../i18n'
 import { useEffect, useRef, useState } from 'react'
 import Taro, { useDidHide, useDidShow, usePullDownRefresh, useUnload } from '@tarojs/taro'
@@ -16,11 +17,16 @@ import { day, message, RequestScope } from '../../utils/booking'
 import { appointmentActions, deadlineLabel, stampAppointments } from '../../utils/appointment-actions'
 import type { Appointment, Runtime, Site, Slots } from '../../types'
 import ordersIcon from '../../assets/tabbar/orders-active.png'
+import { navigationInset } from '../../utils/navigation-inset'
 import './index.scss'
 
 function Orders() {
   const { locale } = useI18n()
   const signedIn = useCustomerSession()
+  const [topInset] = useState(() => {
+    if (!isWeapp) return 0
+    try { return navigationInset(Taro.getWindowInfo().statusBarHeight, Taro.getMenuButtonBoundingClientRect()) } catch { return navigationInset() }
+  })
   const [orders, setOrders] = useState<Appointment[]>([]), [rawSite, setSite] = useState<Site | null>(null), [runtime, setRuntime] = useState<Runtime>({}), [error, setError] = useState(''), [loading, setLoading] = useState(false), [busy, setBusy] = useState(false)
   const [editing, setEditing] = useState<Appointment | null>(null), [date, setDate] = useState(day(1)), [times, setTimes] = useState<string[]>([]), [timeIndex, setTimeIndex] = useState(0), [lastDay, setLastDay] = useState(day(7)), [timesLoading, setTimesLoading] = useState(false)
   const [clock, setClock] = useState(Date.now())
@@ -85,8 +91,8 @@ function Orders() {
     sending.current = true; setBusy(true)
     try { if (!customerActionAvailable()) return; const subscription = subscribeBooking(runtime); await subscription; await request(`/api/me/appointments/${editing.id}`, { method: 'PATCH', data: { action: 'reschedule', version: editing.version, date, startTime: times[timeIndex] } }); setEditing(null); await load(); void Taro.showModal({ ...dialogLabels(), title: t('改约申请已提交'), content: t('原预约时间和名额继续保留。门店同意后新时间才会生效，未同意或超时将保留原预约。'), showCancel: false }) } catch (e) { toastError(e); await load() } finally { sending.current = false; setBusy(false) }
   }
-  return <View className={`page orders-page locale-${locale} ${!signedIn ? 'orders-guest' : ''} ${isWeapp ? 'is-weapp' : ''}`} style={themeStyle(site)}>{signedIn && <LanguageSwitcher />}
-    {!signedIn ? <CustomerLoginHero withTabbar error={t(error)} onSignedIn={() => { setError('') }} /> : <View className='section'><Text className='eyebrow'>MY APPOINTMENTS</Text><View className='heading'>{t("我的预约")}</View>
+  return <View className={`page orders-page locale-${locale} ${!signedIn ? 'orders-guest' : ''} ${isWeapp ? 'is-weapp' : ''}`} style={themeStyle(site)}>{signedIn && isWeapp && <View className='orders-navigation-space' style={{ height: `${topInset}px` }} />}
+    {!signedIn ? <CustomerLoginHero withTabbar error={t(error)} onSignedIn={() => { setError('') }} /> : <View className='section'><View className='customer-heading-top'><Text className='eyebrow'>MY APPOINTMENTS</Text><LanguageSwitcher compact /></View><View className='heading'>{t("我的预约")}</View>
     <View className='customer-account'><View><View className='account-title'>{t("欢迎来到裕和堂")}</View><View className='tiny'>{t("已登录 · 预约与咨询记录为您保留")}</View></View><Button disabled={busy} onClick={() => { void signOut() }}>{t("退出登录")}</Button></View>
     {runtime.customerProfiles && <CustomerProfileCard />}
     {error && <View className='error-bar'>{t(error)}<Button onClick={() => { void load() }}>{t("重新加载")}</Button></View>}
@@ -116,7 +122,7 @@ function Orders() {
         {editing?.id === item.id && actions.canReschedule && <View className='edit-panel'>
           <View className='label'>{t("选择新的到店时间")}</View><View className='tiny'>{t("提交申请后保留原预约；新时段名额以门店处理时为准。")}</View>
           <Picker mode='date' value={date} start={day()} end={lastDay} disabled={busy} onChange={e => setDate(e.detail.value)}><View className='picker'>{date}　›</View></Picker>
-          <Picker range={times} value={timeIndex} disabled={busy || timesLoading || !times.length} onChange={e => setTimeIndex(Number(e.detail.value))}><View className='picker'>{timesLoading ? t('正在查询名额…') : times[timeIndex] || t('当日暂无可用时段')}　›</View></Picker>
+          <OptionSelect title={t('选择新的到店时间')} options={times} value={timeIndex} disabled={busy || timesLoading || !times.length} triggerClassName='picker' onChange={setTimeIndex}>{timesLoading ? t('正在查询名额…') : times.length ? undefined : t('当日暂无可用时段')}</OptionSelect>
           <View className='bottom-actions'><Button className='secondary' disabled={busy} onClick={() => { scope.current.cancel(); setEditing(null) }}>{t("暂不改约")}</Button><Button className='primary' disabled={busy || timesLoading || !times.length || (date === item.bookingDate && times[timeIndex] === item.startTime)} loading={busy} onClick={() => { void save() }}>{t("提交改约")}</Button></View>
         </View>}
       </View>

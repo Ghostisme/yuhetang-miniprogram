@@ -1,7 +1,7 @@
 .catalog-page {
   .catalog-tabs { padding:0 32px; }
   .toolbar { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
-  .toolbar button, .toolbar taro-button-core { min-height:76px; padding:18px 4px; font-size:24px; }
+  .toolbar button, .toolbar taro-button-core { min-width:0; min-height:88px; padding:18px 12px; font-size:24px; white-space:normal; }
   .service-list { padding-top:24px; }
   .service-list .catalog-card { display:flex; margin-bottom:22px; }
   .service-list .catalog-card image, .service-list .catalog-card taro-image-core { flex-shrink:0; width:226px; height:auto; min-height:254px; }

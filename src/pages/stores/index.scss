@@ -7,8 +7,8 @@
   .store-card .pill { margin:0 0 14px; font-size:21px; }
   .store-card .heading { margin-bottom:12px; font-size:36px; }
   .store-card .tiny { margin-top:8px; }
-  .store-actions { display:flex; align-items:center; gap:16px; margin-top:24px; }
-  .store-actions button, .store-actions taro-button-core { display:flex; flex:1; min-height:82px; align-items:center; justify-content:center; padding:18px 10px; border:1px solid #cdd8c7; border-radius:12px; background:#fff; color:var(--primary,#435e4b); font-size:25px; }
+  .store-actions { display:flex; align-items:stretch; gap:16px; margin-top:24px; }
+  .store-actions button, .store-actions taro-button-core { display:flex; flex:1; min-width:0; min-height:82px; align-items:center; justify-content:center; padding:18px 10px; border:1px solid #cdd8c7; border-radius:12px; background:#fff; color:var(--primary,#435e4b); font-size:25px; }
   .store-actions .green { border-color:var(--primary,#435e4b); background:var(--primary,#435e4b); color:#fff; }
   .store-detail-cover { width:calc(100% - 64px); margin:0 32px; border-radius:20px; }
   .store-meta { padding:22px 24px; border-radius:14px; background:var(--soft,#e9eddf); }
