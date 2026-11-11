@@ -1,0 +1,50 @@
+.page.wallet-page {
+  display: flex; flex-direction: column; height: 100vh; height: 100dvh;
+  min-height: 0; overflow: hidden; padding-bottom: 0; background: #faf9f3;
+}
+
+// Match the 750px design units and scoped button styles used by other Taro pages.
+.wallet-page {
+  .wallet-header { flex-shrink: 0; padding: 32px 32px 28px; }
+  .wallet-header .heading { margin-bottom: 16px; }
+  .wallet-live-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 20px; padding-top: 12px; border-top: 1px solid #e3e7dc; }
+  .wallet-live-bar > view, .wallet-live-bar > div { flex: 1; min-width: 0; }
+  .wallet-live-status, .wallet-query-time { display: block; font-size: 22px; line-height: 1.8; color: #75846d; }
+  .wallet-refresh { flex-shrink: 0; max-width: 40%; }
+  .wallet-caption { color: #778575; font-size: 25px; line-height: 1.8; display: block; overflow-wrap: break-word; }
+  .wallet-scroll { flex: 1; height: 0; min-height: 0; }
+  .wallet-content { padding: 8px 32px calc(48px + env(safe-area-inset-bottom)); }
+  .wallet-account, .wallet-consumption-entry { display: block; width: 100%; text-align: left; color: #405c49; background: #fff; border: 1px solid #dce4d6; border-radius: 24px; padding: 30px; margin: 0 0 24px; line-height: 1.5; white-space: normal; }
+  .wallet-account.is-selected { background: #eaf0e4; border-color: #577552; }
+  .wallet-account-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; font-size: 30px; }
+  .wallet-account-label { color: #74816d; font-size: 24px; display: block; margin-top: 14px; }
+  .wallet-amount { font: 500 64px/1.4 system-ui, sans-serif; margin: 6px 0 12px; }
+  .wallet-currency { font-size: 36px; margin-right: 10px; }
+  .wallet-updated { font-size: 22px; color: #788670; }
+  .wallet-section { background: #fff; border: 1px solid #e2e6dc; border-radius: 24px; padding: 28px; margin: 28px 0 0; }
+  .wallet-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 16px; }
+  .wallet-section-title { font-size: 30px; color: #405c49; line-height: 1.6; }
+  .wallet-service-toggle { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 20px; padding: 8px 0 20px; margin: 0; background: transparent; color: #405c49; border: none; font-size: 28px; line-height: 1.6; white-space: normal; text-align: left; }
+  .wallet-service-toggle::after { border: none; }
+  .wallet-service-body { margin-top: 24px; border-top: 1px solid #edf0e7; padding-top: 24px; }
+  .wallet-link { font-size: 24px; line-height: 1.8; background: transparent; color: #516c4c; padding: 16px 0; margin: 0; border: none; white-space: normal; }
+  .wallet-link::after { border: none; }
+  .wallet-entry { border-bottom: 1px solid #edf0e7; padding: 24px 0; }
+  .wallet-entry-top { display: flex; justify-content: space-between; gap: 24px; font-size: 27px; }
+  .wallet-entry-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; font-size: 22px; color: #85907c; margin-top: 12px; }
+  .wallet-credit { color: #426d44; }
+  .wallet-debit { color: #9c6352; }
+  .wallet-pagination { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 28px; font-size: 24px; }
+  .wallet-pagination .secondary { font-size: 24px; padding: 16px; min-height: 72px; }
+  .wallet-hint { margin: 24px 0; font-size: 24px; line-height: 1.9; color: #7c856f; }
+  .wallet-command { display: flex; flex-direction: column; gap: 20px; background: #f4f6ee; border-radius: 16px; padding: 24px; margin: 24px 0; font-size: 30px; overflow-wrap: break-word; }
+  .wallet-bound { padding: 6px 14px; background: #edf4e6; color: #54774a; border-radius: 8px; font-size: 22px; }
+  .wallet-error { margin: 24px 0; background: #fff4ea; color: #9b5944; padding: 28px; border-radius: 16px; font-size: 26px; line-height: 1.8; }
+  .wallet-empty { padding: 40px 30px; border: 1px solid #e3e7dc; border-radius: 24px; background: #fff; font-size: 26px; color: #85907d; line-height: 1.9; }
+  .wallet-verify { font-size: 26px; line-height: 1.8; }
+  .wallet-verify .customer-profile-card { margin-top: 28px; }
+  .wallet-footnote { padding: 32px 8px 0; font-size: 22px; color: #8c9680; line-height: 1.9; text-align: center; }
+}
+
+.wallet-page .wallet-card-number { display: block; margin-top: 10px; font-size: 25px; color: #435f4b; overflow-wrap: anywhere; }
+.wallet-page .wallet-validity { font-size: 22px; color: #788670; margin-bottom: 8px; }

@@ -118,6 +118,8 @@ test('logout invalidates an in-flight login without changing other device settin
 test('login returns only to known application pages and retains store selection', () => {
   const store = '/pages/booking/index?storeId=shanghai&serviceId=care-1'
   assert.equal(loginReturnTarget(store), store)
+  assert.equal(loginReturnTarget('/pages/consumption/index'), '/pages/consumption/index')
+  assert.equal(loginReturnTarget('/pages/wallet/index'), '/pages/wallet/index')
   for (const unsafe of ['https://example.com', '//example.com', '/pages/login/index', '/pages/legal/index', '/pages/orders/index#x', '/pages/booking/index\\evil', '/pages/chat/index\nx']) {
     assert.equal(loginReturnTarget(unsafe), '/pages/orders/index')
   }

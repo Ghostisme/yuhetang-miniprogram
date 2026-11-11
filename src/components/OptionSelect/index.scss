@@ -1,0 +1,18 @@
+.page .option-select {
+  min-width: 0;
+  .option-select-trigger { width: 100%; min-width: 0; text-align: left; }
+  .option-select-value { flex: 1; min-width: 0; overflow-wrap: break-word; }
+  .option-select-chevron { flex-shrink: 0; color: #85947c; }
+  .option-select-overlay { position: fixed; inset: 0; z-index: 1600; }
+  .option-select-mask { position: absolute; inset: 0; background: rgba(20, 36, 26, .42); }
+  .option-select-dialog { position: absolute; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column; max-height: 85vh; max-width: 750PX; margin: 0 auto; overflow: hidden; border-radius: 28px 28px 0 0; background: #fafbf7; color: #30483b; text-align: left; }
+  .option-select-header { display: flex; flex-shrink: 0; align-items: center; justify-content: space-between; gap: 20px; padding: 24px 28px; border-bottom: 1px solid #e1e7dd; }
+  .option-select-title { flex: 1; min-width: 0; font-size: 30px; font-weight: 600; line-height: 1.6; overflow-wrap: break-word; }
+  .option-select-close { display: flex; flex-shrink: 0; width: 76px; min-height: 76px; align-items: center; justify-content: center; border-radius: 50%; color: #5d705d; background: #edf1e8; font-size: 44px; line-height: 1; }
+  .option-select-options { flex: 0 1 auto; min-height: 0; max-height: 58vh; }
+  .option-select-option { display: flex; align-items: center; justify-content: space-between; gap: 24px; width: 100%; min-height: 104px; margin: 0; padding: 26px 32px; border-bottom: 1px solid #e7ece2; font-size: 28px; font-weight: 400; line-height: 1.65; text-align: left; white-space: normal; }
+  .option-select-option.is-selected { background: #eaf1e4; color: #3e6146; font-weight: 500; }
+  .option-select-label { flex: 1; min-width: 0; overflow-wrap: break-word; }
+  .option-select-check { flex-shrink: 0; width: 40px; color: #4e704b; font-size: 30px; text-align: center; }
+  .option-select-bottom { flex-shrink: 0; height: calc(20px + env(safe-area-inset-bottom)); }
+}

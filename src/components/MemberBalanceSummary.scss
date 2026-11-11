@@ -1,0 +1,12 @@
+.member-balance-summary {
+  margin-top: 26px; padding: 26px; background: #f3f6ee; border: 1px solid #e0e7d9; border-radius: 16px;
+  .balance-summary-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; color: #405c49; font-size: 28px; }
+  .balance-summary-status { color: #75826b; font-size: 23px; }
+  .balance-summary-amount { font: 500 52px/1.6 system-ui, sans-serif; color: #344f3e; overflow-wrap: break-word; }
+  .balance-summary-note, .balance-summary-time { margin-top: 12px; color: #738069; font-size: 23px; line-height: 1.7; }
+  .balance-summary-time { font-size: 21px; }
+  .balance-summary-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; margin-top: 16px; }
+  .balance-summary-refresh, .balance-summary-detail { min-height: 64px; padding: 12px 0; background: transparent; color: #405c49; font-size: 25px; border: none; text-align: left; white-space: normal; }
+  .balance-summary-detail { display: flex; gap: 20px; }
+  .balance-summary-refresh::after, .balance-summary-detail::after { border: none; }
+}

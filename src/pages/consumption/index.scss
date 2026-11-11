@@ -1,0 +1,46 @@
+.page.consumption-page { display: flex; flex-direction: column; height: 100vh; height: 100dvh; min-height: 0; overflow: hidden; padding-bottom: 0; background: #faf9f3; }
+.consumption-page {
+  .consumption-header { flex-shrink: 0; padding: 28px 32px 24px; }
+  .consumption-title-row { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+  .consumption-title-row .heading { margin: 12px 0; }
+  .consumption-caption { color: #788472; font-size: 25px; line-height: 1.8; }
+  .consumption-text-button { border: 0; background: transparent; color: #4e694d; font-size: 25px; padding: 12px 0; margin: 0; line-height: 1.8; white-space: normal; }
+  .consumption-text-button::after { border: 0; }
+  .consumption-back { text-align: left; margin-top: 10px; }
+  .consumption-filters { display: flex; flex-direction: column; gap: 14px; margin-top: 24px; }
+  .consumption-filter { display: flex; justify-content: space-between; gap: 14px; padding: 18px 22px; font-size: 25px; border: 1px solid #dce4d6; border-radius: 12px; background: #fff; color: #4a624a; min-width: 0; }
+  .consumption-date-filters { display: flex; align-items: center; gap: 14px; color: #92a088; }
+  .consumption-date-filters picker, .consumption-date-filters taro-picker-core { flex: 1; min-width: 0; }
+  .consumption-clear { align-self: flex-end; font-size: 23px; padding: 0; }
+  .consumption-scroll { flex: 1; min-height: 0; height: 0; }
+  .consumption-content { padding: 0 32px calc(40px + env(safe-area-inset-bottom)); }
+  .consumption-migration-note { font-size: 23px; line-height: 1.85; color: #829077; margin-bottom: 26px; padding: 20px 24px; background: #eff2e9; border-radius: 12px; }
+  .consumption-card { display: block; text-align: left; background: #fff; border: 1px solid #dfe6d9; color: #405c49; border-radius: 20px; padding: 26px; margin: 0 0 22px; width: 100%; line-height: 1.6; white-space: normal; }
+  .consumption-card::after { border: 0; }
+  .consumption-card-top { display: flex; justify-content: space-between; gap: 20px; align-items: flex-start; }
+  .consumption-project { font-size: 29px; flex: 1; min-width: 0; overflow-wrap: break-word; }
+  .consumption-card-amount { font-size: 31px; font-weight: 500; flex-shrink: 0; }
+  .consumption-card-store { font-size: 25px; margin-top: 16px; }
+  .consumption-card-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; font-size: 23px; color: #88927f; margin-top: 10px; align-items: center; }
+  .consumption-status { font-size: 22px; background: #edf2e8; color: #607f55; border-radius: 8px; padding: 4px 12px; }
+  .consumption-card-bottom { display: flex; justify-content: space-between; gap: 20px; border-top: 1px solid #edf0e8; padding-top: 18px; margin-top: 22px; font-size: 23px; color: #77876d; }
+  .is-reversed .consumption-status, .is-voided .consumption-status { color: #9b7156; background: #f5eee4; }
+  .is-reversed .consumption-card-amount, .is-voided .consumption-card-amount { text-decoration: line-through; color: #97a08e; }
+  .consumption-empty, .consumption-error { border: 1px solid #e1e7da; border-radius: 20px; background: #fff; padding: 36px 28px; color: #829077; font-size: 25px; line-height: 1.9; margin-bottom: 24px; }
+  .consumption-error { color: #9b5944; background: #fff4ea; }
+  .consumption-section-title { font-size: 29px; color: #405c49; margin-bottom: 16px; }
+  .consumption-verify { font-size: 25px; line-height: 1.9; }
+  .consumption-pagination { display: flex; justify-content: space-between; align-items: center; gap: 16px; font-size: 24px; margin-top: 28px; }
+  .consumption-pagination .secondary { padding: 14px 24px; font-size: 24px; }
+  .consumption-footnote { font-size: 22px; line-height: 1.9; text-align: center; color: #8b9680; padding: 28px 8px 0; }
+  .consumption-detail { background: #fff; border: 1px solid #dfe6d9; border-radius: 22px; padding: 30px; }
+  .consumption-detail-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .consumption-source { font-size: 23px; color: #839079; }
+  .consumption-detail-project { font-size: 34px; line-height: 1.6; margin-top: 32px; color: #405c49; overflow-wrap: break-word; }
+  .consumption-detail-amount { font: 500 60px/1.5 system-ui, sans-serif; margin: 14px 0 28px; color: #405c49; }
+  .consumption-detail-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 26px; padding: 24px 0; border-top: 1px solid #edf0e7; color: #87927d; font-size: 25px; line-height: 1.8; }
+  .consumption-detail-row text:last-child, .consumption-detail-row span:last-child { color: #4a614b; text-align: right; overflow-wrap: anywhere; flex: 1; min-width: 0; }
+  .consumption-detail-note { padding-top: 24px; border-top: 1px solid #edf0e7; font-size: 25px; line-height: 1.9; color: #7b8a71; }
+  .consumption-detail-note text, .consumption-detail-note span { display: block; overflow-wrap: break-word; }
+  .consumption-invalid-note { font-size: 24px; line-height: 1.8; background: #f8f1e6; color: #997651; padding: 20px; border-radius: 12px; margin-bottom: 24px; }
+}

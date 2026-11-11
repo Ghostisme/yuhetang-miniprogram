@@ -8,7 +8,7 @@ export const getLocale = store.get
 export const setLocale = store.set
 export const t = (text: string | null | undefined, values?: Record<string, string | number>) => translate(text, getLocale(), values)
 const tabTitles = ['首页', '养护', '门店', '客服', '我的预约']
-const titles: Record<string, string> = { home: '裕和堂', catalog: '养护', stores: '门店', contact: '客服', orders: '我的预约', booking: '预约到店', chat: '在线咨询', 'store-detail': '门店详情', login: '登录', legal: '用户协议', profile: '个人资料' }
+const titles: Record<string, string> = { home: '裕和堂', catalog: '养护', stores: '门店', contact: '客服', orders: '我的预约', booking: '预约到店', chat: '在线咨询', 'store-detail': '门店详情', login: '登录', legal: '用户协议', profile: '个人资料', wallet: '会员余额', consumption: '消费记录' }
 let tabLocale: Locale | undefined, navigationKey = ''
 
 export function refreshNavigation(locale: Locale = getLocale()) {

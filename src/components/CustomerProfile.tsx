@@ -6,9 +6,10 @@ import Taro, { useDidShow } from '@tarojs/taro'
 import { Button, Checkbox, CheckboxGroup, Input, Label, Text, View } from '@tarojs/components'
 import { hasCustomerSession, isWeapp, request } from '../services/api'
 import type { CustomerProfile } from '../types'
+import MemberBalanceSummary from './MemberBalanceSummary'
 import './CustomerProfile.scss'
 
-export default function CustomerProfileCard({ onChanged }: { onChanged?: (profile: CustomerProfile) => void }) {
+export default function CustomerProfileCard({ onChanged, showWallet = true }: { onChanged?: (profile: CustomerProfile) => void; showWallet?: boolean }) {
   useI18n()
   const launch = useLaunchStatus()
   const [profile, setProfile] = useState<CustomerProfile | null>(null)
@@ -68,6 +69,7 @@ export default function CustomerProfileCard({ onChanged }: { onChanged?: (profil
       <View className='profile-card-note'>{t("手机号由您单独授权；会员状态由门店核实维护。")}</View>
     </View>}
     {profile?.complete && !expanded && <Button className='profile-edit' onClick={() => { setExpanded(true); setAgreed(false) }}>{t("编辑个人资料")}<Text>›</Text></Button>}
+    {profile&&showWallet&&<MemberBalanceSummary phoneVerified={profile.phoneVerified} />}
     {error && <View className='profile-error' role='alert'>{t(error)}{!profile && <Button className='secondary' onClick={() => { void load() }}>{t("重新加载")}</Button>}</View>}
   </View>
 }
