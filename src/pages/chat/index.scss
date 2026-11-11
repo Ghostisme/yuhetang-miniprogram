@@ -18,8 +18,9 @@
   .chat-heading .muted { font-size:24px; }
   .chat-store { flex-shrink:0; padding:22px 32px; border-bottom:1px solid var(--line); background:#fff; font-size:25px; }
   .chat-store-row { display:flex; align-items:center; justify-content:space-between; gap:20px; }
-  .store-label { flex-shrink:0; color:#7b8772; }
-  .store-value { overflow:hidden; color:var(--primary,#435e4b); text-overflow:ellipsis; white-space:nowrap; }
+  .store-label { flex-shrink:0; max-width:38%; color:#7b8772; }
+  .store-value { flex:1; min-width:0; color:var(--primary,#435e4b); text-align:right; overflow-wrap:break-word; white-space:normal; }
+  .chat-store .option-select-trigger { width:100%; text-align:left; }
   .chat-contact-footer { flex-shrink:0; margin-top:auto; border-top:1px solid var(--line); background:var(--paper,#faf9f3); }
   .chat-contact-footer .contact-entry { width:100%; min-height:70px; flex-direction:row; gap:14px; font-size:22px; }
   .chat-contact-footer .contact-entry image, .chat-contact-footer .contact-entry taro-image-core { width:32px; height:32px; }
@@ -37,6 +38,10 @@
   .bubble { max-width:86%; padding:20px 24px; overflow-wrap:anywhere; border:1px solid #e3e8dd; border-radius:18px 18px 18px 4px; background:#fff; word-break:break-word; }
   .mine .bubble { border-color:#dce6d2; border-radius:18px 18px 4px 18px; background:#e6eedc; }
   .message-meta { margin-bottom:10px; color:#758469; font-size:21px; }
+  .chat-attachment { width:440px; max-width:100%; }
+  .chat-attachment-image { display:block; width:100%; max-height:600px; overflow:hidden; border-radius:12px; }
+  .chat-attachment-video { display:block; width:100%; height:260px; border-radius:12px; background:#25362b; }
+  .chat-attachment-name { display:block; margin-top:12px; overflow-wrap:break-word; color:#758469; font-size:21px; line-height:1.6; }
   .bubble > text, .bubble > taro-text-core { font-size:27px; line-height:1.8; white-space:pre-wrap; }
   .message-bottom { height:28px; }
   .history { margin:12px auto; padding:16px 24px; color:#738465; font-size:23px; }
@@ -45,4 +50,14 @@
   .chat-compose .primary { min-width:128px; min-height:100px; margin:0; padding:20px 26px; font-size:27px; }
   .chat-error { display:flex; flex-shrink:0; align-items:center; justify-content:space-between; gap:16px; padding:16px 28px; background:#fbefe5; color:#975f43; font-size:23px; line-height:1.8; }
   .chat-error button, .chat-error taro-button-core { flex-shrink:0; color:#875238; font-size:24px; }
+}
+
+.chat-page {
+  .chat-profile-scroll { flex:1; height:0; min-height:0; }
+  .chat-profile-gate { padding:32px; }
+  .chat-profile-gate > .empty-title { margin-bottom:16px; color:var(--ink,#344a3b); font-size:32px; }
+  .chat-profile-gate > .muted { color:#748368; font-size:25px; line-height:1.8; }
+  .chat-profile-gate > .tiny { display:block; margin:20px 0; color:#7f8979; font-size:23px; line-height:1.8; }
+  .chat-access-loading { padding:40px 0; color:#748368; font-size:25px; }
+  .chat-verified-profile { display:flex; flex-wrap:wrap; gap:20px; padding:28px 0; color:#405c49; font-size:27px; }
 }

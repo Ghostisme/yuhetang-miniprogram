@@ -27,6 +27,7 @@ async function fixture(width=390,height=844,signedIn=false){
       calls.push({path,method:req.method(),body:req.postDataJSON()})
       if(path==='/api/site')return json(site)
       if(path==='/api/runtime')return json({customerTemplateIds:[],developmentLogin:false})
+      if(path==='/api/me/profile'&&signedIn)return json({name:'已授权客户',phone:'13900003001',phoneVerified:true,complete:true,memberVerified:false,sources:['MINIPROGRAM']})
       if(path==='/api/stores/shanghai/services')return json([care])
       if(path==='/api/stores/shanghai/therapists')return json([])
       if(path==='/api/stores/shanghai/slots')return json({date:url.searchParams.get('date'),storeId:'shanghai',slots:[{time:'15:00',capacity:4,used:0,remaining:4,available:true}],rules:{advanceDays:7,maxHeadcount:4}})
@@ -96,8 +97,8 @@ try{
   await signed.page.locator('.contact-sheet-close').click()
   await visit(signed.page,'/pages/contact/index');await signed.page.locator('.contact-store-name').getByText('品牌客服 · 总部接待',{exact:true}).waitFor()
   // A fresh app uses headquarters by default. The picker exposes enabled stores only.
-  const picker=signed.page.locator('taro-picker-core')
-  await picker.evaluate(el=>el.dispatchEvent(new CustomEvent('change',{bubbles:true,detail:{value:1}})))
+  await signed.page.locator('.option-select-trigger').click()
+  await signed.page.locator('.option-select-option').filter({hasText:'上海中心店'}).click()
   await signed.page.locator('.contact-store-name').getByText('上海中心店',{exact:true}).waitFor()
   assert((await signed.page.locator('.contact-phone').innerText()).includes('021-50181919'))
   await signed.page.locator('taro-tabbar').getByText('门店',{exact:true}).click()

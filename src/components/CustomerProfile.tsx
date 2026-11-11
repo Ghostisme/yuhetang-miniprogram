@@ -9,7 +9,7 @@ import type { CustomerProfile } from '../types'
 import MemberBalanceSummary from './MemberBalanceSummary'
 import './CustomerProfile.scss'
 
-export default function CustomerProfileCard({ onChanged, showWallet = true }: { onChanged?: (profile: CustomerProfile) => void; showWallet?: boolean }) {
+export default function CustomerProfileCard({ onChanged, showWallet = true, requirePhone = false }: { onChanged?: (profile: CustomerProfile) => void; showWallet?: boolean; requirePhone?: boolean }) {
   useI18n()
   const launch = useLaunchStatus()
   const [profile, setProfile] = useState<CustomerProfile | null>(null)
@@ -39,13 +39,14 @@ export default function CustomerProfileCard({ onChanged, showWallet = true }: { 
   }
   async function save(code?: string) {
     if (sending.current || !validate()) return
+    if (requirePhone && !code && !profile?.phoneVerified) { setError(t('请先授权微信手机号，再开始咨询。')); return }
     sending.current = true; version.current++; setBusy(true); setError('')
     try {
       const next = await request<CustomerProfile>(code ? '/api/me/profile/phone' : '/api/me/profile', {
         method: code ? 'POST' : 'PUT', data: { name: name.trim(), consent: true, ...(code ? { code } : {}) },
       })
       dirty.current = false; receive(next)
-      if (alive.current) { setExpanded(false); void Taro.showToast({ title: code ? t('手机号与资料已保存') : t('姓名已保存'), icon: 'success' }) }
+      if (alive.current) { setExpanded(false); void Taro.showToast({ title: code ? t('手机号与资料已保存') : requirePhone ? t('资料已保存') : t('姓名已保存'), icon: 'success' }) }
     } catch (cause) { if (alive.current) setError(cause instanceof Error ? cause.message : t('资料未保存，请重试。')) }
     finally { sending.current = false; if (alive.current) setBusy(false) }
   }
@@ -58,14 +59,15 @@ export default function CustomerProfileCard({ onChanged, showWallet = true }: { 
       <View className='profile-field'><Text>{t("姓名 / 称呼")}</Text><Input value={name} maxlength={40} placeholder={t('请输入您的姓名或称呼')} disabled={busy} onInput={event => { dirty.current = true; setName(event.detail.value); setError('') }} /></View>
       <CheckboxGroup onChange={event => { setAgreed(event.detail.value.includes('profile')); setError('') }}><Label className='profile-consent'><Checkbox value='profile' checked={agreed} disabled={busy} color='#405c49' /><Text>{t("同意将姓名与授权手机号用于客户档案、预约联系与会员匹配")}</Text></Label></CheckboxGroup>
       <View className='profile-action-row'>
-        {isWeapp ? <Button className='primary' loading={busy} disabled={busy} openType={ready && launch.ready && !launch.status?.enabled ? 'getPhoneNumber' : undefined}
+        {requirePhone && profile.phoneVerified ? <Button className='primary' loading={busy} disabled={busy} onClick={() => { void save() }}>{t('保存资料并开始咨询')}</Button> : isWeapp ? <Button className='primary' loading={busy} disabled={busy} openType={ready && launch.ready && !launch.status?.enabled ? 'getPhoneNumber' : undefined}
           onClick={() => { if (!ready) validate() }}
           onGetPhoneNumber={event => {
             if (event.detail.code) void save(event.detail.code)
-            else setError(event.detail.errMsg?.includes('deny') || event.detail.errMsg?.includes('cancel') ? t('您暂未授权手机号，可先保存称呼，稍后再完善。') : t('微信未返回手机号授权凭证，请在手机微信中重试。'))
-          }}>{profile.phoneVerified ? t('重新授权手机号') : t('微信授权手机号并保存')}</Button> : <View className='profile-wechat-tip'>{t("请在微信小程序中授权手机号。您可以先保存称呼。")}</View>}
-        <Button className='secondary' disabled={busy} onClick={() => { void save() }}>{t("保存称呼")}</Button>
+            else setError(event.detail.errMsg?.includes('deny') || event.detail.errMsg?.includes('cancel') ? requirePhone ? t('请先授权微信手机号，再开始咨询。') : t('您暂未授权手机号，可先保存称呼，稍后再完善。') : t('微信未返回手机号授权凭证，请在手机微信中重试。'))
+          }}>{profile.phoneVerified ? t('重新授权手机号') : t('微信授权手机号并保存')}</Button> : <View className='profile-wechat-tip'>{requirePhone ? t('请在手机微信中打开小程序并授权手机号后，再使用客服对话。') : t('请在微信小程序中授权手机号。您可以先保存称呼。')}</View>}
+        {!requirePhone && <Button className='secondary' disabled={busy} onClick={() => { void save() }}>{t("保存称呼")}</Button>}
       </View>
+      {requirePhone && <View className='profile-card-note'>{t('客服对话需先授权手机号；其他公开内容仍可浏览。')}</View>}
       <View className='profile-card-note'>{t("手机号由您单独授权；会员状态由门店核实维护。")}</View>
     </View>}
     {profile?.complete && !expanded && <Button className='profile-edit' onClick={() => { setExpanded(true); setAgreed(false) }}>{t("编辑个人资料")}<Text>›</Text></Button>}

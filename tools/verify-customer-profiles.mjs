@@ -37,6 +37,7 @@ async function fixture(profile={...fresh},orders=[],width=390){
       if(path==='/api/runtime')return json({customerProfiles:true,developmentLogin:false,customerTemplateId:'result-fixture',customerReminderTemplateId:'reminder-fixture',customerTemplateIds:['result-fixture','reminder-fixture']})
       if(path.startsWith('/api/me/'))assert.equal(req.headers().authorization,'Bearer customer-profile-fixture')
       if(path==='/api/me/profile'&&req.method()==='GET')return json(state.profile)
+      if(path==='/api/me/wallets'){assert(state.profile.phoneVerified);return json({accounts:[],lookupStatus:'MIGRATION_PENDING',memberVerified:true,balanceKnown:false,totalFen:null,balanceScope:'MIGRATED_ACCOUNTS_ONLY'})}
       if(path==='/api/me/profile'&&req.method()==='PUT'){
         const body=req.postDataJSON();assert.deepEqual(Object.keys(body).sort(),['consent','name']);assert.equal(body.consent,true)
         state.saves.push(body);state.profile={...state.profile,name:body.name};return json(state.profile)

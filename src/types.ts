@@ -13,7 +13,7 @@ export interface Rules {opens:string;closes:string;interval:number;capacity:numb
 export interface Slots {date:string;storeId:string;slots:{time:string;capacity:number;used:number;remaining:number;available:boolean}[];rules:Rules}
 export interface Runtime {memberCrossStoreBooking?:boolean;paymentReservation?:boolean;developmentLogin?:boolean;customerTemplateIds?:string[];customerTemplateId?:string;customerReminderTemplateId?:string;customerProfiles?:boolean}
 export interface CustomerProfile {memberStoreId?:string;memberStoreName?:string;crossStoreBookingSupported?:boolean;name:string;phone:string;phoneVerified:boolean;memberVerified:boolean;memberStatus:'MEMBER'|'NON_MEMBER';memberGrade:string;sources:string[];complete:boolean;firstLoginAt:string;lastLoginAt:string;development:boolean}
-export interface ChatMessage {id:string;seq:number;direction:'IN'|'OUT';senderName:string;content:string;createdAt:string}
+export interface ChatMessage {id:string;seq:number;direction:'IN'|'OUT';senderName:string;content:string;createdAt:string;kind?:'text'|'image'|'video'|'miniprogrampage';attachment?:{kind:'image'|'video';name:string;size:number;url:string;thumbnailUrl?:string}}
 export interface ChatConversation {id:string;status:'OPEN'|'ACTIVE'|'RESOLVED';assignedAdminName?:string;acceptedAt?:string;endedAt?:string;endedBy?:string}
 export interface MessagePage {items:ChatMessage[];conversation?:ChatConversation}
 
