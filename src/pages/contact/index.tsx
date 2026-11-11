@@ -1,3 +1,4 @@
+import { withLaunchNotice } from '../../components/LaunchNotice'
 import LanguageSwitcher from '../../components/LanguageSwitcher'
 import { t, useI18n } from '../../i18n'
 import { useState } from 'react'
@@ -9,7 +10,7 @@ import { useSite } from '../../hooks/useSite'
 import { contactState, themeStyle } from '../../services/site'
 import './index.scss'
 
-export default function Contact() {
+function Contact() {
   const { locale } = useI18n()
   const { site, error, refresh } = useSite()
   const [storeId, setStoreId] = useState(contactState.storeId)
@@ -27,3 +28,5 @@ export default function Contact() {
     </View>
   </View>
 }
+
+export default withLaunchNotice(Contact)

@@ -1,3 +1,4 @@
+import { withLaunchNotice } from '../../components/LaunchNotice'
 import LanguageSwitcher from '../../components/LanguageSwitcher'
 import { t, useI18n } from '../../i18n'
 import Taro, { useShareAppMessage } from '@tarojs/taro'
@@ -9,7 +10,7 @@ import careIcon from '../../assets/tabbar/care-active.png'
 import storesIcon from '../../assets/tabbar/stores-active.png'
 import './index.scss'
 
-export default function Home() {
+function Home() {
   const { locale } = useI18n()
   const { site, error, refresh } = useSite()
   useShareAppMessage(() => ({ title: site ? `${site.brandName} · ${site.tagline}` : t('裕和堂'), path: '/pages/home/index' }))
@@ -46,3 +47,5 @@ export default function Home() {
     <View className='footer'>YU Health · WELLNESS &amp; CARE</View>
   </View>
 }
+
+export default withLaunchNotice(Home)

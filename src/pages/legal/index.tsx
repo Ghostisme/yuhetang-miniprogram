@@ -1,3 +1,4 @@
+import { withLaunchNotice } from '../../components/LaunchNotice'
 import LanguageSwitcher from '../../components/LanguageSwitcher'
 import { t, useI18n } from '../../i18n'
 import Taro, { useRouter } from '@tarojs/taro'
@@ -22,7 +23,7 @@ const privacy = [
   ['资料管理', '您可在“我的预约”查看与管理预约，并退出当前设备的登录。更正、删除个人资料或申请注销账号，请通过门店电话、微信客服联系工作人员。退出登录不会删除服务器中的预约与咨询记录。'],
   ['完整隐私保护指引', '涉及个人信息的具体处理规则，请同时查阅微信小程序展示的《用户隐私保护指引》。如对资料使用有疑问，可联系门店核实后再继续操作。'],
 ]
-export default function Legal() {
+function Legal() {
   const { locale } = useI18n()
   const privacyPage = useRouter().params.kind === 'privacy'
   return <View className={`page legal-page locale-${locale}`}><LanguageSwitcher /><View className='section'>
@@ -33,3 +34,5 @@ export default function Legal() {
     <Button className='secondary' onClick={() => { if (Taro.getCurrentPages().length > 1) void Taro.navigateBack(); else void Taro.switchTab({ url: '/pages/home/index' }) }}>{t("返回")}</Button>
   </View></View>
 }
+
+export default withLaunchNotice(Legal)

@@ -1,3 +1,5 @@
+import { useLaunchStatus } from '../hooks/useLaunchStatus'
+import { customerActionAvailable } from '../services/launch-mode'
 import { t, useI18n } from '../i18n'
 import { useEffect, useRef, useState } from 'react'
 import Taro, { useDidShow } from '@tarojs/taro'
@@ -8,6 +10,7 @@ import './CustomerProfile.scss'
 
 export default function CustomerProfileCard({ onChanged }: { onChanged?: (profile: CustomerProfile) => void }) {
   useI18n()
+  const launch = useLaunchStatus()
   const [profile, setProfile] = useState<CustomerProfile | null>(null)
   const [name, setName] = useState(''), [agreed, setAgreed] = useState(false)
   const [expanded, setExpanded] = useState(false), [busy, setBusy] = useState(false), [error, setError] = useState('')
@@ -28,6 +31,7 @@ export default function CustomerProfileCard({ onChanged }: { onChanged?: (profil
   useDidShow(() => { if (hasCustomerSession()) void load() })
   const ready = !!name.trim() && agreed
   function validate() {
+    if (!customerActionAvailable()) return false
     if (!name.trim()) { setError(t('请填写您的姓名或称呼。')); return false }
     if (!agreed) { setError(t('请先同意将资料用于客户档案与预约联系。')); return false }
     return true
@@ -53,7 +57,7 @@ export default function CustomerProfileCard({ onChanged }: { onChanged?: (profil
       <View className='profile-field'><Text>{t("姓名 / 称呼")}</Text><Input value={name} maxlength={40} placeholder={t('请输入您的姓名或称呼')} disabled={busy} onInput={event => { dirty.current = true; setName(event.detail.value); setError('') }} /></View>
       <CheckboxGroup onChange={event => { setAgreed(event.detail.value.includes('profile')); setError('') }}><Label className='profile-consent'><Checkbox value='profile' checked={agreed} disabled={busy} color='#405c49' /><Text>{t("同意将姓名与授权手机号用于客户档案、预约联系与会员匹配")}</Text></Label></CheckboxGroup>
       <View className='profile-action-row'>
-        {isWeapp ? <Button className='primary' loading={busy} disabled={busy} openType={ready ? 'getPhoneNumber' : undefined}
+        {isWeapp ? <Button className='primary' loading={busy} disabled={busy} openType={ready && launch.ready && !launch.status?.enabled ? 'getPhoneNumber' : undefined}
           onClick={() => { if (!ready) validate() }}
           onGetPhoneNumber={event => {
             if (event.detail.code) void save(event.detail.code)

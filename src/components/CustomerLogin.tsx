@@ -5,6 +5,7 @@ import Taro, { useDidHide, useDidShow } from '@tarojs/taro'
 import { Button, Checkbox, CheckboxGroup, Image, Label, ScrollView, Text, View } from '@tarojs/components'
 import { authorizeCustomerLogin, cancelCustomerLogin, isWeapp, toastError } from '../services/api'
 import { isTabPage } from '../utils/session'
+import { customerActionAvailable } from '../services/launch-mode'
 import space from '../assets/login/space.jpg'
 import reception from '../assets/login/reception.jpg'
 import './CustomerLogin.scss'
@@ -22,6 +23,7 @@ function useAuthorization(onSignedIn: LoginProps['onSignedIn']) {
   useEffect(() => cancel, [])
   useDidHide(() => { cancel(); setBusy(false) })
   async function signIn() {
+    if (!customerActionAvailable()) return
     if (submitting.current) return
     if (!agreed) { setError(t('请先阅读并同意用户协议与隐私说明。')); return }
     const attempt = ++generation.current

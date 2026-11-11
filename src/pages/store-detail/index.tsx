@@ -1,3 +1,4 @@
+import { withLaunchNotice } from '../../components/LaunchNotice'
 import LanguageSwitcher from '../../components/LanguageSwitcher'
 import { t, useI18n } from '../../i18n'
 import { useState } from 'react'
@@ -10,7 +11,7 @@ import { themeStyle } from '../../services/site'
 import { call, toastError } from '../../services/api'
 import './index.scss'
 
-export default function StoreDetail() {
+function StoreDetail() {
   const { locale } = useI18n()
   const { params } = useRouter()
   const { site, error, refresh } = useSite()
@@ -68,3 +69,5 @@ export default function StoreDetail() {
     {store && <CustomerService site={site} storeId={store.id} variant='dock' />}
   </View>
 }
+
+export default withLaunchNotice(StoreDetail)

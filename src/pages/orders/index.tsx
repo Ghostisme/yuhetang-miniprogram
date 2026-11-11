@@ -1,3 +1,5 @@
+import { customerActionAvailable } from '../../services/launch-mode'
+import { withLaunchNotice } from '../../components/LaunchNotice'
 import { localizeSite } from '../../i18n/content'
 import LanguageSwitcher from '../../components/LanguageSwitcher'
 import { dialogLabels, t, useI18n } from '../../i18n'
@@ -16,7 +18,7 @@ import type { Appointment, Runtime, Site, Slots } from '../../types'
 import ordersIcon from '../../assets/tabbar/orders-active.png'
 import './index.scss'
 
-export default function Orders() {
+function Orders() {
   const { locale } = useI18n()
   const signedIn = useCustomerSession()
   const [orders, setOrders] = useState<Appointment[]>([]), [rawSite, setSite] = useState<Site | null>(null), [runtime, setRuntime] = useState<Runtime>({}), [error, setError] = useState(''), [loading, setLoading] = useState(false), [busy, setBusy] = useState(false)
@@ -81,7 +83,7 @@ export default function Orders() {
     if (sending.current || !editing || !times[timeIndex] || timesLoading) return
     if (!hasCustomerSession() || !allowed(editing, 'canReschedule')) return
     sending.current = true; setBusy(true)
-    try { const subscription = subscribeBooking(runtime); await subscription; await request(`/api/me/appointments/${editing.id}`, { method: 'PATCH', data: { action: 'reschedule', version: editing.version, date, startTime: times[timeIndex] } }); setEditing(null); await load(); void Taro.showModal({ ...dialogLabels(), title: t('改约申请已提交'), content: t('原预约时间和名额继续保留。门店同意后新时间才会生效，未同意或超时将保留原预约。'), showCancel: false }) } catch (e) { toastError(e); await load() } finally { sending.current = false; setBusy(false) }
+    try { if (!customerActionAvailable()) return; const subscription = subscribeBooking(runtime); await subscription; await request(`/api/me/appointments/${editing.id}`, { method: 'PATCH', data: { action: 'reschedule', version: editing.version, date, startTime: times[timeIndex] } }); setEditing(null); await load(); void Taro.showModal({ ...dialogLabels(), title: t('改约申请已提交'), content: t('原预约时间和名额继续保留。门店同意后新时间才会生效，未同意或超时将保留原预约。'), showCancel: false }) } catch (e) { toastError(e); await load() } finally { sending.current = false; setBusy(false) }
   }
   return <View className={`page orders-page locale-${locale} ${!signedIn ? 'orders-guest' : ''} ${isWeapp ? 'is-weapp' : ''}`} style={themeStyle(site)}>{signedIn && <LanguageSwitcher />}
     {!signedIn ? <CustomerLoginHero withTabbar error={t(error)} onSignedIn={() => { setError('') }} /> : <View className='section'><Text className='eyebrow'>MY APPOINTMENTS</Text><View className='heading'>{t("我的预约")}</View>
@@ -121,3 +123,5 @@ export default function Orders() {
     })}
     {orders.length >= 100 && <View className='tiny'>{t("当前展示最近 100 条预约，如需更早记录请联系门店。")}</View>}</View>}</View>
 }
+
+export default withLaunchNotice(Orders)

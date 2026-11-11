@@ -1,3 +1,4 @@
+import { withLaunchNotice } from '../../components/LaunchNotice'
 import LanguageSwitcher from '../../components/LanguageSwitcher'
 import { t, useI18n } from '../../i18n'
 import { useState } from 'react'
@@ -11,7 +12,7 @@ import './index.scss'
 
 function isService(item: ServiceItem | ProductItem): item is ServiceItem { return 'duration' in item && typeof item.duration === 'string' && 'steps' in item && Array.isArray(item.steps) }
 
-export default function Catalog() {
+function Catalog() {
   const { locale } = useI18n()
   const { site, error, refresh } = useSite()
   const [tab, setTab] = useState('services'), [selected, setDetail] = useState<ServiceItem | ProductItem | null>(null)
@@ -36,3 +37,5 @@ export default function Catalog() {
     </>}
   </View>
 }
+
+export default withLaunchNotice(Catalog)

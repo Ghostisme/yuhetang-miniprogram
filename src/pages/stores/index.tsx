@@ -1,3 +1,4 @@
+import { withLaunchNotice } from '../../components/LaunchNotice'
 import LanguageSwitcher from '../../components/LanguageSwitcher'
 import { t, useI18n } from '../../i18n'
 import { useState } from 'react'
@@ -10,7 +11,7 @@ import { call, toastError } from '../../services/api'
 import type { StoreItem } from '../../types'
 import './index.scss'
 
-export default function Stores() {
+function Stores() {
   const { locale } = useI18n()
   const { site, error, refresh } = useSite()
   const [district, setDistrict] = useState('')
@@ -23,3 +24,5 @@ export default function Stores() {
     <View className='section store-list'><View className='toolbar'>{['', ...new Set(stores.map(item => item.district))].map(value => <Button key={value} className={district === value ? 'active' : ''} onClick={() => setDistrict(value)}>{t(value || '全部区域')}</Button>)}</View>{stores.filter(item => !district || item.district === district).map(item => <View className='store-card' key={item.id}><Image src={item.image} mode='aspectFill' onClick={() => selectStore(item.id)} /><View className='card-body'><Text className='pill'>{t(item.district)} · {item.tag}</Text><View className='heading'>{item.name}</View><View className='muted'>{item.address}</View><View className='tiny'>{item.hours}</View><View className='store-actions'><Button onClick={() => selectStore(item.id)}>{t("门店详情")}</Button><Button className='green' onClick={() => book(item)}>{item.onlineBooking ? t('申请预约') : t('电话咨询')}</Button></View></View></View>)}{!stores.length && <View className='empty'>{t("门店资料正在完善中。")}</View>}</View>
   </View>
 }
+
+export default withLaunchNotice(Stores)

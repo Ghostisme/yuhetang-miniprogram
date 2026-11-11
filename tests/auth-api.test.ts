@@ -20,22 +20,51 @@ function fixture({platform='weapp',code='one-use-wechat-code',initialToken=''}={
     request:(input:any)=>{calls.push({type:'request',...input});return respond(input)},
     getCurrentPages:()=>[{route:'pages/booking/index',options:{storeId:'shanghai',serviceId:'care-1'}}],
     navigateTo:async (options:any)=>{calls.push({type:'navigate',...options})},
+    showModal:async (options:any)=>{calls.push({type:'notice',...options});return {confirm:true}},
   }
+  const modules=new Map<string,any>()
   function load(path:string):any {
+    if(modules.has(path))return modules.get(path)
     const module={exports:{}},source=ts.transpileModule(readFileSync(resolve(path),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText
     const require=(name:string)=>{
       if(name==='@tarojs/taro')return {__esModule:true,default:sdk}
       if(name==='../utils/booking')return load('src/utils/booking.ts')
       if(name==='../utils/session')return load('src/utils/session.ts')
+      if(name==='../utils/launch-mode')return load('src/utils/launch-mode.ts')
+      if(name==='./launch-mode')return load('src/services/launch-mode.ts')
       if (name.endsWith('/i18n')) return i18nFixture
       if (name.endsWith('/components/LanguageSwitcher')) return { default: 'LanguageSwitcher' }
       throw new Error('Unexpected fixture import: '+name)
     }
     vm.runInNewContext(source,{module,exports:module.exports,require,API_BASE_URL:'https://fixture.invalid',ENABLE_DEV_LOGIN:false,process:{env:{TARO_ENV:platform}},console,Date,Math,setTimeout,clearTimeout})
-    return module.exports
+    modules.set(path,module.exports);return module.exports
   }
-  return {api:load('src/services/api.ts'),calls,storage,setRespond:(fn:typeof respond)=>{respond=fn}}
+  return {api:load('src/services/api.ts'),launch:load('src/services/launch-mode.ts'),calls,storage,setRespond:(fn:typeof respond)=>{respond=fn}}
 }
+
+const construction={enabled:true,revision:1,updatedAt:'',title:{zh:'温馨提示',en:'Notice',ja:'ご案内'},message:{zh:'小程序正在建设中，暂仅供浏览。',en:'Browse only.',ja:'閲覧のみ'}}
+test('construction mode blocks login, private mutations and contact before native or network operations',async()=>{
+  const {api,launch,calls}=fixture({initialToken:'customer'})
+  launch.receiveLaunchStatus(construction)
+  await assert.rejects(api.authorizeCustomerLogin(true),/建设中/)
+  await assert.rejects(api.request('/api/appointments',{method:'POST',data:{}}),/建设中/)
+  await assert.rejects(api.request('/api/me/profile',{method:'PUT',data:{}}),/建设中/)
+  api.contact('shanghai');api.call('02150181919');await api.openCustomerLogin()
+  assert(calls.every(c=>c.type==='notice'))
+  launch.receiveLaunchStatus({...construction,enabled:false,revision:2})
+  await api.authorizeCustomerLogin(true)
+  assert.equal(calls.filter(c=>c.type==='wx.login').length,1)
+})
+
+test('a server construction response updates an outdated client and blocks its next submission',async()=>{
+  const {api,calls,setRespond,launch}=fixture({initialToken:'customer'})
+  setRespond(async()=>({statusCode:423,header:{},data:{code:'MINIPROGRAM_UNDER_CONSTRUCTION',message:construction.message.zh,launchStatus:construction}}))
+  await assert.rejects(api.request('/api/appointments',{method:'POST',data:{}}),/建设中/)
+  assert.equal(launch.getLaunchSnapshot().status.enabled,true)
+  await assert.rejects(api.request('/api/appointments',{method:'POST',data:{}}),/建设中/)
+  assert.equal(calls.filter(c=>c.type==='request').length,1)
+  assert.equal(calls.filter(c=>c.type==='wx.login').length,0)
+})
 
 test('visiting as a guest cannot silently log in or fetch personal records',async()=>{
   const {api,calls}=fixture()

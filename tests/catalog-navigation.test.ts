@@ -34,6 +34,7 @@ function fixture() {
     if (name.endsWith('/hooks/useSite')) return { useSite: () => ({ site, error: '', refresh: async () => {} }) }
     if (name.endsWith('/services/site')) return { catalogState, themeStyle: () => ({}) }
     if (name.endsWith('/components/PageState')) return { default: 'PageState' }
+    if (name.endsWith('/components/LaunchNotice')) return { withLaunchNotice: (page: unknown) => page }
     if (name.endsWith('.scss')) return {}
     if (name.endsWith('/i18n')) return i18nFixture
     if (name.endsWith('/components/LanguageSwitcher')) return { default: 'LanguageSwitcher' }

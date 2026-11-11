@@ -5,6 +5,7 @@ releases/
 .swc/
 logs/
 backups/
+work/
 __pycache__/
 *.pyc
 test-results/

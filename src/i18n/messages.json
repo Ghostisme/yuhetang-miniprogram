@@ -1394,5 +1394,501 @@
   "已核实会员": {
     "en": "Verified member",
     "ja": "確認済み会員"
+  },
+  "会员余额": {
+    "en": "Member balance",
+    "ja": "会員残高"
+  },
+  "会员余额与流水": {
+    "en": "Balance and transactions",
+    "ja": "残高と利用明細"
+  },
+  "各门店账户分别记录，充值与消费有迹可查。": {
+    "en": "Separate branch accounts, with a record of every top-up and purchase.",
+    "ja": "店舗ごとの口座で、入金と利用の履歴を確認できます。"
+  },
+  "先核实您的会员身份": {
+    "en": "Verify your membership",
+    "ja": "会員情報の確認"
+  },
+  "授权手机号后，仅显示与您的客户档案关联的余额。": {
+    "en": "Authorize your phone number to view only the balances linked to your own profile.",
+    "ja": "電話番号を認証すると、ご本人の会員残高のみ表示されます。"
+  },
+  "余额待迁移核对": {
+    "en": "Balance awaiting verification",
+    "ja": "残高を確認中"
+  },
+  "暂未录入不代表余额为零，请联系门店核对原会员账户。": {
+    "en": "A missing balance does not mean zero. Please ask your branch to verify your previous account.",
+    "ja": "未登録は残高ゼロを意味しません。以前の会員口座は店舗にご確認ください。"
+  },
+  "更新于 {time}": {
+    "en": "Updated {time}",
+    "ja": "更新：{time}"
+  },
+  "余额明细": {
+    "en": "Transactions",
+    "ja": "残高明細"
+  },
+  "余额": {
+    "en": "Balance",
+    "ja": "残高"
+  },
+  "充值": {
+    "en": "Top-up",
+    "ja": "入金"
+  },
+  "消费": {
+    "en": "Purchase",
+    "ja": "利用"
+  },
+  "期初余额": {
+    "en": "Opening balance",
+    "ja": "移行時残高"
+  },
+  "冲正": {
+    "en": "Reversal",
+    "ja": "訂正"
+  },
+  "服务号查询": {
+    "en": "Query in WeChat",
+    "ja": "WeChat公式アカウントで照会"
+  },
+  "已绑定": {
+    "en": "Linked",
+    "ja": "連携済み"
+  },
+  "绑定后，在裕和堂服务号发送“余额”即可查询。": {
+    "en": "Once linked, send “余额” to the YU Health official account to check your balance.",
+    "ja": "連携後、裕和堂の公式アカウントに「余额」と送信すると残高を照会できます。"
+  },
+  "服务号余额查询暂未启用，小程序内仍可查看已录入余额。": {
+    "en": "WeChat account queries are not yet enabled. Recorded balances are still available here.",
+    "ja": "公式アカウントの残高照会は準備中です。登録済みの残高はここで確認できます。"
+  },
+  "绑定口令仅用于关联您本人的会员档案，请勿转发给他人。": {
+    "en": "This one-time command links your own membership. Do not share it with anyone.",
+    "ja": "この連携コードはご本人の会員情報専用です。他の人に共有しないでください。"
+  },
+  "{seconds} 秒后失效": {
+    "en": "Expires in {seconds}s",
+    "ja": "あと{seconds}秒で失効"
+  },
+  "口令已失效，请重新生成": {
+    "en": "Command expired. Generate another.",
+    "ja": "コードの有効期限が切れました。再発行してください。"
+  },
+  "复制口令": {
+    "en": "Copy command",
+    "ja": "コードをコピー"
+  },
+  "打开裕和堂服务号，将完整口令粘贴到消息输入框并发送。": {
+    "en": "Open the YU Health official account, paste the full command into the message box, and send it.",
+    "ja": "裕和堂の公式アカウントを開き、メッセージ欄にコード全文を貼り付けて送信してください。"
+  },
+  "重新生成绑定口令": {
+    "en": "Generate a new command",
+    "ja": "連携コードを再発行"
+  },
+  "生成绑定口令": {
+    "en": "Generate link command",
+    "ja": "連携コードを発行"
+  },
+  "解除服务号绑定": {
+    "en": "Unlink WeChat account",
+    "ja": "公式アカウントの連携を解除"
+  },
+  "解绑后，服务号将停止返回您的会员余额。小程序内仍可查询。": {
+    "en": "Unlinking stops balance replies in the official account. You can still check here.",
+    "ja": "解除後は公式アカウントに残高が表示されなくなります。ミニプログラムでは引き続き確認できます。"
+  },
+  "已发送口令，刷新绑定状态": {
+    "en": "Sent the command? Refresh status",
+    "ja": "送信後、連携状況を更新"
+  },
+  "先验证您的手机号": {
+    "en": "Verify your phone number",
+    "ja": "電話番号を認証してください"
+  },
+  "会员资料待核实": {
+    "en": "Membership details awaiting verification",
+    "ja": "会員情報を確認中"
+  },
+  "会员资料正在分批迁移，暂未查到记录不代表非会员或余额为零，请联系门店核实。": {
+    "en": "Membership records are being migrated in stages. A missing record does not mean you are not a member or that your balance is zero. Please check with your branch.",
+    "ja": "会員情報は順次移行中です。記録が見つからなくても、非会員や残高ゼロという意味ではありません。店舗にご確認ください。"
+  },
+  "账户迁入后可直接查询，无需重新绑定服务号。": {
+    "en": "Your balance will be available once your account is migrated. You will not need to link the official account again.",
+    "ja": "口座の移行後は、そのまま照会できます。公式アカウントとの再連携は不要です。"
+  },
+  "当前仅显示已迁入并核对的账户，其他账户请联系门店核实。": {
+    "en": "Only migrated and verified accounts are shown. Please contact your branch about other accounts.",
+    "ja": "移行・確認済みの口座のみ表示しています。その他の口座は店舗にご確認ください。"
+  },
+  "余额按人民币展示，由门店登记维护。对金额有疑问请联系门店核对。": {
+    "en": "Balances are in CNY and maintained by the branch. Please contact staff with any questions.",
+    "ja": "残高は人民元表示で、店舗が管理しています。金額については店舗にお問い合わせください。"
+  },
+  "授权手机号后查看会员余额": {
+    "en": "Verify your phone to view your balance",
+    "ja": "電話番号の認証後に残高を確認できます"
+  },
+  "余额暂未加载": {
+    "en": "Balance is currently unavailable",
+    "ja": "残高を読み込めませんでした"
+  },
+  "正在查询余额…": {
+    "en": "Checking your balance…",
+    "ja": "残高を照会中…"
+  },
+  "已迁入账户合计": {
+    "en": "Total of migrated accounts",
+    "ja": "移行済み口座の合計"
+  },
+  "余额暂未更新，当前显示上次查询结果。": {
+    "en": "Could not refresh. The last retrieved balance is shown.",
+    "ja": "更新できませんでした。前回照会時の残高を表示しています。"
+  },
+  "进入页面自动更新，停留时每 15 秒刷新。": {
+    "en": "Refreshes on entry and every 15 seconds while this page is open.",
+    "ja": "ページ表示時、および表示中は15秒ごとに更新します。"
+  },
+  "尚未迁入的账户不计为零余额，请联系门店核对。": {
+    "en": "Accounts awaiting migration are not treated as zero balances. Please check with your branch.",
+    "ja": "未移行の口座は残高ゼロではありません。店舗にご確認ください。"
+  },
+  "查询于 {time}": {
+    "en": "Retrieved at {time}",
+    "ja": "照会時刻：{time}"
+  },
+  "查询中…": {
+    "en": "Checking…",
+    "ja": "照会中…"
+  },
+  "刷新余额": {
+    "en": "Refresh balance",
+    "ja": "残高を更新"
+  },
+  "查看余额与明细": {
+    "en": "Balance and transactions",
+    "ja": "残高・取引明細を見る"
+  },
+  "每 15 秒自动更新": {
+    "en": "Updates every 15 seconds",
+    "ja": "15秒ごとに自動更新"
+  },
+  "服务号查询（可选）": {
+    "en": "Official-account lookup (optional)",
+    "ja": "公式アカウントから照会（任意）"
+  },
+  "小程序内可直接查余额，无需绑定或发送消息。": {
+    "en": "Check your balance here directly, without linking an official account or sending messages.",
+    "ja": "公式アカウントの連携やメッセージ送信なしで、ここから直接残高を確認できます。"
+  },
+  "登录、填写姓名并授权手机号后沟通": {
+    "en": "Sign in, add your name and authorize your phone number to chat",
+    "ja": "ログインし、お名前を入力して電話番号を許可すると相談できます"
+  },
+  "登录后还需填写姓名并授权手机号，": {
+    "en": "After signing in, add your name and authorize your phone number ",
+    "ja": "ログイン後にお名前を入力し、電話番号を許可すると、"
+  },
+  "不授权也可通过电话联系门店。": {
+    "en": "You can still call the store without authorizing your phone number.",
+    "ja": "電話番号を許可しなくても、店舗に電話でお問い合わせいただけます。"
+  },
+  "完善资料后，开始咨询": {
+    "en": "Complete your details to start a conversation",
+    "ja": "お客様情報を登録して相談を開始"
+  },
+  "请填写姓名或称呼，并授权微信手机号，方便门店确认您的身份和跟进咨询。": {
+    "en": "Add your name or preferred name and authorize your WeChat phone number so the store can identify you and follow up.",
+    "ja": "店舗がご本人を確認し、ご相談に対応できるよう、お名前または呼び名を入力してWeChatの電話番号を許可してください。"
+  },
+  "正在核对客户资料…": {
+    "en": "Checking your details…",
+    "ja": "お客様情報を確認中…"
+  },
+  "拒绝手机号授权时，不会创建客服会话；您仍可电话联系门店。": {
+    "en": "No chat is created if you decline phone authorization. You can still call the store.",
+    "ja": "電話番号の許可を見送った場合、チャットは作成されません。店舗への電話は引き続きご利用いただけます。"
+  },
+  "客户资料已确认": {
+    "en": "Your details are verified",
+    "ja": "お客様情報を確認しました"
+  },
+  "点击微信客服，开始与门店沟通。": {
+    "en": "Tap WeChat customer service to start chatting with the store.",
+    "ja": "「WeChatカスタマーサービス」をタップして店舗への相談を開始してください。"
+  },
+  "请先登录并完善姓名、授权手机号后再联系客服。": {
+    "en": "Please sign in, add your name and authorize your phone number before contacting customer service.",
+    "ja": "ログインし、お名前を登録して電話番号を許可してからお問い合わせください。"
+  },
+  "消费记录": {
+    "en": "Consumption history",
+    "ja": "ご利用履歴"
+  },
+  "消费详情": {
+    "en": "Consumption details",
+    "ja": "ご利用の詳細"
+  },
+  "每一次养护，都有记录可查。": {
+    "en": "A record of every care experience.",
+    "ja": "一回ごとのケアを、ご利用履歴で確認。"
+  },
+  "开始日期": {
+    "en": "Start date",
+    "ja": "開始日"
+  },
+  "结束日期": {
+    "en": "End date",
+    "ja": "終了日"
+  },
+  "清除筛选": {
+    "en": "Clear filters",
+    "ja": "絞り込みを解除"
+  },
+  "返回消费列表": {
+    "en": "Back to history",
+    "ja": "履歴一覧に戻る"
+  },
+  "授权手机号后，仅显示与您的客户档案关联的消费记录。": {
+    "en": "Verify your phone number to view only the history linked to your customer profile.",
+    "ja": "電話番号を認証すると、ご本人の顧客情報に紐づくご利用履歴を確認できます。"
+  },
+  "请先授权微信手机号，再开始咨询。": {
+    "en": "Authorize your WeChat phone number before starting a conversation.",
+    "ja": "お問い合わせの前に、WeChatの電話番号を連携してください。"
+  },
+  "请在手机微信中打开小程序并授权手机号后，再使用客服对话。": {
+    "en": "Open the mini program in WeChat on your phone and authorize your phone number to use customer chat.",
+    "ja": "スマートフォンのWeChatでミニプログラムを開き、電話番号を連携してからお問い合わせください。"
+  },
+  "保存资料并开始咨询": {
+    "en": "Save details and start chatting",
+    "ja": "情報を保存して問い合わせる"
+  },
+  "客服对话需先授权手机号；其他公开内容仍可浏览。": {
+    "en": "Phone authorization is required for customer chat. You can still browse public content.",
+    "ja": "お問い合わせには電話番号の連携が必要です。公開情報は引き続き閲覧できます。"
+  },
+  "资料已保存": {
+    "en": "Details saved",
+    "ja": "情報を保存しました"
+  },
+  "消费记录暂未加载": {
+    "en": "Purchase history could not be loaded",
+    "ja": "ご利用履歴を読み込めませんでした"
+  },
+  "已登记": {
+    "en": "Recorded",
+    "ja": "登録済み"
+  },
+  "已冲正": {
+    "en": "Reversed",
+    "ja": "取消処理済み"
+  },
+  "已作废": {
+    "en": "Voided",
+    "ja": "無効"
+  },
+  "原系统消费": {
+    "en": "Legacy record",
+    "ja": "旧システムの履歴"
+  },
+  "会员储值消费": {
+    "en": "Member balance payment",
+    "ja": "会員残高でのお支払い"
+  },
+  "会员消费（项目待核对）": {
+    "en": "Member purchase · service to be verified",
+    "ja": "会員のご利用（内容を確認中）"
+  },
+  "此笔消费已冲正，原记录保留供核对。": {
+    "en": "This debit has been reversed. The original record is retained for reference.",
+    "ja": "この引き落としは取消処理済みです。確認用に元の記録を残しています。"
+  },
+  "此条历史记录已作废，请以核对后的有效记录为准。": {
+    "en": "This historical record has been voided. Please refer to the verified valid record.",
+    "ja": "この履歴は無効になりました。確認済みの有効な記録をご参照ください。"
+  },
+  "消费门店": {
+    "en": "Store",
+    "ja": "ご利用店舗"
+  },
+  "消费时间": {
+    "en": "Date and time",
+    "ja": "ご利用日時"
+  },
+  "订单 / 凭证编号": {
+    "en": "Order / receipt number",
+    "ja": "注文・伝票番号"
+  },
+  "记录来源": {
+    "en": "Record source",
+    "ja": "記録の出典"
+  },
+  "原系统历史记录": {
+    "en": "Imported legacy history",
+    "ja": "旧システムから移行した履歴"
+  },
+  "门店消费登记": {
+    "en": "Recorded by the store",
+    "ja": "店舗によるご利用登録"
+  },
+  "扣款账户": {
+    "en": "Debited account",
+    "ja": "お支払い口座"
+  },
+  "消费后余额": {
+    "en": "Balance after this debit",
+    "ja": "ご利用直後の残高"
+  },
+  "消费说明": {
+    "en": "Consumption note",
+    "ja": "ご利用について"
+  },
+  "当前仅展示已登记或已迁入的消费。酷鼠历史明细正在分批核对，未显示不代表没有消费。": {
+    "en": "Only recorded or migrated purchases are shown. Ku52 history is being verified in batches; missing entries do not mean there was no purchase.",
+    "ja": "登録済み・移行済みの履歴のみ表示します。旧システムの明細は順次確認中のため、未表示でもご利用がないとは限りません。"
+  },
+  "记录暂未更新，当前显示上次查询结果。": {
+    "en": "History could not be refreshed. The previous results are shown.",
+    "ja": "履歴を更新できませんでした。前回の照会結果を表示しています。"
+  },
+  "当前筛选下暂无记录": {
+    "en": "No records match these filters",
+    "ja": "条件に一致する履歴はありません"
+  },
+  "暂未查到已登记的消费": {
+    "en": "No recorded purchases found yet",
+    "ja": "登録済みのご利用履歴はまだありません"
+  },
+  "如需查询尚未迁入的消费明细，请联系门店核对。": {
+    "en": "Please contact the store to check purchases that have not been migrated yet.",
+    "ja": "未移行のご利用明細については、店舗にお問い合わせください。"
+  },
+  "对消费项目或金额有疑问，请联系对应门店核对。": {
+    "en": "For questions about a service or amount, please contact the relevant store.",
+    "ja": "ご利用内容や金額については、ご利用店舗にお問い合わせください。"
+  },
+  "查看消费门店、项目、金额与时间": {
+    "en": "View stores, services, amounts and dates",
+    "ja": "店舗・内容・金額・日時を確認"
+  },
+  "刷新": {
+    "en": "Refresh",
+    "ja": "更新"
+  },
+  "储值账户": {
+    "en": "Member balance account",
+    "ja": "チャージ残高口座"
+  },
+  "自动读取最新已同步数据": {
+    "en": "Automatically reads synced data",
+    "ja": "同期済みの最新データを自動取得"
+  },
+  "已关联会员卡合计": {
+    "en": "Linked membership cards total",
+    "ja": "紐付け済み会員カードの合計"
+  },
+  "原系统同步": {
+    "en": "Synced from original system",
+    "ja": "旧システムから同期"
+  },
+  "卡号": {
+    "en": "Card number",
+    "ja": "カード番号"
+  },
+  "有效期": {
+    "en": "Valid until",
+    "ja": "有効期間"
+  },
+  "原系统卡为同步查询数据，消费详情请查看消费记录。": {
+    "en": "This card is a synced record. See Consumption history for purchase details.",
+    "ja": "このカードは同期した参照データです。ご利用の詳細は利用履歴をご確認ください。"
+  },
+  "按卡号与所属门店分别展示，已迁入账户优先，不重复累计。": {
+    "en": "Cards are listed by number and branch. Migrated local accounts take priority and are counted once.",
+    "ja": "カード番号・所属店舗別に表示します。移行済み口座を優先し、重複集計しません。"
+  },
+  "原系统登录已过期，请联系门店恢复同步。": {
+    "en": "The original system session expired. Ask the branch to resume syncing.",
+    "ja": "旧システムのログイン期限が切れました。店舗に同期の再開をご依頼ください。"
+  },
+  "原系统暂未同步成功，保留上次核对的数据。": {
+    "en": "Sync is temporarily unavailable. The last verified data is retained.",
+    "ja": "旧システムとの同期が完了していません。前回の確認済みデータを保持しています。"
+  },
+  "原系统暂未匹配到已验证手机号，请联系门店核对。": {
+    "en": "No matching record was found for your verified phone. Please contact the branch.",
+    "ja": "認証済みの電話番号に一致する記録がありません。店舗にご確認ください。"
+  },
+  "正在等待后台同步会员卡与消费记录。": {
+    "en": "Waiting for membership cards and purchases to sync.",
+    "ja": "会員カードと利用履歴のバックグラウンド同期を待っています。"
+  },
+  "数据更新有延迟，当前显示上次同步结果。": {
+    "en": "Updates are delayed. Showing the last successful sync.",
+    "ja": "更新が遅れています。前回の同期結果を表示しています。"
+  },
+  "会员卡与消费记录由后台定时同步。": {
+    "en": "Membership cards and purchases sync on a background schedule.",
+    "ja": "会員カードと利用履歴はバックグラウンドで定期同期します。"
+  },
+  "源数据更新于 {time}": {
+    "en": "Source data updated at {time}",
+    "ja": "元データ更新日時：{time}"
+  },
+  "消费记录在后台定时同步，日期和门店仅用于筛选已同步记录。": {
+    "en": "Purchases sync in the background. Dates and branches only filter synced records.",
+    "ja": "利用履歴はバックグラウンドで同期します。日付と店舗は同期済み記録の絞り込みにのみ使用します。"
+  },
+  "正在查询原系统会员卡": {
+    "en": "Looking up your existing membership cards",
+    "ja": "旧システムの会員カードを確認しています"
+  },
+  "已验证您的手机号，后台正在关联会员卡和近期消费，完成后自动显示。": {
+    "en": "Your phone is verified. Your membership cards and recent visits will appear automatically after synchronization.",
+    "ja": "電話番号の確認が完了しました。会員カードと最近のご利用履歴は、同期後に自動で表示されます。"
+  },
+  "历史消费仍在补充，未显示不代表没有消费。": {
+    "en": "Earlier visits are still being added. Missing entries do not mean there were no visits.",
+    "ja": "過去のご利用履歴は順次追加中です。未表示でも、ご利用がなかったことを意味しません。"
+  },
+  "全部门店": {
+    "en": "All branches",
+    "ja": "すべての店舗"
+  },
+  "查看详情": {
+    "en": "View details",
+    "ja": "詳細を見る"
+  },
+  "关闭选项": {
+    "en": "Close options",
+    "ja": "選択肢を閉じる"
+  },
+  "先浏览看看": {
+    "en": "Browse",
+    "ja": "見る"
+  },
+  "查看建设中提示": {
+    "en": "View pre-launch notice",
+    "ja": "準備中のご案内を見る"
+  },
+  "建设中 · 仅供浏览": {
+    "en": "Coming soon · Browse only",
+    "ja": "準備中・閲覧のみ"
+  },
+  "小程序正在建设中，暂仅供浏览。": {
+    "en": "The mini program is under construction. Browsing only.",
+    "ja": "ミニプログラムは現在準備中です。閲覧のみ可能です。"
+  },
+  "我知道了": {
+    "en": "Got it",
+    "ja": "確認"
   }
 }

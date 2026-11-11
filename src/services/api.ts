@@ -1,4 +1,7 @@
-import { t } from '../i18n'
+import { getLocale, t } from '../i18n'
+import { customerWrite } from '../utils/launch-mode'
+import { constructionMessage, customerActionAvailable, getLaunchSnapshot, receiveLaunchStatus, showLaunchNotice } from './launch-mode'
+import type { LaunchStatus } from '../utils/launch-mode'
 import Taro from '@tarojs/taro'
 import type { Runtime } from '../types'
 import { newId, subscriptionIds, message } from '../utils/booking'
@@ -35,6 +38,7 @@ export function watchCustomerSession(listener: () => void): () => void {
 export function logout() { session.clear(); pending.clear() }
 export const cancelCustomerLogin = () => session.cancelPending()
 export function openCustomerLogin(returnTo?: string): Promise<unknown> {
+  if (!customerActionAvailable()) return Promise.resolve()
   if (loginNavigation) return loginNavigation
   const pages = Taro.getCurrentPages(), current = pages[pages.length - 1]
   const route = current?.route?.replace(/^\//, '')
@@ -50,6 +54,7 @@ export function openCustomerLogin(returnTo?: string): Promise<unknown> {
 type Options = { method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'; data?: object; headers?: Record<string, string> }
 
 export function request<T>(path: string, options: Options = {}): Promise<T> {
+  if (customerWrite(options.method || 'GET', path) && !customerActionAvailable()) return Promise.reject(new Error(constructionMessage()))
   const token = customerToken()
   const privateRequest = path.startsWith('/api/me/') || (path === '/api/appointments' && options.method === 'POST')
   if (privateRequest && !token) return Promise.reject(new LoginRequiredError())
@@ -57,12 +62,17 @@ export function request<T>(path: string, options: Options = {}): Promise<T> {
   const read = !options.method || options.method === 'GET'
   if (read && pending.has(key)) return pending.get(key) as Promise<T>
   if ((cooldown.get(path) || 0) > Date.now()) return Promise.reject(new Error(t('当前访问较多，请稍后重试。')))
-  const task = Taro.request<T & { message?: string }>({
+  const task = Taro.request<T & { message?: string; code?: string; launchStatus?: LaunchStatus }>({
     url: base + path, method: options.method || 'GET', data: options.data, timeout: 15000,
-    header: { 'content-type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}), ...options.headers },
+    header: { 'content-type': 'application/json', 'Accept-Language': getLocale(), ...(token ? { Authorization: `Bearer ${token}` } : {}), ...options.headers },
   }).then(result => {
     if (privateRequest && token !== customerToken()) throw new LoginRequiredError(t('登录状态已更新，请重新操作。'))
     if (result.statusCode >= 200 && result.statusCode < 300) return result.data as T
+    if (result.statusCode === 423 && result.data?.code === 'MINIPROGRAM_UNDER_CONSTRUCTION') {
+      if (result.data.launchStatus) receiveLaunchStatus(result.data.launchStatus)
+      void showLaunchNotice()
+      throw new Error(result.data.message || constructionMessage())
+    }
     if (result.statusCode === 401) {
       session.clear(token)
       throw new LoginRequiredError(t('登录已失效，请重新登录。'))
@@ -83,6 +93,7 @@ export function login(): Promise<void> {
 }
 
 export function authorizeCustomerLogin(agreed: boolean): Promise<void> {
+  if (!customerActionAvailable()) return Promise.reject(new Error(constructionMessage()))
   customerToken()
   return session.authorize(agreed, async () => {
     let result: { token: string }
@@ -109,8 +120,8 @@ export function media<T>(value: T): T {
   return value
 }
 export const toastError = (error: unknown) => { void Taro.showToast({ title: t(message(error)), icon: 'none', duration: 3500 }) }
-export const contact = (storeId = '') => Taro.navigateTo({ url: `/pages/chat/index?storeId=${encodeURIComponent(storeId)}` })
-export function call(phone?: string) { if (phone) void Taro.makePhoneCall({ phoneNumber: phone }); else toastError(new Error(t('门店电话待完善，请使用在线客服。'))) }
+export const contact = (storeId = '', channel?: 'wechat') => customerActionAvailable() ? Taro.navigateTo({ url: `/pages/chat/index?storeId=${encodeURIComponent(storeId)}${channel === 'wechat' ? '&channel=wechat' : ''}` }) : Promise.resolve()
+export function call(phone?: string) { if (!customerActionAvailable()) return; if (phone) void Taro.makePhoneCall({ phoneNumber: phone }); else toastError(new Error(t('门店电话待完善，请使用在线客服。'))) }
 export function privacy(): Promise<void> {
   if (!isWeapp || !Taro.getPrivacySetting || !Taro.requirePrivacyAuthorize) return Promise.resolve()
   return new Promise((resolve, reject) => {
@@ -145,6 +156,7 @@ export const readSubscriptionSettings = () => subscriptionSettings(false)
 export const openSubscriptionSettings = () => subscriptionSettings(true)
 // Run from the booking/changes submit gesture, before awaiting privacy or HTTP.
 export function subscribeBooking(runtime: Runtime): Promise<SubscriptionResult> {
+  if (getLaunchSnapshot().status?.enabled) return Promise.resolve({ accepted: 0, recorded: 0, declined: 0 })
   return subscribe([runtime.customerTemplateId || '', runtime.customerReminderTemplateId || '', ...(runtime.customerTemplateIds || [])])
 }
 let subscriptionPromise: Promise<SubscriptionResult> | undefined

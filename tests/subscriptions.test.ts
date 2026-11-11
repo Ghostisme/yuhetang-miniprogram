@@ -29,23 +29,28 @@ async function fixture({failRecord=false,failNative=false,signedIn=true}={}){
       return {statusCode:200,data:{recorded:true},header:{}}
     },
     showToast:async()=>{calls.push({kind:'toast'})},
+    showModal:async()=>{calls.push({kind:'notice'});return {confirm:true}},
     eventCenter:{trigger:()=>{}},
   }
+  const modules=new Map<string,any>()
   function load(path:string):any{
+    if(modules.has(path))return modules.get(path)
     const module={exports:{}},source=ts.transpileModule(readFileSync(resolve(path),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText
     const require=(name:string)=>{
       if(name==='@tarojs/taro')return {__esModule:true,default:sdk}
       if(name==='../utils/booking')return load('src/utils/booking.ts')
       if(name==='../utils/session')return load('src/utils/session.ts')
+      if(name==='../utils/launch-mode')return load('src/utils/launch-mode.ts')
+      if(name==='./launch-mode')return load('src/services/launch-mode.ts')
       if (name.endsWith('/i18n')) return i18nFixture
       if (name.endsWith('/components/LanguageSwitcher')) return { default: 'LanguageSwitcher' }
       throw new Error('Unexpected fixture import: '+name)
     }
     vm.runInNewContext(source,{module,exports:module.exports,require,API_BASE_URL:'https://fixture.invalid',ENABLE_DEV_LOGIN:false,process:{env:{TARO_ENV:'weapp'}},console,Date,Math,Error,setTimeout,clearTimeout})
-    return module.exports
+    modules.set(path,module.exports);return module.exports
   }
   const api=load('src/services/api.ts')
-  return {api,subscribe:api.subscribe as (ids:string[])=>Promise<SubscriptionResult>,logout:api.logout as ()=>void,readSettings:api.readSubscriptionSettings as ()=>Promise<SubscriptionSettings|null>,openSettings:api.openSubscriptionSettings as ()=>Promise<SubscriptionSettings|null>,calls,get options(){return options}}
+  return {api,launch:load('src/services/launch-mode.ts'),subscribe:api.subscribe as (ids:string[])=>Promise<SubscriptionResult>,logout:api.logout as ()=>void,readSettings:api.readSubscriptionSettings as ()=>Promise<SubscriptionSettings|null>,openSettings:api.openSubscriptionSettings as ()=>Promise<SubscriptionSettings|null>,calls,get options(){return options}}
 }
 
 // Execute the real page action against the real API adapter and fixture SDK.
@@ -63,7 +68,7 @@ function bookingAction(state:Awaited<ReturnType<typeof fixture>>){
   const result:{receipt?:{id:string};subscription?:SubscriptionResult;login?:boolean;errors:unknown[]}={errors:[]}
   const sending={current:false},runtime={customerTemplateId:'result',customerReminderTemplateId:'reminder',customerTemplateIds:[]}
   const bindings={
-    sending,runtime,hasCustomerSession:state.api.hasCustomerSession,setLoginOpen:(value:boolean)=>{result.login=value},
+    sending,runtime,customerActionAvailable:state.launch.customerActionAvailable,hasCustomerSession:state.api.hasCustomerSession,setLoginOpen:(value:boolean)=>{result.login=value},
     store:{id:'shanghai'},service:{id:'care-1'},storeId:'shanghai',serviceId:'care-1',date:'2030-01-02',time:'15:00',headcount:1,
     teachers:[],teacherId:'',servicesLoading:false,teachersLoading:false,slotsLoading:false,
     slots:{slots:[{time:'15:00',available:true,remaining:4}]},name:'测试客户',phone:'13900003001',consent:true,sensitive:false,
@@ -75,6 +80,15 @@ function bookingAction(state:Awaited<ReturnType<typeof fixture>>){
   }
   return {bindings,result,submit:()=>pageAction('src/pages/booking/index.tsx','submit',bindings)()}
 }
+
+test('construction mode cannot open a subscription prompt or create a booking from the page action',async()=>{
+  const state=await fixture()
+  state.launch.receiveLaunchStatus({enabled:true,revision:1,updatedAt:'',title:{zh:'温馨提示',en:'Notice',ja:'ご案内'},message:{zh:'建设中',en:'Browse only.',ja:'閲覧のみ'}})
+  const booking=bookingAction(state);await booking.submit()
+  await state.api.subscribeBooking({customerTemplateIds:['result','reminder']})
+  assert.equal(state.calls.filter(c=>c.kind!=='notice').length,0)
+  assert.equal(booking.result.receipt,undefined)
+})
 
 test('booking submit directly opens one native prompt with both reminder templates before HTTP or privacy awaits',async()=>{
   const state=await fixture(),booking=bookingAction(state)
@@ -122,7 +136,7 @@ test('missing template configuration or failed grant persistence never makes boo
 test('reschedule submit requests reminders in its click and continues if the customer declines',async()=>{
   const state=await fixture(),sending={current:false},refreshes:unknown[]=[]
   const save=pageAction('src/pages/orders/index.tsx','save',{
-    sending,editing:{id:'fixture-booking',version:1},times:['15:00'],timeIndex:0,timesLoading:false,date:'2030-01-02',
+    sending,customerActionAvailable:state.launch.customerActionAvailable,editing:{id:'fixture-booking',version:1},times:['15:00'],timeIndex:0,timesLoading:false,date:'2030-01-02',
     runtime:{customerTemplateIds:['result','reminder']},hasCustomerSession:state.api.hasCustomerSession,allowed:()=>true,
     subscribeBooking:state.api.subscribeBooking,request:state.api.request,setBusy:()=>{},setEditing:()=>{},
     load:async()=>{refreshes.push('loaded')},Taro:{showModal:async()=>{}},toastError:(error:Error)=>{throw error},

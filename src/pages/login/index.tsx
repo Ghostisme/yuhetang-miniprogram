@@ -1,3 +1,4 @@
+import { withLaunchNotice } from '../../components/LaunchNotice'
 import { useI18n } from '../../i18n'
 import Taro, { useRouter } from '@tarojs/taro'
 import { View } from '@tarojs/components'
@@ -5,7 +6,7 @@ import { CustomerLoginHero } from '../../components/CustomerLogin'
 import { isTabPage, loginReturnTarget } from '../../utils/session'
 import './index.scss'
 
-export default function Login() {
+function Login() {
   const { locale } = useI18n()
   const { params } = useRouter()
   async function signedIn() {
@@ -18,3 +19,5 @@ export default function Login() {
   }
   return <View className={`page login-page locale-${locale}`}><CustomerLoginHero onSignedIn={signedIn} /></View>
 }
+
+export default withLaunchNotice(Login)

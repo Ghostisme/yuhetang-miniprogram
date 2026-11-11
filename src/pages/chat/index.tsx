@@ -1,3 +1,4 @@
+import { withLaunchNotice } from '../../components/LaunchNotice'
 import { localizeSite } from '../../i18n/content'
 import LanguageSwitcher from '../../components/LanguageSwitcher'
 import { t, useI18n } from '../../i18n'
@@ -13,7 +14,7 @@ import { mergeMessages, message, newId, RequestScope } from '../../utils/booking
 import type { ChatConversation, ChatMessage, MessagePage, Site } from '../../types'
 import './index.scss'
 
-export default function Chat() {
+function Chat() {
   const { locale } = useI18n()
   const { params } = useRouter()
   const signedIn = useCustomerSession()
@@ -80,3 +81,5 @@ export default function Chat() {
     <CustomerLoginSheet open={loginOpen} onClose={() => setLoginOpen(false)} onSignedIn={() => setLoginOpen(false)} />
   </View>
 }
+
+export default withLaunchNotice(Chat)

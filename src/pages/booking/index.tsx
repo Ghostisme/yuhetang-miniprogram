@@ -1,3 +1,5 @@
+import { customerActionAvailable } from '../../services/launch-mode'
+import { withLaunchNotice } from '../../components/LaunchNotice'
 import { localizeSite, localizeService, localizeTherapist } from '../../i18n/content'
 import LanguageSwitcher from '../../components/LanguageSwitcher'
 import { dialogLabels, t, useI18n } from '../../i18n'
@@ -20,7 +22,7 @@ import './index.scss'
 const steps = ['选择门店', '选择项目', '到店时间', '预约信息']
 const stepHints = ['选择一家方便到访的门店', '选一份适合自己的养护', '把一段时间留给自己', '留下信息，静候门店确认']
 const claims = ['YES', 'NO', 'UNKNOWN'], claimNames = ['是', '否', '不确定']
-export default function Booking() {
+function Booking() {
   const { locale } = useI18n()
   const { params } = useRouter()
   const signedIn = useCustomerSession()
@@ -83,6 +85,7 @@ export default function Booking() {
     setStep(value => Math.min(3, value + 1))
   }
   async function submit() {
+    if (!customerActionAvailable()) return
     if (sending.current) return
     if (!hasCustomerSession()) { setLoginOpen(true); return }
     const chosen = teachers.find(item => item.id === teacherId)
@@ -123,3 +126,5 @@ export default function Booking() {
     <CustomerLoginSheet open={loginOpen} onClose={() => setLoginOpen(false)} onSignedIn={() => { setLoginOpen(false); setError('') }} />
   </View>
 }
+
+export default withLaunchNotice(Booking)
